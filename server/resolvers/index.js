@@ -1,45 +1,33 @@
+const { User } = require("../models/index.js")
+
+
 const resolvers = {
     Query: {
       hello: () => 'world',
-      quote(obj, {id}) {
-              return Quote.findById(id)
-          },
-      author(source, {id}) {
-              return Author.findById(id)
-          },
-      tag(source, {id}) {
-              return Tag.findById(id)
+      user(ctx, { id }) {
+        return User.findById(id)
       },
-      quotes(source, { cursor }) {
-              options = cursor ? { _id : { $gt: cursor} } : {}
-              console.log(options)
-              return Quote.find(options).limit(30)
-          },
-      authors() {
-              return Author.find({})
+      book(ctx, { id }) { 
+          return { }
       },
-      tags() {
-              return Tag.find({})
-          }
-    },
-    Quote: {
-      author(source, args) {
-              return Author.findById(source.author)
-      },
-      tags(source, args) {
-              return source.tags.map(id => Tag.findById(id))
+      secret(ctx, { }, { user }) {
+
+          return `Psssh ${user.email}`
       }
     },
-    Author: {
-      quotes(source, args) {
-              return Quote.find({ author: source.id })
-          }
-      },
-    Tag: {
-        quotes(source) {
-          return Quote.find({ tags: { $in: source.id } })
+    Mutation: {
+        async newUser(obj, { email, password }) {
+          const user = await User({ email, password })
+          await user.isUniqueOrAbort(email)
+          user.save()
+          return user
+        },
+        async newAuth(obj, { email, password }, ctx) {
+          const user = await User.find().byEmailAndPassword({ email, password })
+          const token = user.generateJWT()
+          return { user, token }
         }
-    }
+      }
   }
 
   module.exports = resolvers
