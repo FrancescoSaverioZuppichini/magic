@@ -7,7 +7,7 @@ const expressLogger = require('express-pino-logger')({ logger })
 const typeDefs = require('./types/index.js')
 const resolvers = require('./resolvers/index.js')
 const { AuthDirective } = require('./directives/index.js')
-
+const { Deck } = require('./models')
 const PORT = process.env.PORT || 4000
 const NODE_ENV = process.env.NODE_ENV || 'development'
 const TOKEN_SECRET = process.env.TOKEN_SECRET || 'pazzofurioso'
@@ -18,6 +18,9 @@ mongoose
 	.connect(MONGO_URI)
 	.then(() => console.log(`🚀 Mongodb connected at ${MONGO_URI}`))
 	.catch((e) => logger.error(e))
+
+Deck.collection.drop()
+
 
 const server = new ApolloServer({
 	typeDefs,
