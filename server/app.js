@@ -19,7 +19,7 @@ mongoose
 	.then(() => console.log(`🚀 Mongodb connected at ${MONGO_URI}`))
 	.catch((e) => logger.error(e))
 
-Deck.collection.drop()
+// Deck.collection.drop()
 
 
 const server = new ApolloServer({
