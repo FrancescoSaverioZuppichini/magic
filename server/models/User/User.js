@@ -12,8 +12,10 @@ const errors = {
 }
 
 const UserSchema = new mongoose.Schema({ 
+    username: { type: String, required: true },
     password: { type : String, required : true},
     email: {type : String, unique : true, required : true, index: true},
+    decks: [ { type: mongoose.Schema.Types.ObjectId, ref : 'Deck' } ]
 })
 
 UserSchema.methods.passwordIsValid = (toCheck, valid) => bcrypt.compareSync(toCheck, valid)
