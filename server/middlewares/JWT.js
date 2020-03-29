@@ -19,7 +19,6 @@ async function JWTProtected(req, res, next) {
     
     return next()
   } catch (err) {
-    console.log(err.message);
     err.status = 401
     next(err)
   }
