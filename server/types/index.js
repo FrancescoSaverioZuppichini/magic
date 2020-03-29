@@ -5,13 +5,13 @@ const typeDefs = gql`
 
 	type Query {
 		user: User
-    me: User
+    me: User @isAuthenticated
 		secret: String @isAuthenticated
 		hello: String
-    deck: Deck
+    deck: Deck @isAuthenticated
     decks: [Deck]
-    card: Card
-    cards: [Cards]
+    card(id: ID!): Card
+    cards(filter: CardInput): [Card]
 	}
 
 	type User {
@@ -24,9 +24,11 @@ const typeDefs = gql`
 	type Deck {
     name: String!
     cards: [Card]
+    owner: User
 	}
 
 	type Card {
+    id: ID!
     name: String!
 	}
 
@@ -41,12 +43,27 @@ const typeDefs = gql`
 		user: User
 	}
 
+  input DeckInput { 
+    name: String!
+    cards: [CardInput]
+  }
+
+  input CardInput {
+    id: ID
+    name: String
+  }
+
+  input UserInput {
+    id: ID!
+  }
+
 	type Mutation {
 		newUser(username: String!, email: String!, password: String!): User
 		newAuth(email: String!, password: String!): Auth
-    newDeck(name: String!): Deck
-    updateDeck(name: String!, cards: [Card]): Deck
-    newRoom(name: String!, users: [Users]) : Room
+    newDeck(deck: DeckInput): Deck @isAuthenticated
+    newCard(card: CardInput): Card
+    updateDeck(deck: DeckInput): Deck @isAuthenticated
+    newRoom(name: String!, user: UserInput) : Room
     joinRoom(name: String!): Room
 	}
 `
