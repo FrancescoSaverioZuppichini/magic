@@ -5,8 +5,13 @@ const typeDefs = gql`
 
 	type Query {
 		user: User
+    me: User
 		secret: String @isAuthenticated
 		hello: String
+    deck: Deck
+    decks: [Deck]
+    card: Card
+    cards: [Cards]
 	}
 
 	type User {
@@ -39,6 +44,10 @@ const typeDefs = gql`
 	type Mutation {
 		newUser(username: String!, email: String!, password: String!): User
 		newAuth(email: String!, password: String!): Auth
+    newDeck(name: String!): Deck
+    updateDeck(name: String!, cards: [Card]): Deck
+    newRoom(name: String!, users: [Users]) : Room
+    joinRoom(name: String!): Room
 	}
 `
 module.exports = typeDefs
