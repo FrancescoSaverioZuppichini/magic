@@ -7,17 +7,14 @@ const resolvers = {
       user(ctx, { id }) {
         return User.findById(id)
       },
-      book(ctx, { id }) { 
-          return { }
-      },
       secret(ctx, { }, { user }) {
 
           return `Psssh ${user.email}`
       }
     },
     Mutation: {
-        async newUser(obj, { email, password }) {
-          const user = await User({ email, password })
+        async newUser(obj, { username, email, password }) {
+          const user = await User({ username, email, password })
           await user.isUniqueOrAbort(email)
           user.save()
           return user

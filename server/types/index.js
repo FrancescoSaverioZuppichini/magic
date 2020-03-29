@@ -1,36 +1,44 @@
 const { gql } = require('apollo-server-express')
 
 const typeDefs = gql`
-directive @isAuthenticated on FIELD_DEFINITION
+	directive @isAuthenticated on FIELD_DEFINITION
 
-type Query {
-    book: Book
-    user: User
-    secret: String @isAuthenticated
-    hello: String
-}
+	type Query {
+		user: User
+		secret: String @isAuthenticated
+		hello: String
+	}
 
-type User {
-    id: ID!
-    email: String,
-    books: [Book]
-  }
+	type User {
+		id: ID!
+		username: String!
+		email: String!
+		decks: [Deck]
+	}
 
-type Book {
-    cursor: String
-    id: ID!
-    text: String!
-    author: User
-}
+	type Deck {
+    name: String!
+    cards: [Card]
+	}
 
-type Auth {
-    token: String
-    user: User
-  }
+	type Card {
+    name: String!
+	}
 
-type Mutation {
-    newUser(email: String!, password: String!): User
-    newAuth(email: String!, password: String!): Auth
-  }
+	type Room {
+    name: String!,
+    users: [User]
+    active: Boolean
+	}
+
+	type Auth {
+		token: String
+		user: User
+	}
+
+	type Mutation {
+		newUser(username: String!, email: String!, password: String!): User
+		newAuth(email: String!, password: String!): Auth
+	}
 `
 module.exports = typeDefs

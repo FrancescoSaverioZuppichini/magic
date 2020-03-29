@@ -19,6 +19,7 @@
     "express-pino-logger": "^4.0.0",
     "graphql": "^14.0.2",
     "graphql-import": "^0.7.1",
+    "moment": "^2.24.0",
     "mongoose": "^5.3.4",
     "morgan": "^1.9.1",
     "pino": "^6.0.0",
