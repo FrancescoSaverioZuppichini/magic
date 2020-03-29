@@ -12,10 +12,10 @@ const resolvers = {
 		},
 		secret(ctx, {}, { user }) {
 			return `Psssh ${user.email}`
-    },
-    decks(ctx, {}) {
-      return Deck.find().populate('owner')
-    },
+		},
+		decks(ctx, {}) {
+			return Deck.find().populate('owner')
+		},
 		cards(ctx, { filter }) {
 			return Card.find(filter)
 		},
@@ -36,24 +36,26 @@ const resolvers = {
 			return { user, token }
 		},
 		async newDeck(obj, { deck }, { user }) {
-      deck = { ...deck, owner: user }
+			deck = { ...deck, owner: user }
 			// check if the current user has already a deck
-      const alreadyExist = await Deck.exists(deck) 
-      console.log(alreadyExist)
+			const alreadyExist = await Deck.exists(deck)
+
 			if (alreadyExist) throw new Error(`Deck with name ${deck.name} already exists.`)
-      const newDeck = new Deck(deck)
-      console.log(newDeck)
-			return (await newDeck.save())
+			const newDeck = new Deck(deck)
+
+			return await newDeck.save()
 		},
 		async updateDeck(obj, { deck }, { user }) {
-      const doesntExist =  ! await Deck.exists({ deck }) 
+			deck = { ...deck, owner: user }
+
+			const doesntExist = !await Deck.exists(deck)
 			if (doesntExist) throw new Error(`Deck with name ${deck.name} does not exist.`)
 
-			const updatedDeck = Deck.findOneAndUpdate({ name: deck.name, owner: user }, deck, { new: true })
+			const updatedDeck = Deck.findOneAndUpdate(deck, deck, { new: true })
 
 			user.decks.push(updatedDeck)
 			await user.update()
-			return updatedDeck.populated('owner')
+			return updatedDeck.populated('owner').populate('cards')
 		},
 		async newCard(obj, { card }) {
 			const oldCard = Card.findOne(card)
