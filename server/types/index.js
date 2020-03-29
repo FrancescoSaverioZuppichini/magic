@@ -8,7 +8,7 @@ const typeDefs = gql`
     me: User @isAuthenticated
 		secret: String @isAuthenticated
 		hello: String
-    deck: Deck @isAuthenticated
+    deck(id: ID!): Deck @isAuthenticated
     decks: [Deck]
     card(id: ID!): Card
     cards(filter: CardInput): [Card]
@@ -22,6 +22,7 @@ const typeDefs = gql`
 	}
 
 	type Deck {
+    id: ID!
     name: String!
     cards: [Card]
     owner: User
@@ -30,6 +31,24 @@ const typeDefs = gql`
 	type Card {
     id: ID!
     name: String!
+    artist: String!
+    colorIdentity: [String]!
+    colors: [String]!
+    convertedManaCost: Int!
+    faceConvertedManaCost: Int!
+    hand: String
+    hasNoDeckLimit: Boolean
+    layout: String!
+    life: String
+    loyalty: String
+    manaCost: String!
+    power: Int!
+    subtypes: [String!]
+    supertypes: [String!]
+    text: String!
+    toughness: Int!
+    types: [String!]
+    scryfallOracleId: String!
 	}
 
 	type Room {
