@@ -1,46 +1,41 @@
 const { ApolloServer, gql } = require('apollo-server-express')
 const mongoose = require('mongoose')
 const express = require('express')
-const { Author, Quote, Tag} = require('./models/index')
-const morgan = require('morgan')
-const jwt = require("express-jwt")
-
+const jwt = require('express-jwt')
+const logger = require('./logger')
+const expressLogger = require('express-pino-logger')({ logger })
 const typeDefs = require('./types/index.js')
 const resolvers = require('./resolvers/index.js')
 const { AuthDirective } = require('./directives/index.js')
 
-const MONGO_URL = 'mongodb://localhost/test'
 const PORT = process.env.PORT || 4000
-const NODE_ENV = process.env.NODE_ENV || "development"
-process.env.TOKEN_SECRET = process.env.TOKEN_SECRET || 'pazzofurioso'
-
+const NODE_ENV = process.env.NODE_ENV || 'development'
+const TOKEN_SECRET = process.env.TOKEN_SECRET || 'pazzofurioso'
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost/tes'
 process.env.SALT_ROUNDS = 10
 
-mongoose.connect(MONGO_URL)
-.then(() => console.log(`🚀 Mongodb connected at ${MONGO_URL}`))
-.catch((e) => consolg.error(e))
-
+mongoose
+	.connect(MONGO_URI)
+	.then(() => console.log(`🚀 Mongodb connected at ${MONGO_URI}`))
+	.catch((e) => logger.error(e))
 
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  schemaDirectives: {
+	typeDefs,
+	resolvers,
+	schemaDirectives: {
 		isAuthenticated: AuthDirective
 	},
 	context: ({ req }) => ({
-    // we store the request on the context in order to use them later inside the directives
-		req 
+		// we store the request on the context in order to use them later inside the directives
+		req
 	})
 })
 
 var app = express()
-app.use(express.static('public'));
+app.use(express.static('public'))
+app.use(expressLogger)
+app.use(jwt({ secret: TOKEN_SECRET, credentialsRequired: false }))
 
-app.use(morgan('combined'))
-app.use(jwt({ secret: process.env.TOKEN_SECRET, credentialsRequired: false }))
+server.applyMiddleware({ app })
 
-server.applyMiddleware({ app }) 
-
-app.listen({ port: PORT }, () =>
-  console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`)
-)
+app.listen({ port: PORT }, () => logger.info(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`))
