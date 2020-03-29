@@ -7,12 +7,13 @@ const resolvers = {
 			// should filder out some infos
 			return User.findOne({ username })
 		},
-		me: (ctx, { id }, { user }) => {
-			return user
+		me: async (ctx, { id }, { user }) => {
+			return User.findById(user.id).populate('decks')
 		},
 		secret(ctx, {}, { user }) {
 			return `Psssh ${user.email}`
-		},
+    },
+    deck: (ctx, { id}) => Deck.findById(id),
 		decks(ctx, {}) {
 			return Deck.find().populate('owner')
 		},
@@ -41,7 +42,10 @@ const resolvers = {
 			const alreadyExist = await Deck.exists(deck)
 
 			if (alreadyExist) throw new Error(`Deck with name ${deck.name} already exists.`)
-			const newDeck = new Deck(deck)
+      const newDeck = new Deck(deck)
+      
+      user.decks = [newDeck]
+      await user.save()
 
 			return await newDeck.save()
 		},
@@ -58,8 +62,7 @@ const resolvers = {
 			return updatedDeck.populated('owner').populate('cards')
 		},
 		async newCard(obj, { card }) {
-			const oldCard = Card.findOne(card)
-			const doesAnotherCardWithSameNameExist = oldCard !== null
+			const alreadyExist = Card.exists(card)
 			if (alreadyExist) throw new Error(`Another card with the same name ${card.name} exists.`)
 			const newCard = new Card(card)
 			return newCard.save()
