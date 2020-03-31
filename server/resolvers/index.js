@@ -18,7 +18,7 @@ const resolvers = {
 			return Deck.find().populate('owner')
 		},
 		cards(ctx, { filter }) {
-			return Card.find(filter)
+			return Card.find(filter).limit(10)
 		},
 		card(ctx, { id }) {
 			return Card.findById(id)
@@ -52,14 +52,9 @@ const resolvers = {
 		async updateDeck(obj, { deck }, { user }) {
 			deck = { ...deck, owner: user }
 
-			const doesntExist = !await Deck.exists(deck)
-			if (doesntExist) throw new Error(`Deck with name ${deck.name} does not exist.`)
+			const updatedDeck = Deck.findOneAndUpdate(deck.id, deck, { new: true })
 
-			const updatedDeck = Deck.findOneAndUpdate(deck, deck, { new: true })
-
-			user.decks.push(updatedDeck)
-			await user.update()
-			return updatedDeck.populated('owner').populate('cards')
+			return updatedDeck.populate('owner').populate('cards')
 		},
 		async newCard(obj, { card }) {
 			const alreadyExist = Card.exists(card)

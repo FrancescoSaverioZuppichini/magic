@@ -1,0 +1,1 @@
+mongoimport --db=tes --collection=cards --file=../data/AllCards.json --jsonArray
