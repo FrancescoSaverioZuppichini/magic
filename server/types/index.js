@@ -30,25 +30,23 @@ const typeDefs = gql`
 
 	type Card {
     id: ID!
-    name: String!
-    artist: String!
-    colorIdentity: [String]!
-    colors: [String]!
-    convertedManaCost: Int!
-    faceConvertedManaCost: Int!
-    hand: String
-    hasNoDeckLimit: Boolean
-    layout: String!
-    life: String
-    loyalty: String
-    manaCost: String!
-    power: Int!
-    subtypes: [String!]
-    supertypes: [String!]
-    text: String!
-    toughness: Int!
-    types: [String!]
-    scryfallOracleId: String!
+    name: String!,
+    artist: String,
+    colorIndicator:  [String],
+    colors: [String],
+    manaCost: [String],
+    convertedManaCost: Float,
+    text: String,
+    power: Float
+,   toughness: Float,
+    type: String,
+    types: [String],
+    subtypes: [String],
+    supertypes: [String],
+    scryfallId: String,
+    layout: String,
+    life: String,
+    loyalty: Float
 	}
 
 	type Room {
@@ -63,12 +61,13 @@ const typeDefs = gql`
 	}
 
   input DeckInput { 
+    id: ID!
     name: String!
-    cards: [CardInput]
+    cards: [ID!]
   }
 
   input CardInput {
-    id: ID
+    id: ID!
     name: String
   }
 
