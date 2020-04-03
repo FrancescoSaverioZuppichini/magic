@@ -19,17 +19,17 @@ const resolvers = {
 		},
 		async cards(ctx, { filter, cursor }) {
 			let { skip, limit } = cursor
-			if(limit > CURSOR_BOUNDS.limit) throw new Error(`Limit cannot be greater than ${CURSOR_BOUNDS.limit}`)
+			if (limit > CURSOR_BOUNDS.limit) throw new Error(`Limit cannot be greater than ${CURSOR_BOUNDS.limit}`)
 
-			let cardFilter = {...filter}
+			let cardFilter = { ...filter }
 
-			if(filter.type) cardFilter.types =  filter.type
-			if(filter.name) cardFilter.name = { '$regex' : filter.name}
-			if(filter.colors) cardFilter.colors = { '$all' : filter.colors} 
-						
-			const cards =  await Card.find(cardFilter).skip(skip).limit(limit)
+			if (filter.type) cardFilter.types = filter.type
+			if (filter.name) cardFilter.name = { '$regex': filter.name }
+			if (filter.colors) cardFilter.colors = { '$all': filter.colors }
+
+			const cards = await Card.find(cardFilter).skip(skip).limit(limit)
 			const hasMore = cards.length == limit
-			cursor.skip += limit 
+			cursor.skip += limit
 
 			return { cards, hasMore, cursor }
 		},
@@ -38,7 +38,8 @@ const resolvers = {
 		}
 	},
 	Mutation: {
-		async newUser(obj, { username, email, password }) {
+		async newUser(obj, { input }) {
+			const { username, email, password } = input
 			const user = await User({ username, email, password })
 			await user.isUniqueOrAbort(email)
 			user.save()

@@ -1,12 +1,9 @@
-const { ApolloServer, gql } = require('apollo-server-express')
 const mongoose = require('mongoose')
 const express = require('express')
 const jwt = require('express-jwt')
 const logger = require('./logger')
 const expressLogger = require('express-pino-logger')({ logger })
-const typeDefs = require('./types/index.js')
-const resolvers = require('./resolvers/index.js')
-const { AuthDirective } = require('./directives/index.js')
+const server = require('./server')
 const { Deck } = require('./models')
 const PORT = process.env.PORT || 4000
 const NODE_ENV = process.env.NODE_ENV || 'development'
@@ -21,17 +18,6 @@ mongoose
 
 // Deck.collection.drop()
 
-const server = new ApolloServer({
-	typeDefs,
-	resolvers,
-	schemaDirectives: {
-		isAuthenticated: AuthDirective
-	},
-	context: ({ req }) => ({
-		// we store the request on the context in order to use them later inside the directives
-		req
-	})
-})
 
 var app = express()
 app.use(express.static('public'))
