@@ -44,6 +44,7 @@ describe("API", () => {
                 mutation: NEW_USER, 
                 variables: { input: user }
             })
+            console.log(res)
             const newUser = res.data.newUser
             assert.equal(newUser.email, user.email)
             assert.equal(newUser.username, user.username)

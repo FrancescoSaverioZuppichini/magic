@@ -38,7 +38,8 @@ const resolvers = {
 		}
 	},
 	Mutation: {
-		async newUser(obj, { username, email, password }) {
+		async newUser(obj, { input }) {
+			const { username, email, password } = input
 			const user = await User({ username, email, password })
 			await user.isUniqueOrAbort(email)
 			user.save()
