@@ -21,7 +21,6 @@ mongoose
 
 // Deck.collection.drop()
 
-
 const server = new ApolloServer({
 	typeDefs,
 	resolvers,
