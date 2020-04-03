@@ -10,8 +10,8 @@ const typeDefs = gql`
 		hello: String
     deck(id: ID!): Deck @isAuthenticated
     decks: [Deck]
-    card(id: ID!): Card
-    cards(filter: CardInput): [Card]
+    card(id: ID!): Card 
+    cards(filter: CardFilter, cursor: CursorInput!): CardConnection
 	}
 
 	type User {
@@ -49,6 +49,23 @@ const typeDefs = gql`
     loyalty: Float
 	}
 
+  type CardConnection {
+    cards: [Card]!
+    hasMore: Boolean!
+    cursor: Cursor
+  }
+
+  type Cursor {
+    limit: Int!
+    skip: Int!
+  }
+
+  input CursorInput {
+    limit: Int!
+    skip: Int!
+  }
+
+
 	type Room {
     name: String!,
     users: [User]
@@ -66,9 +83,13 @@ const typeDefs = gql`
     cards: [ID!]
   }
 
-  input CardInput {
-    id: ID!
+  input CardFilter {
     name: String
+    type: String
+    colors: [String]
+    convertedManaCost: Int
+    toughness: Int
+    power: Int
   }
 
   input UserInput {
@@ -79,7 +100,7 @@ const typeDefs = gql`
 		newUser(username: String!, email: String!, password: String!): User
 		newAuth(email: String!, password: String!): Auth
     newDeck(deck: DeckInput): Deck @isAuthenticated
-    newCard(card: CardInput): Card
+    newCard(card: CardFilter): Card
     updateDeck(deck: DeckInput): Deck @isAuthenticated
     newRoom(name: String!, user: UserInput) : Room
     joinRoom(name: String!): Room
