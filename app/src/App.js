@@ -5,6 +5,9 @@ import theme from './theme.js'
 import { ApolloProvider } from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';
 import { BrowserRouter, Route, Link, Redirect } from "react-router-dom";
+import Index from './Index'
+import { ThemeProvider } from 'theme-ui'
+import { Box } from 'theme-ui'
 
 const client = new ApolloClient({
   uri: '/graphql',
@@ -15,17 +18,21 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
-      <BrowserRouter>
-        <Route path="/" exact={true}>
-          index
+      <ThemeProvider theme={theme}>
+        <Box variant='app'>
+        <BrowserRouter>
+          <Route path="/" exact={true}>
+            <Index />
           </Route>
-        <Route path="/home">
-          home
+          <Route path="/home">
+            home
           </Route>
-        {isAuthenticated && <Redirect to={{ pathname: '/home' }} />}
-      </BrowserRouter>
+          {isAuthenticated && <Redirect to={{ pathname: '/home' }} />}
+        </BrowserRouter>
+        </Box>
+      </ThemeProvider>
     </ApolloProvider>
   )
 }
 
-export default App;
+export default App
