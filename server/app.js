@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 4000
 const NODE_ENV = process.env.NODE_ENV || 'development'
 const TOKEN_SECRET = process.env.TOKEN_SECRET || 'pazzofurioso'
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost/tes'
-const server = require('server')
+const server = require('./server')
 process.env.SALT_ROUNDS = 10
 
 mongoose
