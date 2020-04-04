@@ -21,7 +21,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <Box variant='app'>
         <BrowserRouter>
-          <Route path="/" exact={true}>
+          <Route path="/">
             <Index />
           </Route>
           <Route path="/home">
