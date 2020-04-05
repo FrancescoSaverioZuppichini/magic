@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { Flex, Box, Input, Text, Button, Card, Link } from 'theme-ui'
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, Redirect } from "react-router-dom"
+import queries from './queries/index'
+import mutations from './mutations/index'
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
 
 const Left = ({ active, doAuth, onSignUpClick, onSignInClick }) => (
     <Card variant='viewport' sx={{
@@ -56,13 +59,33 @@ const Right = ({ active, onSignUpClick, onSignInClick }) => (
 
 
 function Index() {
+    const client = useApolloClient()
     const [active, setActive] = useState('signUp')
+    
+    const [newAuth, _ ] = useMutation(mutations.NEW_AUTH, {
+        onCompleted({ newAuth }) {
+            // update the local cache
+            const token = newAuth.token
+            localStorage.setItem("token", token)
+            client.writeData({ data: { isAuthenticated: true } })
+        }
+    })
+    // check if user already authenticated -> TODO this should be done in parent component
+    const { error, data } = useQuery(queries.IS_AUTHENTICATED)
+    const { isAuthenticated } = data
+    // fake auth
+    const user = { email: 'test', password: 'test'}
+    if(!isAuthenticated){
+        newAuth({ variables: user})
+    }
+     
 
     const onSignInClick = () => setActive('signIn')
     const onSignUpClick = () => setActive('signUp')
 
     const doSignUp = () => console.log('sign up')
     const doSignIn = () => console.log('sign in')
+
     const doAuth = active === 'signIn' ? doSignIn : doSignUp
 
     return (
@@ -78,6 +101,7 @@ function Index() {
                 onSignInClick={onSignInClick}
                 active={active}
             />
+            {/* {isAuthenticated && <Redirect to={{ pathname: '/home' }} />} */}
         </Flex>
     )
 }

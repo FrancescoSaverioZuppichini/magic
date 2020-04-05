@@ -1,5 +1,24 @@
 const { User, Card, Deck } = require('../models/index.js')
 const CURSOR_BOUNDS = { limit: 200 }
+
+const cards = async (ctx, { filter, cursor }) => {
+	let { skip, limit } = cursor
+	if(limit > CURSOR_BOUNDS.limit) throw new Error(`Limit cannot be greater than ${CURSOR_BOUNDS.limit}`)
+
+	let cardFilter = {...filter}
+
+	if(filter.type) cardFilter.types =  filter.type
+	if(filter.name) cardFilter.name = { '$regex' : filter.name}
+	if(filter.colors) cardFilter.colors = { '$all' : filter.colors} 
+	if(filter.ids) cardFilter.ids = {'$in': filter.ids}
+				
+	const cards =  await Card.find(cardFilter).skip(skip).limit(limit)
+	const hasMore = cards.length == limit
+	cursor.skip += limit 
+
+	return { cards, hasMore, cursor }
+}
+
 const resolvers = {
 	Query: {
 		hello: () => 'world',
@@ -13,25 +32,15 @@ const resolvers = {
 		secret(ctx, { }, { user }) {
 			return `Psssh ${user.email}`
 		},
+		cards,
 		deck: (ctx, { id }) => Deck.findById(id),
 		decks(ctx, { }) {
 			return Deck.find().populate('owner')
 		},
-		async cards(ctx, { filter, cursor }) {
-			let { skip, limit } = cursor
-			if(limit > CURSOR_BOUNDS.limit) throw new Error(`Limit cannot be greater than ${CURSOR_BOUNDS.limit}`)
-
-			let cardFilter = {...filter}
-
-			if(filter.type) cardFilter.types =  filter.type
-			if(filter.name) cardFilter.name = { '$regex' : filter.name}
-			if(filter.colors) cardFilter.colors = { '$all' : filter.colors} 
-						
-			const cards =  await Card.find(cardFilter).skip(skip).limit(limit)
-			const hasMore = cards.length == limit
-			cursor.skip += limit 
-
-			return { cards, hasMore, cursor }
+		async cardsInDeck(ctx, { filter, cursor, deckID }) {
+			let deck = (await Deck.findById(deckID))
+			filter.ids = deck.cards
+			return cards({ filter, cursor } )
 		},
 		card(ctx, { id }) {
 			return Card.findById(id)

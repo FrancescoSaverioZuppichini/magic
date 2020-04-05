@@ -12,6 +12,8 @@ const typeDefs = gql`
     decks: [Deck]
     card(id: ID!): Card 
     cards(filter: CardFilter, cursor: CursorInput!): CardConnection
+    cardsInDeck(filter: CardFilter, cursor: CursorInput!, deck: ID!): CardConnection
+
 	}
 
 	type User {
