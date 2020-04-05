@@ -27,3 +27,4 @@ app.use(jwt({ secret: TOKEN_SECRET, credentialsRequired: false }))
 server.applyMiddleware({ app })
 
 app.listen({ port: PORT }, () => logger.info(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`))
+ 
