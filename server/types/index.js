@@ -102,7 +102,7 @@ const typeDefs = gql`
 
 	type Mutation {
 		newUser(input: UserInput): User
-		newAuth(email: String!, password: String!): Auth
+		newAuth(username: String!, password: String!): Auth
     newDeck(deck: DeckInput): Deck @isAuthenticated
     newCard(card: CardFilter): Card
     updateDeck(deck: DeckInput): Deck @isAuthenticated
