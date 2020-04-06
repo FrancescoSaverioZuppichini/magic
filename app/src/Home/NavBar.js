@@ -1,6 +1,7 @@
 import React from 'react'
 import { Flex, Box, Text, Button } from 'theme-ui'
 import SearchBar from './SearchBar'
+import Cards from './MagicCards'
 import { useLazyQuery } from '@apollo/react-hooks';
 import queries from '../queries/index'
 import { useHistory, useLocation } from 'react-router-dom'
@@ -10,7 +11,7 @@ function NavBar({ user }) {
     const [getCards, { error, data, fetchMore }] = useLazyQuery(queries.GET_CARDS, 
         { fetchPolicy: 'network-only' })
     const history = useHistory()
-
+    
     const searchCards = (value) => {
         const filter = JSON.parse(value)
         let cursor = { skip: 0, limit: 32 }
@@ -49,7 +50,8 @@ function NavBar({ user }) {
                 <Box variant="spacer" />
                 <Text>{user.username}</Text>
             </Flex>
-            {data && data.cards.cards.map(card => (<img src={`cards/${card.scryfallId}.jpg`} height='250px'></img>))}
+            
+            {data && <Cards cards={data.cards.cards}/>}
             {data && data.cards.hasMore && <Button onClick={onLoadMore}>More</Button>}
         </Box>
     )

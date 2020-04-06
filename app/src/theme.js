@@ -14,6 +14,7 @@ const theme = {
     monospace: 'Menlo, monospace',
   },
   fontWeights: {
+    thin: 200,
     body: 400,
     heading: 700,
     bold: 700,
@@ -39,6 +40,9 @@ const theme = {
   cards: {
     viewport: {
       height: ['50vh', '50vh', '100vh'],
+      padding: [2, 4]
+    },
+    container: {
       padding: [2, 4]
     }
   },
@@ -107,6 +111,16 @@ const theme = {
       '&:active': {
         borderColor: 'active',
         color: 'active',
+        // outline:'none'
+      }
+    },
+    circle: {
+      borderRadius: '50%',
+      outline: 'none',
+      bg: 'primary',
+      '&:active': {
+        backgroundColor: 'active',
+        borderColor: 'active',
         // outline:'none'
       }
     }
