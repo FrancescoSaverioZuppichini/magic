@@ -54,8 +54,8 @@ const resolvers = {
 			user.save()
 			return user
 		},
-		async newAuth(obj, { email, password }, ctx) {
-			const user = await User.find().byEmailAndPassword({ email, password })
+		async newAuth(obj, { username, password }, ctx) {
+			const user = await User.find().byUsernameAndPassword({ username, password })
 			const token = user.generateJWT()
 			return { user, token }
 		},

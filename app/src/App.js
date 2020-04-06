@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import theme from './theme.js'
-import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloProvider, useQuery } from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';
 import { BrowserRouter, Route, Link, Redirect } from "react-router-dom";
 import Index from './Index'
 import { ThemeProvider } from 'theme-ui'
 import { Box } from 'theme-ui'
+import queries from './queries/index'
 import gql from 'graphql-tag';
 
 
@@ -40,14 +41,15 @@ client.writeData({ data: { isAuthenticated: !!localStorage.getItem('token') } })
 // I could use ApolloConsumer and check for isAuthenticated
 // https://www.apollographql.com/docs/react/data/local-state/
 function App() {
-  const [isAuthenticated, _] = useState(false)
+  const { error, data } = useQuery(queries.IS_AUTHENTICATED, { client })
+  const { isAuthenticated } = data
 
   return (
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>
         <Box variant='app'>
           <BrowserRouter>
-            <Route path="/index">
+            <Route path="/" exact={true}>
               <Index />
             </Route>
             <Route path="/home">

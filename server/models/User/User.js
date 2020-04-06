@@ -61,5 +61,22 @@ UserSchema.query.byEmailAndPassword = async function({ email, password }){
   return user
 }
 
+/**
+ * Utility method that get one user from username and password. 
+ * User.find().ByEmailAndPassword({ email: foo, password: baa })
+ */
+UserSchema.query.byUsernameAndPassword = async function({ username, password }){
+  const user = await this.findOne({
+    username: username
+  })
+
+  if(!user) throw errors.USER_NOT_FOUND()
+  if(!user.activated) errors.USER_NOT_ACTIVATED()
+  if (!user) throw errors.PASSWORD_NOT_VALID()
+  if (!user.passwordIsValid(password, user.password)) throw errors.PASSWORD_NOT_VALID()
+  
+  return user
+}
+
 
 module.exports = mongoose.model('User', UserSchema)
