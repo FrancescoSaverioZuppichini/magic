@@ -6,6 +6,7 @@ import { ApolloProvider, useQuery } from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';
 import { BrowserRouter, Route, Link, Redirect } from "react-router-dom";
 import Index from './Index'
+import Home from './Home/Home'
 import { ThemeProvider } from 'theme-ui'
 import { Box } from 'theme-ui'
 import queries from './queries/index'
@@ -53,7 +54,7 @@ function App() {
               <Index />
             </Route>
             <Route path="/home">
-              home
+              <Home/>
           </Route>
             {isAuthenticated && <Redirect to={{ pathname: '/home' }} />}
           </BrowserRouter>
