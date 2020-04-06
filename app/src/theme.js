@@ -1,8 +1,11 @@
 const theme = {
   colors: {
     text: '#000',
+    textLight: 'white',
     background: '#F4F4F4',
     primary: '#6A66F2',
+    dark: '#413BFF',
+
     active: '#9B66F2'
   },
   fonts: {
@@ -58,6 +61,23 @@ const theme = {
       '&:focus': {
         // backgroundColor: 'active',
         borderColor: 'active',
+        outline:'none'
+      }
+    },
+    searchbar: {
+      backgroundColor: 'background',
+      color: 'text',
+      borderRadius: '28px',
+      outline:'none',
+      padding: '14px',
+      borderWidth: '0px',
+      fontSize: 1,
+      '&:active': {
+        // backgroundColor: 'active',
+        outline:'none'
+      },
+      '&:focus': {
+        // backgroundColor: 'active',
         outline:'none'
       }
     },
