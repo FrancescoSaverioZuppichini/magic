@@ -22,16 +22,29 @@ function SearchBar({ children }) {
          * In order we first ensure that cards are displayed and we fix the input.
          * Then we get the cards and, finally, we update the history
          */
+        let cursor = { skip: 0, limit: 32 }
         setHideCards(false)
         setFilterHasChanged(false)
-        let cursor = { skip: 0, limit: 32 }
-        getCards({ variables: { filter, cursor } })
-        history.push(
-            {
-                pathname: '/home',
-                search: `?${queryString.stringify({ 'filter': JSON.stringify(filter) })}`
-            }
-        )
+        // base case, we are searching only for name
+        let parsedFilter = { name : filter}
+
+        try{
+            parsedFilter = JSON.parse(filter)
+        } catch(err){
+            console.log(err)
+        }
+        finally{
+            console.log(parsedFilter)
+            getCards({ variables: { filter: parsedFilter, cursor } })
+            history.push(
+                {
+                    pathname: '/home',
+                    search: `?${queryString.stringify({ 'filter': filter })}`
+                }
+            )
+        }
+
+    
     }
 
     const onLoadMore = () => {
@@ -57,7 +70,7 @@ function SearchBar({ children }) {
                 <Input variant='searchbar' placeholder='{ "name" : "search me", "type": "creature" }' 
                 ref={input} onChange={e => {
                     setFilterHasChanged(true)
-                setFilter(JSON.parse(e.target.value))}}></Input>
+                setFilter(e.target.value)}}></Input>
                 {(hideCards || filterHasChanged) ? <IconButton onClick={() => searchCards(filter)}
                     sx={{
                         position: 'absolute', top: 0, right: 0, bg: 'dark', height: '100%'
