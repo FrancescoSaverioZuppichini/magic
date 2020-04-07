@@ -7,52 +7,29 @@ import queries from '../queries/index'
 import { useHistory, useLocation } from 'react-router-dom'
 import queryString from 'query-string'
 
+
+const MagicCardsDisplayer = ( { cards, onLoadMore} ) => (
+    <div></div>
+)
+
 function NavBar({ user }) {
-    const [getCards, { error, data, fetchMore }] = useLazyQuery(queries.GET_CARDS, 
-        { fetchPolicy: 'network-only' })
-    const history = useHistory()
-    
-    const searchCards = (value) => {
-        const filter = JSON.parse(value)
-        let cursor = { skip: 0, limit: 32 }
-
-        getCards({ variables: { filter, cursor } })
-
-        history.push(
-            {
-                pathname: '/home',
-                search: `?${queryString.stringify({ 'filter': value })}`
-            }
-        )
-    }
-
-    const onLoadMore = () => {
-        fetchMore({
-            variables: {
-                cursor: { limit: data.cards.cursor.limit, skip: data.cards.cursor.skip }
-            },
-            updateQuery: (prev, { fetchMoreResult }) => {
-                if (!fetchMoreResult) return prev
-                fetchMoreResult.cards.cards = [...prev.cards.cards, ...fetchMoreResult.cards.cards]
-                return Object.assign({}, prev, fetchMoreResult)
-
-            }
-        })
-    }
 
     return (
         <Box>
             <Flex py={3} px={4} sx={{ width: '100vw', bg: 'primary', color: 'textLight', alignItems: 'center' }}>
                 <Box variant="spacer" />
                 <Box sx={{ flexGrow: 2 }}>
-                    <SearchBar onSearchClick={searchCards} />
+                    <SearchBar children={({ cards, onLoadMore}) => (<Box>
+                            {cards && <Cards cards={cards.cards} />}
+                            {cards && cards.hasMore && <Button onClick={onLoadMore}>More</Button>}
+                        </Box>
+                        )}>
+                    </SearchBar>
                 </Box>
                 <Box variant="spacer" />
                 <Text>{user.username}</Text>
             </Flex>
-            
-            {data && <Cards cards={data.cards.cards}/>}
-            {data && data.cards.hasMore && <Button onClick={onLoadMore}>More</Button>}
+
         </Box>
     )
 }
