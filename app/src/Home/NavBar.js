@@ -17,7 +17,7 @@ const WithMagicCardsDisplayer = ({ children }) => (
 )
 
 function NavBar({ user }) {
-
+    // TODO onLoadMore and also scroll down a bit
     return (
         <Box>
             <Flex py={3} px={4} sx={{ width: '100vw', bg: 'primary', color: 'textLight', alignItems: 'center' }}>

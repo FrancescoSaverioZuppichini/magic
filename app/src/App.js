@@ -23,17 +23,17 @@ const typeDefs = gql`
 const resolvers = {};
 
 const client = new ApolloClient({
-    uri: '/graphql',
-    request: (operation) => {
-      const token = localStorage.getItem('token')
-      console.log(`token = ${token}`)
-      operation.setContext({
-        headers: {
-          authorization: token ? `Bearer ${token}` : ''
-        }
-      })
-    }
-  },
+  uri: '/graphql',
+  request: (operation) => {
+    const token = localStorage.getItem('token')
+    console.log(`token = ${token}`)
+    operation.setContext({
+      headers: {
+        authorization: token ? `Bearer ${token}` : ''
+      }
+    })
+  }
+},
   typeDefs,
   resolvers)
 
@@ -54,9 +54,9 @@ function App() {
             <Route path="/" exact={true}>
               <Index />
             </Route>
-            <Route path="/home">
-              <Home/>
-          </Route>
+            <Route path="/home" >
+              <Home />
+            </Route>
             {isAuthenticated && <Redirect to={{ pathname: '/home' }} />}
           </BrowserRouter>
         </Box>
