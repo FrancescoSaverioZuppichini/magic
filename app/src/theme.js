@@ -49,6 +49,11 @@ const theme = {
   spacer: {
     flex: '1 1'
   },
+  centering: {
+    flexDirection: 'column', 
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   forms: {
     input: {
       borderColor: 'primary',

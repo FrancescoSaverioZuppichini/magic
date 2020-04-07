@@ -1,37 +1,30 @@
 import React, { useState } from 'react'
 import { Box, Flex, Card, IconButton } from 'theme-ui'
-
+import Modal from './Modal.js'
 // TODO would be better to go to the next if clicked
-const MagicCardZoom = ({ scryfallId, onClose }) => (
-    <Flex sx={{
-        position: 'absolute',
-        top: 0, left: 0,
-        zIndex: 99, width: '100vw', height: '100vh', flexDirection: 'row', bg: 'rgba(244, 244, 244, 0.8)'
-    }}>
-        <Box variant="spacer" onClick={onClose} />
-        <Box sx={{ width: ['100vw', '50%'] }}>
-            <Card>
-                <IconButton onClick={onClose}>
-                    <img height='24px' src='/close-black-18dp.svg'></img>
-                </IconButton>
-                <img src={`cards/${scryfallId}.jpg`} width='100%'></img>
-            </Card>
-        </Box>
-        <Box variant="spacer" onClick={onClose} />
-    </Flex>
+const MagicCardZoom = ({ scryfallId, onClose, active }) => (
+    <Modal active={active}>
+                <Card sx={{ width: ['100%', '50%']}}>
+                    <IconButton onClick={onClose}>
+                        <img height='24px' src='/close-black-18dp.svg'></img>
+                    </IconButton>
+                    <img src={`cards/${scryfallId}.jpg`} style={{borderRadius: '16px'}}  width='100%'></img>
+                </Card>
+    </Modal>
 )
 
-export default function MagicCard({ name, scryfallId }) {
+export default function MagicCard({ name, scryfallId, }) {
     const [isZooming, setIsZooming] = useState(false)
 
     return (
         <Card p={2} sx={{ flex: '1', flexBasis: '200px' }}>
-            <img src={`cards/${scryfallId}.jpg`} width='200px'
+            <img style={{borderRadius: '16px'}} src={`cards/${scryfallId}.jpg`} width='200px'
                 onClick={() => setIsZooming(true)}></img>
-            {isZooming && <MagicCardZoom
+            <MagicCardZoom
+                active={isZooming}
                 scryfallId={scryfallId}
                 onClose={() => setIsZooming(false)}
-            />}
+            />
         </Card>
     )
 }

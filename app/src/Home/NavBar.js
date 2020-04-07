@@ -9,7 +9,7 @@ import queryString from 'query-string'
 
 
 const WithMagicCardsDisplayer = ({ children }) => (
-    <Card sx={{ position: 'absolute', left: 0, top: 6, bg: 'background' }}>
+    <Card sx={{ position: 'absolute', left: 0, top: 6, bg: 'background', flexDirection: 'row' }}>
         <Box px={[2, 3]}>
             {children}
         </Box>>
