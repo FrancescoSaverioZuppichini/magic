@@ -17,6 +17,7 @@ const typeDefs = gql`
   extend type Query {
     isAuthenticated: Boolean!
     searchIput: Object
+    action: String
   }
 `;
 

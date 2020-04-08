@@ -19,7 +19,6 @@ const MagicCardImg = ({ scryfallId, onClick }) => (
 )
 
 const MagicCard = ({ name, scryfallId, id, upControllers, downControllers, isZoomable = false }) => {
-    console.log(isZoomable)
     const [isZooming, setIsZooming] = useState(false)
     return (
         <Card p={2} sx={{ flex: '1', flexBasis: '200px' }}>
