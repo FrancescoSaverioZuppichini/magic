@@ -22,11 +22,10 @@ export default function NewDeck({ onClose }) {
     }
 
     const addCardToDeck = (card) => {
-        const newDeck = Object.assign(deck, { cards: [...deck.cards, card] })
+        const newDeck = { name: deck.name, cards: [...deck.cards, card] }
         setDeck(newDeck)
     }
 
-    console.log(deck)
 
     return (
         <Card variant='modal'>
@@ -67,9 +66,9 @@ export default function NewDeck({ onClose }) {
                                     }}>
                                         {cards.cards.map((card) => <Box key={card.id} p={1} sx={{ width: ['50%', '33%'] }}>
                                             <MagicCardImg
-                                            {...card} 
-                                            // isZoomable={false} 
-                                            onClick={() => addCardToDeck(card)}/>
+                                                {...card}
+                                                // isZoomable={false} 
+                                                onClick={() => addCardToDeck(card)} />
                                         </Box>)}
                                         <Flex variant='centering'>
                                             <Button onClick={onLoadMore}>More</Button>
@@ -78,7 +77,9 @@ export default function NewDeck({ onClose }) {
                             </div>)}</SearchBar>
                         <Box py={2} />
                         <Text pb={2}>So far</Text>
-                        {deck.cards.map((card) => <div>{card.name}</div>)}
+                        <Flex sx={{ flexDirection: 'row', overflowX: 'scroll'}}>
+                        {deck.cards.map((card) => <Box sx={{ width: '100px' }}><MagicCardImg {...card} /></Box>)}
+                        </Flex>
                         <Flex py={5}>
                             <Button onClick={onBack}>Back</Button>
                             <Box variant="spacer" />
