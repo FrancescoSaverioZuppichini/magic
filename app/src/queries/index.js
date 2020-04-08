@@ -4,7 +4,10 @@ const queries = {
     GET_ME: gql`
         {
             me {
-                username
+                username,
+                decks {
+                    name
+                }
             }
         }`,
 

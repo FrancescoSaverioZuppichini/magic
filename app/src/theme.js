@@ -63,7 +63,7 @@ const theme = {
     input: {
       borderColor: 'primary',
       borderRadius: '28px',
-      borderWidth: '3px',
+      borderWidth: '2px',
       outline:'none',
       padding: '14px',
       fontSize: 1,
@@ -84,7 +84,8 @@ const theme = {
       borderRadius: '28px',
       outline:'none',
       padding: '14px',
-      borderWidth: '0px',
+      borderWidth: '2px',
+      borderColor: 'primary',
       fontSize: 1,
       '&:active': {
         // backgroundColor: 'active',
@@ -101,7 +102,7 @@ const theme = {
       borderRadius: '20px',
       borderStyle: 'solid',
       borderColor: 'primary',
-      borderWidth: '3px',
+      borderWidth: '2px',
       outline: 'none',
       '&:active': {
         backgroundColor: 'active',
@@ -116,7 +117,7 @@ const theme = {
       borderColor: 'primary',
       color: 'primary',
       borderStyle: 'solid',
-      borderWidth: '3px',
+      borderWidth: '2px',
       outline: 'none',
       '&:active': {
         borderColor: 'active',
