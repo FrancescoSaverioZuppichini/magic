@@ -12,7 +12,7 @@ function SearchBar({ children }) {
     const [hideCards, setHideCards] = useState(true)
     const [filterHasChanged, setFilterHasChanged] = useState(true)
 
-    const [getCards, { error, data, loading, fetchMore, updateQuery }] = useLazyQuery(queries.GET_CARDS,
+    const [getCards, { error, data, loading, fetchMore }] = useLazyQuery(queries.GET_CARDS,
         { fetchPolicy: 'network-only' }
         )
     const history = useHistory()
@@ -24,14 +24,24 @@ function SearchBar({ children }) {
          */
         setHideCards(false)
         setFilterHasChanged(false)
-        let cursor = { skip: 0, limit: 32 }
-        getCards({ variables: { filter, cursor } })
-        history.push(
-            {
-                pathname: '/home',
-                search: `?${queryString.stringify({ 'filter': JSON.stringify(filter) })}`
-            }
-        )
+        // base case, we are searching only for name
+        let parsedFilter = { name: filter }
+
+        try {
+            parsedFilter = JSON.parse(filter)
+        } catch (err) {
+        }
+        finally {
+            getCards({ variables: { filter: parsedFilter, cursor } })
+            history.push(
+                {
+                    pathname: '/home',
+                    search: `?${queryString.stringify({ 'filter': filter })}`
+                }
+            )
+        }
+
+
     }
 
     const onLoadMore = () => {
