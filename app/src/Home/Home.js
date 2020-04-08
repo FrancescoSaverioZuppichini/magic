@@ -1,17 +1,29 @@
 import React, { useState } from 'react'
 import NavBar from './NavBar'
 import queries from '../queries'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery, useApolloClient } from '@apollo/react-hooks'
 import { Card, Text, Flex, Box, IconButton, Button } from 'theme-ui'
 import { Switch, Route, Link, Redirect, useRouteMatch } from "react-router-dom";
 import Modal from './Modal'
+import NewDeck from './NewDeck'
 
+import { ACTIONS } from '../utils.js'
 function Home() {
+    const [openNewDeck, setOpenDeck] = useState(true)
+    const [openNewRoom, setNewRoom] = useState(false)
+    const client  = useApolloClient()
     const { error, data } = useQuery(queries.GET_ME)
     let { path, url } = useRouteMatch();
-    const [openNewDeck, setOpenDeck] = useState(false)
-    const [openNewRoom, setNewRoom] = useState(false)
 
+    const onNewDeckClick = () => {
+        setOpenDeck(true)
+        client.writeData({ data : { action : ACTIONS.NEW_DECK }})
+    }
+
+    const onNewDeckClose = () => {
+        setOpenDeck(false)
+        client.writeData({ data : { action : null }})
+    }
     // if error here we have to redirect to login!
     return (
         <Box>
@@ -20,12 +32,12 @@ function Home() {
                 <Card variant='container'>
                     <Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Your Deck</Text>
                     <IconButton variant='circle' sx={{ height: '54px', width: '54px' }}
-                        onClick={() => setOpenDeck(true)}>
+                        onClick={onNewDeckClick}>
                         <img height='48px' width='48px' src='add-white-18dp.svg'></img>
                     </IconButton>
-
-                    <Modal active={openNewDeck}> newDeck
-                    <Button onClick={() => setOpenDeck(false)}>Close</Button>
+                    <Modal active={openNewDeck}> 
+                    <NewDeck/>
+                    <Button onClick={onNewDeckClose}>Close</Button>
                     </Modal>
                 </Card>
                 <Card variant='container'>

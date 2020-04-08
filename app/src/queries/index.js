@@ -12,6 +12,11 @@ const queries = {
         query isAuthenticated {
           isAuthenticated @client
     }`,
+    GET_ACTION: gql`
+        query getAction {
+            aciton @client
+        }
+    `,
     GET_CARDS: gql`
         query cards($filter: CardFilter!, $cursor: CursorInput!){
             cards(filter: $filter, cursor: $cursor) @connection(key: "cards"){

@@ -44,6 +44,11 @@ const theme = {
     },
     container: {
       padding: [2, 4]
+    },
+    modal: {
+      padding: 2,
+      bg: 'background',
+      width: ['100%', '66%']
     }
   },
   spacer: {

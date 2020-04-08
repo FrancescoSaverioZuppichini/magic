@@ -6,7 +6,7 @@ import queries from '../queries/index'
 import { useHistory, useLocation } from 'react-router-dom'
 import queryString from 'query-string'
 
-function SearchBar({ children }) {
+function SearchBar({ children, inputVariant='searchbar' }) {
     /**
      * This component allows to search for cards and return them as a render props + a function to fetch more
      */
@@ -70,7 +70,7 @@ function SearchBar({ children }) {
     return (
         <Box>
             <Box sx={{ position: 'relative' }}>
-                <Input variant='searchbar' placeholder='{ "name" : "search me", "type": "creature" }'
+                <Input variant={inputVariant} placeholder='{ "name" : "search me", "type": "creature" }'
                     ref={input} onChange={e => {
                         setFilterHasChanged(true)
                         setFilter(e.target.value)
