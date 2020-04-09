@@ -57,11 +57,16 @@ const theme = {
       borderStyle: 'solid',
     }
   },
+  text: {
+    error: {
+      color: 'red'
+    }
+  },
   spacer: {
     flex: '1 1'
   },
   centering: {
-    flexDirection: 'column', 
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -70,36 +75,36 @@ const theme = {
       borderColor: 'primary',
       borderRadius: '28px',
       borderWidth: '2px',
-      outline:'none',
+      outline: 'none',
       padding: '14px',
       fontSize: 1,
       '&:active': {
         // backgroundColor: 'active',
         borderColor: 'active',
-        outline:'none'
+        outline: 'none'
       },
       '&:focus': {
         // backgroundColor: 'active',
         borderColor: 'active',
-        outline:'none'
+        outline: 'none'
       }
     },
     searchbar: {
       backgroundColor: 'background',
       color: 'text',
       borderRadius: '28px',
-      outline:'none',
+      outline: 'none',
       padding: '14px',
       borderWidth: '2px',
       borderColor: 'primary',
       fontSize: 1,
       '&:active': {
         // backgroundColor: 'active',
-        outline:'none'
+        outline: 'none'
       },
       '&:focus': {
         // backgroundColor: 'active',
-        outline:'none'
+        outline: 'none'
       }
     },
   },
