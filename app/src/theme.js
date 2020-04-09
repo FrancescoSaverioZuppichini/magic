@@ -5,6 +5,7 @@ const theme = {
     background: '#F4F4F4',
     primary: '#6A66F2',
     dark: '#413BFF',
+    gray: 'C4C4C4',
 
     active: '#9B66F2'
   },
@@ -49,6 +50,11 @@ const theme = {
       padding: 2,
       bg: 'background',
       width: ['100%', '66%']
+    },
+    selected: {
+      borderColor: 'primary',
+      borderWidth: '4px',
+      borderStyle: 'solid',
     }
   },
   spacer: {
@@ -127,6 +133,21 @@ const theme = {
     },
     circle: {
       borderRadius: '50%',
+      outline: 'none',
+      bg: 'primary',
+      '&:active': {
+        backgroundColor: 'active',
+        borderColor: 'active',
+        // outline:'none'
+      }
+    },
+    circleSmall: {
+      borderRadius: '50%',
+      paddingTop: '4px',
+      paddingBottom: '4px',
+      paddingLeft: '4px',
+      paddingRight: '4px',
+
       outline: 'none',
       bg: 'primary',
       '&:active': {
