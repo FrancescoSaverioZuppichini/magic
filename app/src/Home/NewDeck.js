@@ -9,6 +9,7 @@ import { MagicCard, MagicCardImg, WithControllers } from './MagicCard'
 import queries from '../queries/index.js'
 import Stages from './Stages'
 import theme from '../theme.js'
+import InputWithErrors from '../InputWithErrors'
 // const PickableMagicCard
 
 const DeckCardsPickedPreview = ({ cards, onCardClick }) => {
@@ -18,7 +19,7 @@ const DeckCardsPickedPreview = ({ cards, onCardClick }) => {
     const [showMoreCards, setShowMoreCard] = useState(false)
 
     return (
-        <Flex sx={{ flexDirection: 'row', overflowX: 'scroll', alignItems: 'center' }}>
+        <Flex sx={{ flexDirection: 'row', alignItems: 'center' }}>
             {subsetOfCards.map((card, i) =>
                 <Box key={i} sx={{ width: '100px' }} p={2}>
                     <MagicCardImg key={i} {...card} onClick={() => onCardClick(card)} />
@@ -83,28 +84,32 @@ export default function NewDeck({ onClose }) {
         setDeck(newDeck)
     }
 
+    const onInfoDeckComplete = (goNext) => {
+        if (deck.name !== '') goNext()
+    }
+
 
     return (
         <Card variant='modal'>
             <Text sx={{ fontSize: 4 }}>New Deck</Text>
             <Box py={3} />
-            <Stages initialStage={1}>
+            <Stages initialStage={0}>
                 {({ onNext }) => (
                     <Card>
                         <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Info</Text>
                         <Box py={2} />
                         <Box>
                             <Text pb={2}>Name</Text>
-                            <Input sx={{ width: ['100%', '100%'] }}
+                            <InputWithErrors sx={{ width: ['100%', '100%'] }}
                                 ref={nameInput}
-                                onChange={(el) => setDeck(Object.assign(deck, { name: el.target.value }))}>
+                                onChange={(el) => setDeck(Object.assign(deck, { name: el.target.value }))}
 
-                            </Input>
+                            />
                         </Box>
                         <Flex py={5}>
                             <Button onClick={onClose}>Close</Button>
                             <Box variant="spacer" />
-                            <Button onClick={onNext}>Next</Button>
+                            <Button onClick={() => onInfoDeckComplete(onNext)}>Next</Button>
                         </Flex>
                     </Card>
                 )}
@@ -156,10 +161,10 @@ export default function NewDeck({ onClose }) {
                 {({ onBack }) => (
                     <Card>
                         <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Preview</Text>
-                        <Box p={3}/>
+                        <Box p={3} />
                         <Text sx={{ fontSize: 1 }}>Name</Text>
                         <Text sx={{ fontSize: 2 }}>{deck.name}</Text>
-                        <Box p={2}/>
+                        <Box p={2} />
                         <Text sx={{ fontSize: 1 }}>Cards</Text>
                         <DeckCardsPickedPreview cards={deck.cards}
                             onCardClick={() => ''} />
