@@ -6,10 +6,9 @@ export default function Modal(props) {
         {props.active && (<Flex p={2} sx={{
             position: 'fixed',
             top: '0', left: 0,
-            paddingTop: '100px',
             zIndex: 99, width: '100vw', height: '100vh',
             bg: 'rgba(244, 244, 244, 0.8)',
-        }} variant='centering'>
+        }} variant={props.variant || 'centering'}>
             {props.children}
         </Flex>)}
     </div>

@@ -49,7 +49,7 @@ const theme = {
     modal: {
       padding: 2,
       bg: 'background',
-      width: ['100%', '66%']
+      width: ['100%', '100%', '100%', '66%']
     },
     selected: {
       borderColor: 'primary',
@@ -69,6 +69,9 @@ const theme = {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  vCentering: {
+    justifyContent: 'center',
   },
   forms: {
     input: {
@@ -122,6 +125,21 @@ const theme = {
       }
 
     },
+
+    primaryCard: {
+      borderRadius: '8px',
+      borderStyle: 'solid',
+      borderColor: 'primary',
+      outline: 'none',
+      boxShadow: '-4px -4px 4px rgba(133, 129, 245, 0.5), 0px 4px 4px #43419C',
+      fontSize: 0,
+      '&:active': {
+        backgroundColor: 'active',
+        borderColor: 'active',
+        // outline:'none'
+      }
+
+    },
     outline: {
       borderRadius: '20px',
       backgroundColor: 'rgba(0,0,0,0)',
@@ -158,6 +176,22 @@ const theme = {
       '&:active': {
         backgroundColor: 'active',
         borderColor: 'active',
+        // outline:'none'
+      }
+    },
+    close: {
+      position: 'absolute',
+      right: [2, 3, 4],
+      top: [2, 3, 4], 
+      height:'48px',
+      width:'48px',
+      outline: 'none',
+      '&:active': {
+        opacity: 0.5,
+        // outline:'none'
+      },
+      '&:hover': {
+        opacity: 0.5,
         // outline:'none'
       }
     }

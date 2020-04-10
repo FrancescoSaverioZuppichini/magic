@@ -18,7 +18,7 @@ const DeckCardsPickedPreview = ({ cards, onCardClick }) => {
      * This component shows the cards selected so far. It can be expansed to show all the cards added to the deck so far.
      */
     const [showMoreCards, setShowMoreCard] = useState(false)
-    const subsetOfCards = cards.reverse().slice(0, 4)
+    const subsetOfCards = [...cards].reverse().slice(0, 4)
     const thereAreMoreCards = cards.length > subsetOfCards.length
 
     return (
@@ -28,20 +28,24 @@ const DeckCardsPickedPreview = ({ cards, onCardClick }) => {
                     <MagicCardImg  key={i} {...card} height={'100%'} width={'auto'} onClick={() => onCardClick(card)} />
                     {/* <Box bg={'primary'}>1</Box> */}
                 </Box>)}
-            {thereAreMoreCards && <Box>
-                <Button onClick={() => setShowMoreCard(true)}>
-                    <Text>+ {cards.length - subsetOfCards.length}</Text>
-                </Button>
-            </Box>}
-            <Modal active={showMoreCards && cards.length > 0}>
-                <IconButton onClick={() => setShowMoreCard(false)}>
-                    <img height='24px' src='/close-black-18dp.svg'></img>
-                </IconButton>                <Flex sx={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+            <Box>
+                {subsetOfCards.length > 0 && <Button onClick={() => setShowMoreCard(true)}>
+                    <Text>{ thereAreMoreCards ? `${cards.length}` : 'zoom' }</Text>
+                </Button>}
+            </Box>
+            <Modal active={showMoreCards && cards.length > 0} variant={'vCentering'}>
+                <IconButton onClick={() => setShowMoreCard(false)} variant='close'>
+                    <img height='100%' src='/close-black-18dp.svg'></img>
+                </IconButton>                
+                <Box>
+                <Flex p={[2, 4]} sx={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                     {cards.map((card, i) =>
-                        <Box key={i} sx={{ width: '200px' }} p={2}>
+                        <Box key={i} sx={{ flexBasis: '200px' }} p={2}>
                             <MagicCardImg key={i} {...card} onClick={() => onCardClick(card)} />
-                        </Box>)}
+                        </Box>)
+                        }
                 </Flex>
+                </Box>
             </Modal>
         </Flex>)
 }
@@ -50,13 +54,14 @@ const AddAndRemoveMagicCard = ({ onAdd, onRemove, card, numberInDeck }) => (
     /***
      * Wrapper around MagicCard to easily add or remove it from the deck
      */
-    <Box>
-        <MagicCard {...card} isZoomable={true} />
-        <Flex p={1} sx={{bg :'primary', borderRadius: '16px'}}>
-            { numberInDeck > 0 && <Button onClick={onRemove}>REMOVE</Button>}
-            {numberInDeck}
+    <Box sx={{ position: 'relative'}}>
+        <MagicCard {...card} sx={{backgroundColor : 'primary', borderRadius: '8px 8px 0px 0px'}} isZoomable={true} />
+        <Flex pb={2} px={2} sx={{bg :'primary', borderRadius: '0px 0px 16px 16px', alignItems: 'center'}}>
+            { numberInDeck > 0 && <Button onClick={onRemove} variant='primaryCard'>remove</Button>}
             <Box variant="spacer" />
-            <Button onClick={onAdd}>ADD</Button>
+            { numberInDeck > 0 && <Text sx={{fontSize: 2, color: 'white'}}>{numberInDeck}</Text>}
+            <Box variant="spacer" />
+            <Button onClick={onAdd} variant='primaryCard'>add</Button>
         </Flex>
     </Box>
 )
@@ -109,7 +114,7 @@ export default function NewDeck({ onClose }) {
                         <Box py={2} />
                         <Box>
                             <Text pb={2}>Name</Text>
-                            <InputWithErrors sx={{ width: ['100%', '100%'] }}
+                            <InputWithErrors sx={{ width: ['50%', '100%'] }}
                                 ref={nameInput}
                                 onChange={(el) => setDeck(Object.assign(deck, { name: el.target.value }))}
                             />
@@ -136,16 +141,13 @@ export default function NewDeck({ onClose }) {
                                     }}>
                                         {cards.cards.map((card) =>
                                             <Box key={card.id} p={1} sx={{ width: ['50%', '33%'] }}>
-                                                <Card variant={isSelected(card) ? 'selected' : 'primary'}
-                                                    sx={{ position: 'relative' }}>
-
+                                             
                                                     <AddAndRemoveMagicCard
                                                         card={card}
                                                         onRemove={() => removeCardFromDeck(card)}
                                                         onAdd={() => addCardToDeck(card)}
                                                         numberInDeck={getNumberOfCardInDeck(card)} />
 
-                                                </Card>
                                             </Box>)}
                                         <Flex variant='centering'>
                                             <Button onClick={onLoadMore}>More</Button>
