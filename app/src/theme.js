@@ -39,6 +39,10 @@ const theme = {
     height: '100vh'
   },
   cards: {
+    primary: {
+      backgroundColor: 'white',
+      p: 2
+    },
     viewport: {
       height: ['50vh', '50vh', '100vh'],
       padding: [2, 4]
@@ -93,7 +97,7 @@ const theme = {
       }
     },
     searchbar: {
-      backgroundColor: 'background',
+      backgroundColor: 'white',
       color: 'text',
       borderRadius: '28px',
       outline: 'none',

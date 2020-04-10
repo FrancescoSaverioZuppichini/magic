@@ -9,7 +9,7 @@ import NewDeck from './NewDeck'
 
 import { ACTIONS } from '../utils.js'
 function Home() {
-    const [openNewDeck, setOpenDeck] = useState(true)
+    const [openNewDeck, setOpenDeck] = useState(false)
     const [openNewRoom, setNewRoom] = useState(false)
     const client = useApolloClient()
     const { error, data } = useQuery(queries.GET_ME)
@@ -28,28 +28,35 @@ function Home() {
     return (
         <Box>
             {data && <NavBar user={data.me} />}
-            <Card variant='container'>
+            {data && <Card variant='container'>
                 <Card variant='container'>
-                    <Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Your Deck</Text>
-                    <IconButton variant='circle' sx={{ height: '54px', width: '54px' }}
-                        onClick={onNewDeckClick}>
-                        <img height='48px' width='48px' src='add-white-18dp.svg'></img>
-                    </IconButton>
+                    <Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Your Decks</Text>
+                    <Box p={2} />
+                    <Flex sx={{ alignItems: 'center', flexDirection: 'row' }}>
+                        {data.me.decks.map(deck => <Card p={2}>{deck.name}</Card>)}
+                        <Button
+                            onClick={onNewDeckClick}>
+                            Add
+                    </Button>
+                    </Flex>
                     <Modal active={openNewDeck}>
                         <NewDeck onClose={onNewDeckClose} />
                     </Modal>
                 </Card>
                 <Card variant='container'>
                     <Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Rooms</Text>
-                    <IconButton variant='circle' sx={{ height: '54px', width: '54px' }}
-                        onClick={() => setNewRoom(true)}>
-                        <img height='48px' width='48px' src='add-white-18dp.svg'></img>
-                    </IconButton>
+                    <Box p={2} />
+                    <Flex sx={{ alignItems: 'center', flexDirection: 'row' }}>
+                        <Button
+                            onClick={() => setNewRoom(true)}>
+                            Add
+                    </Button>
+                    </Flex>
                     <Modal active={openNewRoom}> asdsd
                     <Button onClick={() => setNewRoom(false)}>Close</Button>
                     </Modal>
                 </Card>
-            </Card>
+            </Card>}
 
         </Box>
 
