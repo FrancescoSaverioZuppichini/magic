@@ -80,7 +80,7 @@ const typeDefs = gql`
 	}
 
   input DeckInput { 
-    id: ID!
+    id: ID
     name: String!
     cards: [ID!]
   }
@@ -95,6 +95,7 @@ const typeDefs = gql`
   }
 
   input UserInput {
+    id: ID
     email: String!
     username: String!
     password: String!
@@ -103,9 +104,8 @@ const typeDefs = gql`
 	type Mutation {
 		newUser(input: UserInput): User
 		newAuth(username: String!, password: String!): Auth
-    newDeck(deck: DeckInput): Deck @isAuthenticated
+    createOrUpdateDeck(deck: DeckInput): Deck @isAuthenticated
     newCard(card: CardFilter): Card
-    updateDeck(deck: DeckInput): Deck @isAuthenticated
     newRoom(name: String!, user: ID!) : Room
     joinRoom(name: String!): Room
 	}
