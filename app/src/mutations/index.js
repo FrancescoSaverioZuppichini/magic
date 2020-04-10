@@ -18,6 +18,14 @@ const mutations = {
                     username
         }
     }`,
+    NEW_DECK: gql`
+        mutation newDeck($deck: DeckInput!) {
+            newDeck(deck: $deck){
+                    name
+                }
+            }
+        
+    `
 }
 
 export default mutations

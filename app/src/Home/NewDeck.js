@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { useQuery, useApolloClient } from '@apollo/react-hooks'
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
 import { Card, Text, Flex, Box, IconButton, Button, Input } from 'theme-ui'
 import SearchBar from './SearchBar'
 import { Switch, Route, Link, Redirect, useRouteMatch } from "react-router-dom";
@@ -7,22 +7,25 @@ import Modal from './Modal'
 import { ACTIONS } from '../utils.js'
 import { MagicCard, MagicCardImg, WithControllers } from './MagicCard'
 import queries from '../queries/index.js'
+import mutations from '../mutations/index.js'
 import Stages from './Stages'
 import theme from '../theme.js'
 import InputWithErrors from '../InputWithErrors'
 // const PickableMagicCard
 
 const DeckCardsPickedPreview = ({ cards, onCardClick }) => {
+    /**
+     * This component shows the cards selected so far. It can be expansed to show all the cards added to the deck so far.
+     */
+    const [showMoreCards, setShowMoreCard] = useState(false)
     const subsetOfCards = cards.reverse().slice(0, 4)
     const thereAreMoreCards = cards.length > subsetOfCards.length
 
-    const [showMoreCards, setShowMoreCard] = useState(false)
-
     return (
-        <Flex sx={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Flex sx={{ flexDirection: 'row', alignItems: 'center', height:'10vh' }}>
             {subsetOfCards.map((card, i) =>
-                <Box key={i} sx={{ width: '100px' }} p={2}>
-                    <MagicCardImg key={i} {...card} onClick={() => onCardClick(card)} />
+                <Box key={i}  p={2} sx={{height: '100%'}}>
+                    <MagicCardImg  key={i} {...card} height={'100%'} width={'auto'} onClick={() => onCardClick(card)} />
                     {/* <Box bg={'primary'}>1</Box> */}
                 </Box>)}
             {thereAreMoreCards && <Box>
@@ -37,46 +40,53 @@ const DeckCardsPickedPreview = ({ cards, onCardClick }) => {
                     {cards.map((card, i) =>
                         <Box key={i} sx={{ width: '200px' }} p={2}>
                             <MagicCardImg key={i} {...card} onClick={() => onCardClick(card)} />
-                            {/* <Box bg={'primary'}>1</Box> */}
                         </Box>)}
                 </Flex>
             </Modal>
         </Flex>)
 }
 
-const AddToDeckCardDownControllers = ({ onAdd, onRemove }) => (
-    <Flex p={1}>
-        <Box variant="spacer" />
-        <Button onClick={onAdd} variant='circleSmall'><img src='add-white-18dp.svg'></img></Button>
-    </Flex>
+const AddAndRemoveMagicCard = ({ onAdd, onRemove, card, numberInDeck }) => (
+    /***
+     * Wrapper around MagicCard to easily add or remove it from the deck
+     */
+    <Box>
+        <MagicCard {...card} isZoomable={true} />
+        <Flex p={1} sx={{bg :'primary', borderRadius: '16px'}}>
+            { numberInDeck > 0 && <Button onClick={onRemove}>REMOVE</Button>}
+            {numberInDeck}
+            <Box variant="spacer" />
+            <Button onClick={onAdd}>ADD</Button>
+        </Flex>
+    </Box>
 )
-
-const CardInDecksNumber = ({ number }) => (
-    <Box
-        p={2}
-        sx={{ position: 'absolute', right: 0, top: 0, bg: 'primary' }}>
-        {number}
-    </Box>)
 
 export default function NewDeck({ onClose }) {
     const nameInput = useRef(null)
-    const [deck, setDeck] = useState({ name: '', cards: [] })
     const client = useApolloClient()
+    const [deck, setDeck] = useState({ name: '', cards: [] })
     const { error, data } = useQuery(queries.GET_ACTION, { client })
+    const [newDeck, { newDeckError}] = useMutation(mutations.NEW_DECK, {
+        onCompleted({ newDeck }) {
+            console.log(newDeck)
+            onClose()
+        }
+    })
 
 
     const getNumberOfCardInDeck = (card) => deck.cards.filter(el => el.id === card.id).length
     const isSelected = (card) => getNumberOfCardInDeck(card) > 0
 
     const onDone = (el) => {
-        console.log(deck)
+        let deckInput = {...deck}
+        deckInput.cards = deckInput.cards.map(el => el.id)
+        newDeck({ variables : { deck: deckInput } })
     }
 
     const removeCardFromDeck = (card) => {
         let newDeck = { ...deck }
         newDeck.cards.splice(newDeck.cards.indexOf(card), 1)
         setDeck(newDeck)
-
     }
 
     const addCardToDeck = (card) => {
@@ -88,12 +98,11 @@ export default function NewDeck({ onClose }) {
         if (deck.name !== '') goNext()
     }
 
-
     return (
         <Card variant='modal'>
             <Text sx={{ fontSize: 4 }}>New Deck</Text>
             <Box py={3} />
-            <Stages initialStage={0}>
+            <Stages initialStage={1}>
                 {({ onNext }) => (
                     <Card>
                         <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Info</Text>
@@ -103,7 +112,6 @@ export default function NewDeck({ onClose }) {
                             <InputWithErrors sx={{ width: ['100%', '100%'] }}
                                 ref={nameInput}
                                 onChange={(el) => setDeck(Object.assign(deck, { name: el.target.value }))}
-
                             />
                         </Box>
                         <Flex py={5}>
@@ -130,17 +138,13 @@ export default function NewDeck({ onClose }) {
                                             <Box key={card.id} p={1} sx={{ width: ['50%', '33%'] }}>
                                                 <Card variant={isSelected(card) ? 'selected' : 'primary'}
                                                     sx={{ position: 'relative' }}>
-                                                    {/* <WithControllers
-                                                        downControllers={<AddToDeckCardDownControllers onAdd={() => addCardToDeck(card)} />}> */}
-                                                    <MagicCardImg
-                                                        {...card}
-                                                        onClick={() => addCardToDeck(card)}
-                                                    // isZoomable={false} 
-                                                    />
-                                                    {isSelected(card) &&
-                                                        <CardInDecksNumber
-                                                            number={getNumberOfCardInDeck(card)} />}
-                                                    {/* </WithControllers> */}
+
+                                                    <AddAndRemoveMagicCard
+                                                        card={card}
+                                                        onRemove={() => removeCardFromDeck(card)}
+                                                        onAdd={() => addCardToDeck(card)}
+                                                        numberInDeck={getNumberOfCardInDeck(card)} />
+
                                                 </Card>
                                             </Box>)}
                                         <Flex variant='centering'>
@@ -149,6 +153,7 @@ export default function NewDeck({ onClose }) {
                                     </Flex>}
                             </div>)}</SearchBar>
                         <Box py={2} />
+                        <Box sx={{height: '10vh'}} >
                         <Text pb={2}>So far</Text>
                         <DeckCardsPickedPreview {...deck} onCardClick={removeCardFromDeck} />
                         <Flex py={5}>
@@ -156,6 +161,7 @@ export default function NewDeck({ onClose }) {
                             <Box variant="spacer" />
                             <Button onClick={onNext}>Next</Button>
                         </Flex>
+                        </Box>
                     </Card>
                 )}
                 {({ onBack }) => (
