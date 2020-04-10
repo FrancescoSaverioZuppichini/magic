@@ -42,9 +42,9 @@ const NEW_AUTH = gql`
     }
 `
 
-const CREATE_OR_UPDATE_DECK = gql`
-    mutation createOrUpdateDeck($deck: DeckInput!) {
-        createOrUpdateDeck(deck: $deck){
+const NEW_DECK = gql`
+    mutation newDeck($deck: DeckInput!) {
+        newDeck(deck: $deck){
             name
             cards {
                 id
@@ -126,7 +126,7 @@ describe("Auth", () => {
         describe('Deck', () => {
             it('should create a new deck if does not exist', async () => {
                 const res = await AuthMutate({
-                    mutation: CREATE_OR_UPDATE_DECK,
+                    mutation: NEW_DECK,
                     variables: { deck }
                 })
                 console.log(res)

@@ -13,8 +13,8 @@ const MagicCardZoom = ({ scryfallId, onClose, active }) => (
     </Modal>
 )
 
-const MagicCardImg = ({ scryfallId, onClick }) => (
-    <img src={`cards/${scryfallId}.jpg`} width='100%' style={{ borderRadius: '4%' }}
+const MagicCardImg = ({ scryfallId, onClick, width='100%', height='auto'  }) => (
+    <img src={`cards/${scryfallId}.jpg`} width={width} height={height} style={{ borderRadius: '4%' }}
         onClick={onClick}></img>
 )
 // REVIEW not working
@@ -33,7 +33,7 @@ const WithControllers = (props) => (
 const MagicCard = ({ name, scryfallId, id, upControllers, downControllers, isZoomable = false, variant = 'primary' }) => {
     const [isZooming, setIsZooming] = useState(false)
     return (
-        <Card p={2} sx={{ flex: '1', flexBasis: '200px' }} variant={variant}>
+        <Box sx={{ flex: '1', flexBasis: '200px' }} variant={variant}>
             <MagicCardImg onClick={() => setIsZooming(true)} scryfallId={scryfallId} />
             {isZoomable && <Modal active={isZooming}>
                 <Box>
@@ -43,7 +43,7 @@ const MagicCard = ({ name, scryfallId, id, upControllers, downControllers, isZoo
                     <MagicCard scryfallId={scryfallId} />
                 </Box>
             </Modal>}
-        </Card>
+        </Box>
     )
 }
 

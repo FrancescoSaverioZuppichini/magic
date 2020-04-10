@@ -35,7 +35,7 @@ const resolvers = {
 		cards,
 		deck: (ctx, { id }) => Deck.findById(id),
 		decks(ctx, { }) {
-			return Deck.find().populate('owner')
+			return Deck.find().populate('owner').populate('cards')
 		},
 		async cardsInDeck(ctx, { filter, cursor, deckID }) {
 			let deck = (await Deck.findById(deckID))
@@ -59,11 +59,11 @@ const resolvers = {
 			const token = user.generateJWT()
 			return { user, token }
 		},
-		async createOrUpdateDeck(obj, { deck }, { user }) {
+		async newDeck(obj, { deck }, { user }) {
+			console.log(deck)
 			deck = { ...deck, owner: user.id }
 			let newDeck;
 			if(deck.id) {
-				console.log('update Deck')
 				newDeck = await Deck.findByIdAndUpdate(deck.id, deck, {
 					new: true
 				})
