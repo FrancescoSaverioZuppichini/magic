@@ -30,20 +30,22 @@ const WithControllers = (props) => (
     </Card>
 )
 
-const MagicCard = ({ name, scryfallId, id, upControllers, downControllers, isZoomable = false, variant = 'primary' }) => {
+const MagicCard = ({ name, sx, scryfallId, id, upControllers, downControllers, isZoomable = false, variant = 'primary' }) => {
     const [isZooming, setIsZooming] = useState(false)
+    console.log(isZoomable)
     return (
-        <Box sx={{ flex: '1', flexBasis: '200px' }} variant={variant}>
-            <MagicCardImg onClick={() => setIsZooming(true)} scryfallId={scryfallId} />
+        <Box sx={sx}>
+            <MagicCardImg onClick={() => setIsZooming(true)} scryfallId={scryfallId}>
+            </MagicCardImg>
             {isZoomable && <Modal active={isZooming}>
                 <Box>
-                    <IconButton onClick={() => setIsZooming(false)}>
-                        <img height='24px' src='/close-black-18dp.svg'></img>
+                    <IconButton onClick={() => setIsZooming(false)} variant="close">
+                        <img height='100%' src='/close-black-18dp.svg'></img>
                     </IconButton>
                     <MagicCard scryfallId={scryfallId} />
                 </Box>
             </Modal>}
-        </Box>
+            </Box>
     )
 }
 
