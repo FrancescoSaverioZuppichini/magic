@@ -3,18 +3,18 @@ const CURSOR_BOUNDS = { limit: 200 }
 
 const cards = async (ctx, { filter, cursor }) => {
 	let { skip, limit } = cursor
-	if(limit > CURSOR_BOUNDS.limit) throw new Error(`Limit cannot be greater than ${CURSOR_BOUNDS.limit}`)
+	if (limit > CURSOR_BOUNDS.limit) throw new Error(`Limit cannot be greater than ${CURSOR_BOUNDS.limit}`)
 
-	let cardFilter = {...filter}
+	let cardFilter = { ...filter }
 
-	if(filter.type) cardFilter.types =  filter.type
-	if(filter.name) cardFilter.name = { '$regex' : filter.name}
-	if(filter.colors) cardFilter.colors = { '$all' : filter.colors} 
-	if(filter.ids) cardFilter.ids = {'$in': filter.ids}
-				
-	const cards =  await Card.find(cardFilter).skip(skip).limit(limit)
+	if (filter.type) cardFilter.types = filter.type
+	if (filter.name) cardFilter.name = { '$regex': filter.name }
+	if (filter.colors) cardFilter.colors = { '$all': filter.colors }
+	if (filter.ids) cardFilter.ids = { '$in': filter.ids }
+
+	const cards = await Card.find(cardFilter).skip(skip).limit(limit)
 	const hasMore = cards.length == limit
-	cursor.skip += limit 
+	cursor.skip += limit
 
 	return { cards, hasMore, cursor }
 }
@@ -40,7 +40,7 @@ const resolvers = {
 		async cardsInDeck(ctx, { filter, cursor, deckID }) {
 			let deck = (await Deck.findById(deckID))
 			filter.ids = deck.cards
-			return cards({ filter, cursor } )
+			return cards({ filter, cursor })
 		},
 		card(ctx, { id }) {
 			return Card.findById(id)
@@ -59,25 +59,21 @@ const resolvers = {
 			const token = user.generateJWT()
 			return { user, token }
 		},
-		async newDeck(obj, { deck }, { user }) {
-			deck = { ...deck, owner: user }
-			// check if the current user has already a deck
-			const alreadyExist = await Deck.exists(deck)
+		async createOrUpdateDeck(obj, { deck }, { user }) {
+			deck = { ...deck, owner: user.id }
+			let newDeck;
+			if(deck.id) {
+				console.log('update Deck')
+				newDeck = await Deck.findByIdAndUpdate(deck.id, deck, {
+					new: true
+				})
+			}else {
+				newDeck =  await (new Deck(deck)).save()
+				user.decks.push(newDeck)
+				await user.save()
+			}
 
-			if (alreadyExist) throw new Error(`Deck with name ${deck.name} already exists.`)
-			const newDeck = new Deck(deck)
-
-			user.decks = [newDeck]
-			await user.save()
-
-			return await newDeck.save()
-		},
-		async updateDeck(obj, { deck }, { user }) {
-			deck = { ...deck, owner: user }
-
-			const updatedDeck = Deck.findOneAndUpdate(deck.id, deck, { new: true })
-
-			return updatedDeck.populate('owner').populate('cards')
+			return Deck.findById(newDeck.id).populate('owner').populate('cards')
 		},
 		async newCard(obj, { card }) {
 			const alreadyExist = Card.exists(card)

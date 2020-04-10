@@ -9,6 +9,8 @@ const NODE_ENV = process.env.NODE_ENV || 'development'
 const TOKEN_SECRET = process.env.TOKEN_SECRET || 'pazzofurioso'
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost/tes'
 const server = require('./server')
+const { Deck } = require('./models/index.js')
+
 process.env.SALT_ROUNDS = 10
 
 mongoose
