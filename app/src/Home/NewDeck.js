@@ -22,13 +22,12 @@ const DeckCardsPickedPreview = ({ cards, onCardClick }) => {
     const thereAreMoreCards = cards.length > subsetOfCards.length
 
     return (
-        <Flex sx={{ flexDirection: 'row', alignItems: 'center', height: '10vh' }}>
+        <Flex sx={{ flexDirection: 'row', alignItems: 'center', maxHeight: '10vh'}}>
             {/* Show the last 4 picked cards */}
             {subsetOfCards.map((card, i) =>
                 <Box key={i} p={2} sx={{ height: '100%' }}>
                     <MagicCardImg key={i} {...card} height={'100%'} width={'auto'} onClick={() => onCardClick(card)} />
                 </Box>)}
-
             {/* Display a button to zoom and see all the cards in the deck */}
             <Box>
                 {subsetOfCards.length > 0 && <Button onClick={() => setShowMoreCard(true)}>
@@ -36,7 +35,7 @@ const DeckCardsPickedPreview = ({ cards, onCardClick }) => {
                 </Button>}
             </Box>
             {/* The cards will be displayed in a modal */}
-            <Modal active={showMoreCards && cards.length > 0} variant={'vCentering'}>
+            <Modal active={showMoreCards && cards.length > 0} variant={'none'}>
                 <IconButton onClick={() => setShowMoreCard(false)} variant='close'>
                     <img height='100%' src='/close-black-18dp.svg'></img>
                 </IconButton>
@@ -71,7 +70,6 @@ const AddAndRemoveMagicCard = ({ onAdd, onRemove, card, numberInDeck }) => (
 )
 
 export default function NewDeck({ onClose }) {
-    const nameInput = useRef(null)
     const client = useApolloClient()
     const [deck, setDeck] = useState({ name: '', cards: [] })
     const { error, data } = useQuery(queries.GET_ACTION, { client })
@@ -118,17 +116,15 @@ export default function NewDeck({ onClose }) {
 
     return (
         <Card variant='modal'>
-            <Text sx={{ fontSize: 4 }}>New Deck</Text>
-            <Box py={3} />
             <Stages initialStage={0}>
                 {({ onNext }) => (
                     <Card p={2}>
+                        <Text sx={{ fontSize: 4 }}>New Deck</Text>
                         <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Info</Text>
                         <Box py={2} />
                         <Box>
                             <Text pb={2}>Name</Text>
                             <InputWithErrors sx={{ width: ['100%', '100%', '50%'] }}
-                                ref={nameInput}
                                 onChange={(el) => setDeck(Object.assign(deck, { name: el.target.value }))}
                             />
                         </Box>
@@ -141,19 +137,22 @@ export default function NewDeck({ onClose }) {
                 )}
                 {({ onBack, onNext }) => (
                     <Card p={2}>
+                        <Box >
                         <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Cards</Text>
                         <Box py={3} />
-                        <SearchBar >{({ cards, onLoadMore }) =>
-                            (<div>
+                        </Box>
+                        <SearchBar onClick={() => console.log('clicked search bar')}>{({ cards, onLoadMore }) =>
+                            (<Box>
                                 {cards.cards.length > 0 &&
                                     <Flex mt={4} sx={{
                                         flexDirection: 'row',
                                         overflowY: 'scroll',
                                         flexWrap: 'wrap',
-                                        height: '50vh'
+                                        maxHeight: '70vh',
+                                        justifyContent: 'center'
                                     }}>
                                         {cards.cards.map((card) =>
-                                            <Box key={card.id} p={1} sx={{ width: ['50%', '33%'] }}>
+                                            <Box key={card.id} p={1} sx={{ width: ['100%', '33%', '25%', '20%', '15%'] }}>
 
                                                 <AddAndRemoveMagicCard
                                                     card={card}
@@ -166,13 +165,13 @@ export default function NewDeck({ onClose }) {
                                             <Button onClick={onLoadMore}>More</Button>
                                         </Flex>
                                     </Flex>}
-                            </div>)}</SearchBar>
+                            </Box>)}</SearchBar>
                         <Box py={2} />
-                        <Box sx={{ maxHeight: '10vh' }} >
+                        <Box>
                             <Text pb={2}>So far</Text>
                             <DeckCardsPickedPreview {...deck} onCardClick={removeCardFromDeck} />
                         </Box>
-                        <Flex pt={5}>
+                        <Flex pt={5} >
                                 <Button onClick={onBack}>Back</Button>
                                 <Box variant="spacer" />
                                 <Button onClick={onNext}>Next</Button>

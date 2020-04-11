@@ -41,7 +41,7 @@ const theme = {
   cards: {
     primary: {
       backgroundColor: 'white',
-      p: 2
+      padding: [2, 3]
     },
     viewport: {
       height: ['50vh', '50vh', '100vh'],
@@ -53,7 +53,7 @@ const theme = {
     modal: {
       padding: 2,
       bg: 'background',
-      width: ['100%', '100%', '100%', '66%']
+      width: ['100%', '100%', '100%']
     },
     selected: {
       borderColor: 'primary',

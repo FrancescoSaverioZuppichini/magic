@@ -27,13 +27,16 @@ const resolvers = {
 			return User.findOne({ username })
 		},
 		me: async (ctx, { id }, { user }) => {
-			return User.findById(user.id).populate('decks')
+			return User.findById(user.id).populate({
+				path: 'decks', populate:
+					{ path: 'cards', model: 'Card' }
+			})
 		},
 		secret(ctx, { }, { user }) {
 			return `Psssh ${user.email}`
 		},
 		cards,
-		deck: (ctx, { id }) => Deck.findById(id),
+		deck: (ctx, { id }) => Deck.findById(id).populate('cards'),
 		decks(ctx, { }) {
 			return Deck.find().populate('owner').populate('cards')
 		},
@@ -63,12 +66,12 @@ const resolvers = {
 			console.log(deck)
 			deck = { ...deck, owner: user.id }
 			let newDeck;
-			if(deck.id) {
+			if (deck.id) {
 				newDeck = await Deck.findByIdAndUpdate(deck.id, deck, {
 					new: true
 				})
-			}else {
-				newDeck =  await (new Deck(deck)).save()
+			} else {
+				newDeck = await (new Deck(deck)).save()
 				user.decks.push(newDeck)
 				await user.save()
 			}

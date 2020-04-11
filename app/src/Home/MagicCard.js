@@ -32,7 +32,6 @@ const WithControllers = (props) => (
 
 const MagicCard = ({ name, sx, scryfallId, id, upControllers, downControllers, isZoomable = false, variant = 'primary' }) => {
     const [isZooming, setIsZooming] = useState(false)
-    console.log(isZoomable)
     return (
         <Box sx={sx}>
             <MagicCardImg onClick={() => setIsZooming(true)} scryfallId={scryfallId}>

@@ -6,6 +6,7 @@ import { Card, Text, Flex, Box, IconButton, Button } from 'theme-ui'
 import { Switch, Route, Link, Redirect, useRouteMatch } from "react-router-dom";
 import Modal from './Modal'
 import NewDeck from './NewDeck'
+import DeckPreview from './Deck/DeckPreview'
 
 import { ACTIONS } from '../utils.js'
 function Home() {
@@ -32,8 +33,8 @@ function Home() {
                 <Card variant='container'>
                     <Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Your Decks</Text>
                     <Box p={2} />
-                    <Flex sx={{ alignItems: 'center', flexDirection: 'row' }}>
-                        {data.me.decks.map(deck => <Card p={2}>{deck.name}</Card>)}
+                    <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap'}}>
+                        {data.me.decks.map(deck => <Box key={deck.id} p={2}><DeckPreview key={deck.id} {...deck}>}</DeckPreview></Box>)}
                         <Button
                             onClick={onNewDeckClick}>
                             Add
