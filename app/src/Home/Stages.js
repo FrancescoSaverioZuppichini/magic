@@ -22,7 +22,7 @@ export default function Stages({ children, initialStage }) {
 
     return (
         <div>
-            {children.map((el, i) => <Stage visible={i === stageKey}>
+            {children.map((el, i) => <Stage key={i} visible={i === stageKey}>
                 {el({ onBack, onNext, hasBack, hasNext })}
             </Stage>)}
         </div>

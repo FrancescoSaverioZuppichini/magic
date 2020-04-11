@@ -6,7 +6,11 @@ const queries = {
             me {
                 username,
                 decks {
+                    id
                     name
+                    cards {
+                        id
+                    }
                 }
             }
         }`,
@@ -34,7 +38,21 @@ const queries = {
                     skip
                 }
             }
-        }`
+        }`,
+
+    GET_DECK: gql`
+        query deck($id: ID!){
+            deck(id: $id){
+                cards {
+                    name
+                    id
+                    scryfallId
+                }
+            }
+        }
+
+    `
+
 }
 
 export default queries

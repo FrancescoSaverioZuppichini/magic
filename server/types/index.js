@@ -28,6 +28,8 @@ const typeDefs = gql`
     name: String!
     cards: [Card]
     owner: User
+    createdAt: String
+
 	}
 
 	type Card {
@@ -83,6 +85,7 @@ const typeDefs = gql`
     id: ID
     name: String!
     cards: [ID!]
+  
   }
 
   input CardFilter {
