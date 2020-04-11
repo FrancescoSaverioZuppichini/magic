@@ -10,7 +10,7 @@ import DeckPreview from './Deck/DeckPreview'
 
 import { ACTIONS } from '../utils.js'
 function Home() {
-    const [openNewDeck, setOpenDeck] = useState(false)
+    const [openNewDeck, setOpenDeck] = useState(true)
     const [openNewRoom, setNewRoom] = useState(false)
     const client = useApolloClient()
     const { error, data } = useQuery(queries.GET_ME)

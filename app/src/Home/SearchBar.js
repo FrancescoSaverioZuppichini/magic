@@ -68,7 +68,7 @@ function SearchBar({ children, onChange, inputVariant='searchbar' }) {
     }
 
     return (
-        <Box>
+        <Box sx={{maxHeight: 'inherit'}}>
             <Box sx={{ position: 'relative' }}>
                 <Input variant={inputVariant} placeholder='{ "name" : "search me", "type": "creature" }'
                     ref={input} onChange={e => {

@@ -41,7 +41,8 @@ const theme = {
   cards: {
     primary: {
       backgroundColor: 'white',
-      padding: [2, 3]
+      padding: [2, 3],
+      borderRadius: '8px'
     },
     viewport: {
       height: ['50vh', '50vh', '100vh'],

@@ -36,7 +36,7 @@ const MagicCard = ({ name, sx, scryfallId, id, upControllers, downControllers, i
         <Box sx={sx}>
             <MagicCardImg onClick={() => setIsZooming(true)} scryfallId={scryfallId}>
             </MagicCardImg>
-            {isZoomable && <Modal active={isZooming}>
+            {isZoomable && <Modal active={isZooming} position={'fixed'}>
                 <Box>
                     <IconButton onClick={() => setIsZooming(false)} variant="close">
                         <img height='100%' src='/close-black-18dp.svg'></img>
