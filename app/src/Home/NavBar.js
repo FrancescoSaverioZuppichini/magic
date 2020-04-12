@@ -5,7 +5,7 @@ import { MagicCard } from './MagicCard'
 import MagicCards from './MagicCards.js'
 
 const WithMagicCardsDisplayer = ({ children }) => (
-    <Card sx={{ position: 'absolute', left: 0, top: 6, bg: 'background', flexDirection: 'row' }}>
+    <Card sx={{ position: 'absolute', left: 0, top: '82px', bg: 'background', flexDirection: 'row', zIndex: 99 }}>
         <Box px={[2, 3]}>
             {children}
         </Box>>

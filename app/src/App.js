@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 import theme from './theme.js'
 import { ApolloProvider, useQuery } from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';
-import { BrowserRouter, Route, Link, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Redirect } from "react-router-dom";
 import Index from './Index'
 import Home from './Home/Home'
 import { ThemeProvider } from 'theme-ui'
@@ -58,7 +57,7 @@ function App() {
             <Route path="/home" >
               <Home />
             </Route>
-            {isAuthenticated && <Redirect to={{ pathname: '/home' }} />}
+            {isAuthenticated && <Redirect to={{ pathname: window.location.pathname }} />}
           </BrowserRouter>
         </Box>
       </ThemeProvider>

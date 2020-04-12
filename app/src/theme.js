@@ -6,7 +6,8 @@ const theme = {
     primary: '#6A66F2',
     dark: '#413BFF',
     gray: 'C4C4C4',
-
+    warning: '#F26666',
+    warningActive: '#FF6099',
     active: '#9B66F2'
   },
   fonts: {
@@ -131,6 +132,19 @@ const theme = {
 
     },
 
+    warning: {
+      borderRadius: '20px',
+      backgroundColor: 'warning',
+      borderColor: 'warning',
+      borderStyle: 'solid',
+      borderWidth: '2px',
+      outline: 'none',
+      '&:active': {
+        borderColor: 'warningActive',
+        backgroundColor: 'warningActive',
+        // outline:'none'
+      }
+    },
     primaryCard: {
       borderRadius: '8px',
       borderStyle: 'solid',
