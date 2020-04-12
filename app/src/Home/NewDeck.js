@@ -1,16 +1,13 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
 import { Card, Text, Flex, Box, IconButton, Button, Input } from 'theme-ui'
 import SearchBar from './SearchBar'
-import { Switch, Route, Link, Redirect, useRouteMatch } from "react-router-dom";
 import Modal from './Modal'
-import { ACTIONS } from '../utils.js'
-import { MagicCard, MagicCardImg, WithControllers } from './MagicCard'
+import { MagicCard, MagicCardImg } from './MagicCard'
 import MagicCards from './MagicCards.js'
 import queries from '../queries/index.js'
 import mutations from '../mutations/index.js'
 import Stages from './Stages'
-import theme from '../theme.js'
 import InputWithErrors from '../InputWithErrors'
 // const PickableMagicCard
 

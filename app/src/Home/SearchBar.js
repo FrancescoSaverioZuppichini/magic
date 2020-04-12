@@ -41,7 +41,7 @@ function SearchBar({ children, onChange, inputVariant='searchbar' }) {
             getCards({ variables: { filter: parsedFilter, cursor } })
             history.push(
                 {
-                    pathname: '/home',
+                    pathname: window.location.pathname,
                     search: `?${queryString.stringify({ 'filter': filter })}`
                 }
             )
@@ -67,13 +67,14 @@ function SearchBar({ children, onChange, inputVariant='searchbar' }) {
         })
     }
 
+
     return (
         <Box sx={{maxHeight: 'inherit'}}>
             <Box sx={{ position: 'relative' }}>
                 <Input variant={inputVariant} placeholder='{ "name" : "search me", "type": "creature" }'
                     ref={input} onChange={e => {
                         if(onChange) onChange(e)
-                        setFilterHasChanged(true)
+                        e.target.value !== '' ? setFilterHasChanged(true) : setFilterHasChanged(false)
                         setFilter(e.target.value)
                     }}>
 

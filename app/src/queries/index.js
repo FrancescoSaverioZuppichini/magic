@@ -43,6 +43,8 @@ const queries = {
     GET_DECK: gql`
         query deck($id: ID!){
             deck(id: $id){
+                name
+                createdAt
                 cards {
                     name
                     id
