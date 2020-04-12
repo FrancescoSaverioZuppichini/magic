@@ -42,7 +42,7 @@ const DeckCardsPickedPreview = ({ cards, onCardClick }) => {
                 </IconButton>
                     {/* All the cards in the deck so far */}
                     <Box mt={4}>
-                    <MagicCards cards={{cards}} width={['100%', '33%']}>
+                    <MagicCards cards={{cards}} width={['100%', '33%', '25%']}>
                         { card => <MagicCardImg key={card.id} {...card} onClick={() => onCardClick(card)} />}
                     </MagicCards>
                     </Box>
