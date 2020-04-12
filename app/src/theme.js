@@ -50,7 +50,7 @@ const theme = {
       padding: [2, 4]
     },
     container: {
-      padding: [2, 4]
+      padding: [3, 4]
     },
     modal: {
       padding: 2,

@@ -10,8 +10,8 @@ export default function MagicCards( { cards, children, width=['100%', '33%', '25
                 // maxHeight: '70vh',
                 // justifyContent: 'center'
             }}>
-                {cards.cards.map((card) =>
-                    <Box key={card.id} p={1} sx={{ flexBasis:width}}>
+                {cards.cards.map((card, i) =>
+                    <Box key={i} p={1} sx={{ flexBasis:width}}>
                         {children(card)}
                     </Box>)}
             </Flex>

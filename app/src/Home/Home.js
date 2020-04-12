@@ -43,14 +43,13 @@ function Home() {
                         <NewDeck onClose={onNewDeckClose} />
                     </Modal>
                 </Route>
-
                 <Route path='/home/preview'>
-                    <Card variant='container'>
+                    <Box>
                         <Link to='/home/decks'><Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Your Decks</Text></Link>
                         <Box p={2} />
                         <Text>Latest created</Text>
                         <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
-                            {data.me.decks.reverse().slice(0, 3).map(deck => <Box key={deck.id} p={2}><DeckPreview key={deck.id} {...deck}>}</DeckPreview></Box>)}
+                            {data.me.decks.reverse().slice(0, 3).map(deck => <Box key={deck.id} pr={2} py={2}><DeckPreview key={deck.id} {...deck}>}</DeckPreview></Box>)}
                             <Button
                                 onClick={onNewDeckClick}>
                                 Add
@@ -59,8 +58,9 @@ function Home() {
                         <Modal active={openNewDeck}>
                             <NewDeck onClose={onNewDeckClose} />
                         </Modal>
-                    </Card>
-                    <Card variant='container'>
+                    </Box>
+                    <Box py={3}/>
+                    <Box>
                         <Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Rooms</Text>
                         <Box p={2} />
                         <Flex sx={{ alignItems: 'center', flexDirection: 'row' }}>
@@ -72,7 +72,7 @@ function Home() {
                         <Modal active={openNewRoom}> asdsd
                     <Button onClick={() => setNewRoom(false)}>Close</Button>
                         </Modal>
-                    </Card>
+                    </Box>
                 </Route>
             </Card>}
 
