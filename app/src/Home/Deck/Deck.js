@@ -1,10 +1,10 @@
-import React from 'react'
-import moment from 'moment'
-import { useQuery } from '@apollo/react-hooks'
-import queries from '../../queries/index'
-import { Card, Flex, Button, Text, Box } from 'theme-ui'
-import MagicCards from '../MagicCards'
-import { MagicCard } from '../MagicCard'
+import React from 'src/Home/Deck/node_modules/react'
+import moment from 'src/Home/Deck/node_modules/moment'
+import { useQuery } from 'src/Home/Deck/node_modules/@apollo/react-hooks'
+import queries from 'src/queries'
+import { Card, Flex, Button, Text, Box } from 'src/Home/Deck/node_modules/theme-ui'
+import MagicCards from 'src/Home/MagicCards'
+import { MagicCard } from 'src/Home/MagicCard'
 
 export default function Deck({ id }) {
     const { loading, error, data } = useQuery(queries.GET_DECK, { variables: { id: id } })
