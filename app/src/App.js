@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import theme from './theme.js'
 import { ApolloProvider, useQuery } from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';

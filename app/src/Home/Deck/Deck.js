@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import { useQuery } from '@apollo/react-hooks'
-import queries from 'src/queries'
+import queries from '../../queries'
 import { Card, Flex, Button, Text, Box } from 'theme-ui'
 import MagicCards from '../MagicCards'
 import { MagicCard } from '../MagicCard'
