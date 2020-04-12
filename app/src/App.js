@@ -57,7 +57,7 @@ function App() {
             <Route path="/home" >
               <Home />
             </Route>
-            {isAuthenticated && <Redirect to={{ pathname: window.location.pathname }} />}
+            {isAuthenticated && <Redirect to={{ pathname:  window.location.pathname == '/'? '/home/preview' : window.location.pathname }} />}
           </BrowserRouter>
         </Box>
       </ThemeProvider>
