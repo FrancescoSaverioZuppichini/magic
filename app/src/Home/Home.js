@@ -6,8 +6,9 @@ import { Card, Text, Flex, Box, IconButton, Button } from 'theme-ui'
 import { Switch, Route, Link, Redirect, useRouteMatch, useLocation, useHistory } from "react-router-dom";
 import Modal from './Modal'
 import NewDeck from './NewDeck'
-import DeckPreview from './Deck/DeckPreview'
+import DeckPreview from './Decks/DeckPreview'
 import Decks from './Decks/Decks.js'
+import Search from './Search.js'
 
 import { ACTIONS } from '../utils.js'
 function Home() {
@@ -18,11 +19,11 @@ function Home() {
 
     const client = useApolloClient()
     const { error, data } = useQuery(queries.GET_ME)
-    let { path, url } = useRouteMatch();
-    console.log(data)
+    let { path, url } = useRouteMatch()
+
+
     const onNewDeckClick = () => {
         history.push("/home/decks/newDeck");
-
         // setOpenDeck(true)
         client.writeData({ data: { action: ACTIONS.NEW_DECK } })
     }
@@ -37,6 +38,7 @@ function Home() {
         <Box>
             {data && <NavBar user={data.me} />}
             {data && <Card variant='container'>
+                <Route path='/home/search' component={Search}></Route>
                 <Route path='/home/decks' component={Decks}></Route>
                 <Route path='/home/decks/newDeck'>
                     <Modal active={true}>

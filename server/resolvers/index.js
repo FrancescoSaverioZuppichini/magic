@@ -5,13 +5,24 @@ const cards = async (ctx, { filter, cursor }) => {
 	let { skip, limit } = cursor
 	if (limit > CURSOR_BOUNDS.limit) throw new Error(`Limit cannot be greater than ${CURSOR_BOUNDS.limit}`)
 
-	let cardFilter = { ...filter }
+	let cardFilter = { }
 
-	if (filter.type) cardFilter.types = filter.type
+	if (filter.type) cardFilter.types ={ '$in': [filter.type] }
 	if (filter.name) cardFilter.name = { '$regex': filter.name }
 	if (filter.colors) cardFilter.colors = { '$all': filter.colors }
+	if (filter.convertedManaCost){
+		const convertedManaCost = filter.convertedManaCost.split(' ') // we can also pass 10 + 
+		const symb2op = { '+' : '$gte'}
+		if(convertedManaCost.length == 1) cardFilter.convertedManaCost = Number(convertedManaCost[0]) 
+		else if(convertedManaCost.length == 2) {
+			const key = symb2op[convertedManaCost[1]]	
+			cardFilter.convertedManaCost = { }
+			cardFilter.convertedManaCost[key] = Number(convertedManaCost[0]) 
+		}
+	}
 	if (filter.ids) cardFilter.ids = { '$in': filter.ids }
 
+	console.log(cardFilter)
 	const cards = await Card.find(cardFilter).skip(skip).limit(limit)
 	const hasMore = cards.length == limit
 	cursor.skip += limit

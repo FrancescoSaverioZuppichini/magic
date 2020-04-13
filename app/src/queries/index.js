@@ -31,6 +31,9 @@ const queries = {
                     id
                     name
                     scryfallId
+                    types
+                    colors
+                    convertedManaCost
                 },
                 hasMore
                 cursor {
@@ -43,12 +46,16 @@ const queries = {
     GET_DECK: gql`
         query deck($id: ID!){
             deck(id: $id){
+                id
                 name
                 createdAt
                 cards {
                     name
                     id
                     scryfallId
+                    types
+                    colors
+                    convertedManaCost
                 }
             }
         }

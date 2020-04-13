@@ -92,7 +92,7 @@ const typeDefs = gql`
     name: String
     type: String
     colors: [String]
-    convertedManaCost: Int
+    convertedManaCost: String
     toughness: Int
     power: Int
   }
