@@ -14,21 +14,30 @@ export default function Decks() {
     return (
         <Box>
             <Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Decks</Text>
-
             <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
                 {data.me.decks.reverse().map(deck => <Box key={deck.id} pr={2} py={2}>
                     <DeckPreview key={deck.id} {...deck}>}</DeckPreview></Box>)}
+
+                <Box px={3} />
                 <Button
                     onClick={() => history.push('/home/decks/newDeck')}>
                     Add
                     </Button>
             </Flex>
-            <Route path='/home/decks/:deckId'>
+            {/* edit a deck */}
+            <Route path='/home/decks/edit/:deckId'>
                 {({ match }) => match ? <Modal active={true}>
-                    <Deck id={match.params.deckId} />
+                    {`Editings ${match.params.deckId}`}
                     <IconButton onClick={() => history.goBack()} variant='close'>
                         <img height='48px' src='/close-black-18dp.svg'></img>
                     </IconButton>
+                </Modal>
+                    : ''}
+            </Route>
+            {/* open a specific deck */}
+            <Route path='/home/decks/show/:deckId'>
+                {({ match }) => match ? <Modal active={true}>
+                    <Deck id={match.params.deckId} />
                 </Modal> : ''
                 }
             </Route>
