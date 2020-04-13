@@ -50,6 +50,9 @@ function Home() {
                         <Text>Latest created</Text>
                         <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
                             {data.me.decks.reverse().slice(0, 3).map(deck => <Box key={deck.id} pr={2} py={2}><DeckPreview key={deck.id} {...deck}>}</DeckPreview></Box>)}
+
+                            <Box px={3} />
+
                             <Button
                                 onClick={onNewDeckClick}>
                                 Add
@@ -59,7 +62,7 @@ function Home() {
                             <NewDeck onClose={onNewDeckClose} />
                         </Modal>
                     </Box>
-                    <Box py={3}/>
+                    <Box py={3} />
                     <Box>
                         <Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Rooms</Text>
                         <Box p={2} />
