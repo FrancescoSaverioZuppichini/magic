@@ -98,6 +98,23 @@ const theme = {
         outline: 'none'
       }
     },
+    select: {
+      minWidth: '100px',
+      color: 'text',
+      backgroundColor: 'bg',
+      borderWidth: '2px',
+      borderColor: 'primary',
+      '&:active': {
+        // backgroundColor: 'active',
+        borderColor: 'active',
+        outline: 'none'
+      },
+      '&:focus': {
+        // backgroundColor: 'active',
+        borderColor: 'active',
+        outline: 'none'
+      }
+    },
     searchbar: {
       backgroundColor: 'white',
       color: 'text',
@@ -195,6 +212,17 @@ const theme = {
       '&:active': {
         backgroundColor: 'active',
         borderColor: 'active',
+        // outline:'none'
+      }
+    },
+    icon: {
+      outline: 'none',
+      '&:active': {
+        opacity: 0.5,
+        // outline:'none'
+      },
+      '&:hover': {
+        opacity: 0.5,
         // outline:'none'
       }
     },

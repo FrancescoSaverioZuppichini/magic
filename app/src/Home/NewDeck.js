@@ -3,8 +3,8 @@ import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
 import { Card, Text, Flex, Box, IconButton, Button, Input } from 'theme-ui'
 import SearchBar from './SearchBar'
 import Modal from './Modal'
-import { MagicCard, MagicCardImg } from './MagicCard'
-import MagicCards from './MagicCards.js'
+import { MagicCard, MagicCardImg } from './MagicCards/MagicCard'
+import MagicCards from './MagicCards/MagicCards.js'
 import queries from '../queries/index.js'
 import mutations from '../mutations/index.js'
 import Stages from './Stages'
@@ -18,9 +18,9 @@ const DeckCardsPickedPreview = ({ cards, onCardClick }) => {
     const [showMoreCards, setShowMoreCard] = useState(false)
     const subsetOfCards = [...cards].reverse().slice(0, 8)
     const thereAreMoreCards = cards.length > subsetOfCards.length
-
+    console.log('DeckCardsPickedPreview', cards)
     return (
-        <Flex sx={{ flexDirection: 'row', alignItems: 'center', height: '8vh', flexWrap: 'wrap'}}>
+        <Flex sx={{ flexDirection: 'row', alignItems: 'center', height: '8vh', flexWrap: 'wrap' }}>
             {/* Show the last 4 picked cards */}
             {subsetOfCards.map((card, i) =>
                 <Box key={i} p={2} sx={{ height: '100%' }}>
@@ -33,16 +33,19 @@ const DeckCardsPickedPreview = ({ cards, onCardClick }) => {
                 </Button>}
             </Box>
             {/* The cards will be displayed in a modal */}
-            <Modal active={showMoreCards && cards.length > 0} variant={'vCentering'}>
+            <Modal active={showMoreCards && cards.length > 0} variant='none' sx={{ width: '100%' }}>
+
                 <IconButton onClick={() => setShowMoreCard(false)} variant='close'>
                     <img height='100%' src='/close-black-18dp.svg'></img>
                 </IconButton>
+                <Card>
+                    <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>So far</Text>
                     {/* All the cards in the deck so far */}
-                    <Box mt={4}>
-                    <MagicCards cards={{cards}} width={['100%', '33%', '25%']}>
-                        { card => <MagicCardImg key={card.id} {...card} onClick={() => onCardClick(card)} />}
+                    <Box mt={2}></Box>
+                    <MagicCards cards={cards} width={['100%', '33%', '25%']}>
+                        {(card, i) => <MagicCardImg key={i} {...card} onClick={() => onCardClick(card)} />}
                     </MagicCards>
-                    </Box>
+                </Card>
             </Modal>
         </Flex>)
 }
@@ -131,36 +134,36 @@ export default function NewDeck({ onClose }) {
                     </Card>
                 )}
                 {({ onBack, onNext }) => (
-                    <Card p={2} sx={{maxHeight: '95vh'}}>
-                        <Flex sx={{flexDirection: 'column'}}>
-                        <Box >
-                            <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Cards</Text>
-                            <Box py={3} />
-                        </Box>
-                        <SearchBar>{({ cards, onLoadMore }) =>
-                                    <Box sx={{maxHeight: '65vh', overflowY: 'scroll'}}>
-                                        <MagicCards cards={cards}>
-                                            {card => <AddAndRemoveMagicCard
-                                                card={card}
-                                                onRemove={() => removeCardFromDeck(card)}
-                                                onAdd={() => addCardToDeck(card)}
-                                                numberInDeck={getNumberOfCardInDeck(card)} />}
-                                        </MagicCards>
-                                        <Flex variant='centering'>
-                                            <Button onClick={onLoadMore}>More</Button>
-                                        </Flex>
-                                    </Box>
+                    <Card p={2} sx={{ maxHeight: '95vh' }}>
+                        <Flex sx={{ flexDirection: 'column' }}>
+                            <Box >
+                                <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Cards</Text>
+                                <Box py={3} />
+                            </Box>
+                            <SearchBar>{({ cards, onLoadMore }) =>
+                                <Box sx={{ maxHeight: '65vh', overflowY: 'scroll' }}>
+                                    <MagicCards cards={cards} hasFilters={false}>
+                                        {card => <AddAndRemoveMagicCard
+                                            card={card}
+                                            onRemove={() => removeCardFromDeck(card)}
+                                            onAdd={() => addCardToDeck(card)}
+                                            numberInDeck={getNumberOfCardInDeck(card)} />}
+                                    </MagicCards>
+                                    <Flex variant='centering'>
+                                        <Button onClick={onLoadMore}>More</Button>
+                                    </Flex>
+                                </Box>
                             }</SearchBar>
-                        <Box py={2} />
-                        <Box>
-                            <Text pb={2}>So far</Text>
-                            <DeckCardsPickedPreview {...deck} onCardClick={removeCardFromDeck} />
-                        </Box>
-                        <Flex pt={5} >
-                            <Button onClick={onBack}>Back</Button>
-                            <Box variant="spacer" />
-                            <Button onClick={onNext}>Next</Button>
-                        </Flex>
+                            <Box py={2} />
+                            <Box>
+                                <Text pb={2}>So far</Text>
+                                <DeckCardsPickedPreview {...deck} onCardClick={removeCardFromDeck} />
+                            </Box>
+                            <Flex pt={5} >
+                                <Button onClick={onBack}>Back</Button>
+                                <Box variant="spacer" />
+                                <Button onClick={onNext}>Next</Button>
+                            </Flex>
                         </Flex>
                     </Card>
                 )}

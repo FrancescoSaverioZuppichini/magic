@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Box, Flex, Card, IconButton } from 'theme-ui'
-import Modal from './Modal.js'
+import Modal from '../Modal.js'
 // TODO would be better to go to the next if clicked
 const MagicCardZoom = ({ scryfallId, onClose, active }) => (
     <Modal active={active}>

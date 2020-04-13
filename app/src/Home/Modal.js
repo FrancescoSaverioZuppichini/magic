@@ -4,6 +4,7 @@ import { Box, Flex, Card } from 'theme-ui'
 export default function Modal(props) {
     return (<div>
         {props.active && (<Flex p={2} sx={{
+            flexDirection: 'column',
             position: props.position || 'absolute',
             top: '0', left: 0,
             zIndex: 99, width: '100vw', minHeight: '100vh',
