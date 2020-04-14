@@ -73,10 +73,12 @@ function SearchBar({ children, onChange, onSearchEnd, inputVariant = 'searchbar'
 
     return (
         <Flex sx={{ flexDirection: 'column', flexGrow: '1' }}>
-            <Flex sx={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-                <Flex sx={{ flex: 1, flexDirection: ['column', 'column', 'row'], flexWrap: 'wrap' }}>
-                    <Box sx={{ flexGrow: '1', flex: 1 }}>
-                        <Text pb={1}>Name</Text>
+            <Flex sx={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Flex sx={{
+                    flex: 1, flexDirection: ['column', 'column', 'row'], flexWrap: 'wrap',
+                    alignItems: ['baseline', 'baseline', 'flex-end']
+                }}>
+                    <Box sx={{ flexGrow: 1, flex: 1, position: 'relative', width: ['100%', '100%', 'auto'] }}>
                         <Input variant={inputVariant} placeholder='Search for cards...'
                             ref={input} onChange={e => {
                                 if (onChange) onChange(e)
@@ -84,13 +86,34 @@ function SearchBar({ children, onChange, onSearchEnd, inputVariant = 'searchbar'
                                 setFilter({ ...filter, ...{ name: e.target.value } })
                             }}>
                         </Input>
+                        {/* small controllers */}
+                        <Box sx={{ visibility: ['visible', 'visible', 'hidden']}}>
+                        {(hideCards || filterHasChanged) ? <IconButton onClick={() => searchCards(filter)}
+                            sx={{
+                                position: 'absolute', top: 0, right: 0, bg: 'dark', height: '100%'
+                                , borderRadius: '0px 16px 16px 0px', outline: 'none',
+                                width: '40px'
+                            }}>
+                            <img height='24px' src='/search-white-18dp.svg'></img>
+                        </IconButton> : <IconButton onClick={() => setHideCards(true)}
+                            sx={{
+                                position: 'absolute', top: 0, right: 0, bg: 'dark', height: '100%'
+                                , borderRadius: '0px 16px 16px 0px', outline: 'none',
+                                width: '40px'
+                            }}>
+                                <img height='24px' src='/close-white-18dp.svg'></img>
+                            </IconButton>}
+                            </Box>
                     </Box>
                     <Box p={2}></Box>
-                    <Box sx={{ flex: 1 }}>
-                        <MagicCardsFilters onChange={setFilterAndEnsureAll} />
-                    </Box>
+                        <Box sx={{ flex: 1 }}>
+                            <MagicCardsFilters onChange={setFilterAndEnsureAll} />
+                        </Box>
                 </Flex>
-                <Flex pt={3} sx={{ justifyContent: 'start', alignItems: 'center' }}>
+                {/* big controllers */}
+                <Flex pt={3} sx={{ justifyContent: 'start', alignItems: 'center',
+                width: [0, 0, 'auto'], 
+                visibility: ['hidden', 'hidden', 'visible'] }}>
                     {(hideCards || filterHasChanged) ? <Button onClick={() => searchCards(filter)}>
                         Search
                 </Button> : <Button onClick={() => setHideCards(true)}>
@@ -98,7 +121,7 @@ function SearchBar({ children, onChange, onSearchEnd, inputVariant = 'searchbar'
                     </Button>}
                 </Flex>
             </Flex>
-            {!data && <Flex sx={{ flexGrow: 1 }} pt={5} variant='centering'><Text sx={{ fontSize: 3, fontWeight: 'thin' }} >No search so far</Text></Flex>}
+            {!data && <Flex sx={{ flexGrow: 1 }} pt={5} variant='centering'><Text sx={{ fontSize: 3, fontWeight: 'thin' }} >Nothing so far</Text></Flex>}
             {data && !hideCards && children({ cards: data.cards.cards, onLoadMore, filter, setFilter, searchCards })}
         </Flex>
     )

@@ -22,9 +22,8 @@ const cards = async (ctx, { filter, cursor }) => {
 	}
 	if (filter.ids) cardFilter.ids = { '$in': filter.ids }
 
-	console.log(cardFilter)
 	const cards = await Card.find(cardFilter).skip(skip).limit(limit)
-	const hasMore = cards.length == limit
+	const hasMore = cards.length >= limit || cards.length === 0
 	cursor.skip += limit
 
 	return { cards, hasMore, cursor }

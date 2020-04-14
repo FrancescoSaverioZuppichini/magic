@@ -4,6 +4,7 @@ import { Card, Text, Flex, Box, IconButton, Button, Input } from 'theme-ui'
 import SearchBar from './SearchBar'
 import Modal from './Modal'
 import { MagicCard, MagicCardImg } from './MagicCards/MagicCard'
+import DeckPreview from './Decks/DeckPreview'
 import MagicCards from './MagicCards/MagicCards.js'
 import queries from '../queries/index.js'
 import mutations from '../mutations/index.js'
@@ -171,12 +172,7 @@ export default function NewDeck({ onClose }) {
                     <Card p={2}>
                         <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Preview</Text>
                         <Box p={3} />
-                        <Text sx={{ fontSize: 1 }}>Name</Text>
-                        <Text sx={{ fontSize: 2 }}>{deck.name}</Text>
-                        <Box p={2} />
-                        <Text sx={{ fontSize: 1 }}>Cards</Text>
-                        <DeckCardsPickedPreview cards={deck.cards}
-                            onCardClick={() => ''} />
+                        <DeckPreview {...deck} controllers={false}/>
                         <Flex pt={5}>
                             <Button onClick={onBack}>Back</Button>
                             <Box variant="spacer" />
