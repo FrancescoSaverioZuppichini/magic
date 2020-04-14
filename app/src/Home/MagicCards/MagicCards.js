@@ -4,15 +4,6 @@ import { Flex, Box, Text, Select, Button, IconButton, Image } from 'theme-ui'
 import { MagicCardsFilters } from './MagicCardsFilterControllers'
 import { filterMagicCards } from '../../utils'
 
-function usePrevious(value) {
-    const ref = useRef()
-
-    useEffect(() => {
-        ref.current = value;
-    })
-    return ref.current
-}
-
 export default function MagicCards({ cards, children, hasFilters = true, width = ['100%', '33%', '25%', '20%', '15%'] }) {
 
     const [showFilters, setShowFilter] = useState(false)
@@ -20,7 +11,6 @@ export default function MagicCards({ cards, children, hasFilters = true, width =
     const [cardsVisMode, setCardVisMode] = useState('BLOCK')
     const [filter, setFilter] = useState({})
 
-    const prevCards = usePrevious({ cards })
     useEffect(() => {
         setFilteredCards(filterMagicCards(cards, filter))
     }, [cards.length])
@@ -41,26 +31,29 @@ export default function MagicCards({ cards, children, hasFilters = true, width =
     return (
         <Box sx={{ width: '100%' }}>
             <Text sx={{ fontSize: 2 }}>{`${cards.length} cards`}</Text>
-            <Box p={2} />
             <Flex pb={1} sx={{ flexDirection: 'column' }}>
                 <Flex sx={{ justifyContent: 'space-between', flexDirection: 'row', width: '100%' }}>
-                {hasFilters &&  <Button onClick={() => setShowFilter(!showFilters)} variant="outline" sx={{ opacity: showFilters ? 0.5 : 1 }}>Filter</Button>}
-                    <Box variant='spacer'/>
+                    {hasFilters && <Button onClick={() => setShowFilter(!showFilters)} variant="outline" sx={{ opacity: showFilters ? 0.5 : 1 }}>Filter</Button>}
+                    <Box variant='spacer' />
                     <Box>
-                        <IconButton><Image src='/view_module-black-18dp.svg' width='48px' height='48px'></Image></IconButton>
-                        <IconButton><Image src='/view_list-black-18dp.svg' width='48px' height='48px'></Image></IconButton>
+                        <IconButton onClick={() => setCardVisMode('BLOCK')}><Image src='/view_module-black-18dp.svg' width='48px' height='48px'></Image></IconButton>
+                        <IconButton onClick={() => setCardVisMode('TABLE')}><Image src='/view_list-black-18dp.svg' width='48px' height='48px'></Image></IconButton>
                     </Box>
                 </Flex>
                 {showFilters && <MagicCardsFilters onChange={setFilterAndEnsureAll} />}
             </Flex>
+            {!hasFilters && <Box p={2} />}
             <Flex sx={{
                 flexDirection: 'row',
                 flexWrap: 'wrap',
             }}>
-                {filteredCards.map((card, i) =>
+                {cardsVisMode === 'BLOCK' && filteredCards.map((card, i) =>
                     <Box key={i} p={1} sx={{ flexBasis: width }}>
                         {children(card)}
                     </Box>)}
+
+                {cardsVisMode === 'TABLE' && <div>show table</div>}
+
                 {filteredCards.length === 0 && <Flex variant="centering" sx={{ width: '100%', height: '150px' }}>
                     <Text sx={{ fontSize: 3 }}> No cards</Text> </Flex>}
             </Flex>
