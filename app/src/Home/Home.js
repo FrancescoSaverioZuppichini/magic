@@ -9,14 +9,15 @@ import NewDeck from './NewDeck'
 import DeckPreview from './Decks/DeckPreview'
 import Decks from './Decks/Decks.js'
 import Search from './Search.js'
-
+import io from 'socket.io-client';
 import { ACTIONS } from '../utils.js'
+
 function Home() {
     const [openNewDeck, setOpenDeck] = useState(false)
     const [openNewRoom, setNewRoom] = useState(false)
     const location = useLocation()
     const history = useHistory()
-
+    // const socket = io('http://localhost');
     const client = useApolloClient()
     const { error, data } = useQuery(queries.GET_ME)
     let { path, url } = useRouteMatch()

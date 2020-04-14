@@ -1,4 +1,4 @@
-const { User, Card, Deck } = require('../models/index.js')
+const { User, Card, Deck, Room } = require('../models/index.js')
 const CURSOR_BOUNDS = { limit: 200 }
 
 const cards = async (ctx, { filter, cursor }) => {
@@ -73,26 +73,35 @@ const resolvers = {
 			return { user, token }
 		},
 		async newDeck(obj, { deck }, { user }) {
-			console.log(deck)
 			deck = { ...deck, owner: user.id }
-			let newDeck;
+			let newDeck
 			if (deck.id) {
 				newDeck = await Deck.findByIdAndUpdate(deck.id, deck, {
 					new: true
 				})
 			} else {
+				console.log(deck)
 				newDeck = await (new Deck(deck)).save()
 				user.decks.push(newDeck)
 				await user.save()
 			}
-
-			return Deck.findById(newDeck.id).populate('owner').populate('cards')
+			return newDeck.populate('owner').populate('cards').execPopulate()
 		},
 		async newCard(obj, { card }) {
 			const alreadyExist = Card.exists(card)
 			if (alreadyExist) throw new Error(`Another card with the same name ${card.name} exists.`)
 			const newCard = new Card(card)
 			return newCard.save()
+		},
+		async newRoom(obj, { room }, { user }) {
+			// TODO should check if the room alrays exist for a single user
+			// add the master to the room creation
+			let roomWithOwner = { ...room, ...{ users: [ user.id], active: true}} 
+			const newRoom = new Room(roomWithOwner)
+			
+			const savedRoom = await newRoom.save()
+
+			return savedRoom.populate('users').execPopulate()
 		}
 	}
 }

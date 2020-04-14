@@ -4,7 +4,7 @@ const resolvers = require('./resolvers/index.js')
 const { AuthDirective } = require('./directives/index.js')
 const { Deck } = require('./models')
 
-const server = new ApolloServer({
+const GraphQLserver = new ApolloServer({
 	typeDefs,
 	resolvers,
 	schemaDirectives: {
@@ -16,4 +16,4 @@ const server = new ApolloServer({
 	})
 })
 
-module.exports = server
+module.exports = GraphQLserver
