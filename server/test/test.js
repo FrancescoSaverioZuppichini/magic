@@ -18,7 +18,7 @@ const MONGO_URI = 'mongodb://localhost/magic-test'
 
 let connection
 let user = { username: 'test', email: 'test', password: 'test ' }
-const deck = { name: 'test', cards: ["5e838d72cf03cc9263886fe0"] }
+const deck = { name: 'test', cards: ["5e838d72cf03cc9263886e42"] }
 
 const NEW_USER = gql`
     mutation newUser($input: UserInput!){
@@ -51,6 +51,18 @@ const NEW_DECK = gql`
             }
             owner {
                 username
+            }
+        }
+    }
+`
+
+const NEW_ROOM = gql`
+    mutation newRoom($room: RoomInput!) {
+        newRoom(room: $room){
+            name
+            active 
+            users{ 
+                id
             }
         }
     }
@@ -132,7 +144,23 @@ describe("Auth", () => {
                 console.log(res)
             })
         })
+
+        describe('ROOM', () => {
+            it('should create a new room ', async () => {
+                const room = { name : 'test'}
+                const res = await AuthMutate({
+                    mutation: NEW_ROOM,
+                    variables: { room }
+                })
+                assert.equal(res.data.newRoom.name, room.name)
+                assert.equal(res.data.newRoom.active, true)
+                assert.exists(res.data.newRoom.users[0])
+
+
+            })
+        })
     })
+    
 
 
 

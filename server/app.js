@@ -8,9 +8,8 @@ const PORT = process.env.PORT || 4000
 const NODE_ENV = process.env.NODE_ENV || 'development'
 const TOKEN_SECRET = process.env.TOKEN_SECRET || 'pazzofurioso'
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost/tes'
-const server = require('./server')
-const { Deck } = require('./models/index.js')
-
+const GraphQLserver = require('./GraphQLserver')
+const WSServer = require('./WSServer')
 process.env.SALT_ROUNDS = 10
 
 mongoose
@@ -26,7 +25,7 @@ app.use(express.static('public'))
 app.use(expressLogger)
 app.use(jwt({ secret: TOKEN_SECRET, credentialsRequired: false }))
 
-server.applyMiddleware({ app })
-
-app.listen({ port: PORT }, () => logger.info(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`))
- 
+GraphQLserver.applyMiddleware({ app })
+const server = app.listen({ port: PORT }, () => logger.info(`🚀 Server ready at http://localhost:${PORT}${GraphQLserver.graphqlPath}`))
+const wsServer = new WSServer(server)
+wsServer.start()

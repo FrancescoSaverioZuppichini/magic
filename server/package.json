@@ -13,7 +13,7 @@
     "apollo-server": "^2.1.0",
     "apollo-server-express": "^2.11.0",
     "bcrypt": "^4.0.1",
-    "express": "^4.16.4",
+    "express": "^4.15.2",
     "express-graphql": "^0.6.12",
     "express-jwt": "^5.3.1",
     "express-pino-logger": "^4.0.0",
@@ -23,6 +23,7 @@
     "mongoose": "^5.3.4",
     "morgan": "^1.9.1",
     "pino": "^6.0.0",
-    "pino-pretty": "^3.6.1"
+    "pino-pretty": "^3.6.1",
+    "socket.io": "^2.3.0"
   }
 }
