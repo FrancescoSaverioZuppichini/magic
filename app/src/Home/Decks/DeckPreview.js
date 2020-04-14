@@ -4,7 +4,7 @@ import { Card, Flex, Text, Box, Button } from 'theme-ui'
 import { Link } from "react-router-dom"
 import DeckControllers from './DeckControllers'
 
-function DeckPreview({ id, name, cards, createdAt=moment() }) {
+function DeckPreview({ id, name, cards, createdAt=moment(), controllers=true }) {
     
     return (
         <Card sx={{ width: '200px' }} >
@@ -13,7 +13,7 @@ function DeckPreview({ id, name, cards, createdAt=moment() }) {
             <Box p={2}></Box>
             <Text sx={{ fontSize: 0 }}>{`${cards.length} cards`}</Text>
             <Box p={2}></Box>
-            <DeckControllers id={id}/>
+            {controllers && <DeckControllers id={id}/>}
            
         </Card>
     )

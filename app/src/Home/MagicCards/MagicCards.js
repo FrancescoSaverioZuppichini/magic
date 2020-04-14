@@ -62,7 +62,8 @@ export default function MagicCards({ cards, children, hasFilters = true, width =
                     <Box key={i} p={1} sx={{ flexBasis: width }}>
                         {children(card)}
                     </Box>)}
-                {filteredCards.length === 0 && <Flex variant="centering" sx={{ width: '100%', height: '150px' }}><Text sx={{ fontSize: 3 }}> No cards</Text> </Flex>}
+                {filteredCards.length === 0 && <Flex variant="centering" sx={{ width: '100%', height: '150px' }}>
+                    <Text sx={{ fontSize: 3 }}> No cards</Text> </Flex>}
             </Flex>
         </Box>
 
