@@ -8,17 +8,18 @@ function usePrevious(value) {
     const ref = useRef()
 
     useEffect(() => {
-      ref.current = value;
+        ref.current = value;
     })
     return ref.current
-  }
+}
 
 export default function MagicCards({ cards, children, hasFilters = true, width = ['100%', '33%', '25%', '20%', '15%'] }) {
 
     const [showFilters, setShowFilter] = useState(false)
     const [filteredCards, setFilteredCards] = useState([...cards])
+    const [cardsVisMode, setCardVisMode] = useState('BLOCK')
     const [filter, setFilter] = useState({})
-    
+
     const prevCards = usePrevious({ cards })
     useEffect(() => {
         setFilteredCards(filterMagicCards(cards, filter))
@@ -37,23 +38,21 @@ export default function MagicCards({ cards, children, hasFilters = true, width =
         setFilteredCards(filterMagicCards(cards, newFilter))
     }
 
-    
-
-
     return (
-        <Box sx={{width: '100%'}}>
+        <Box sx={{ width: '100%' }}>
             <Text sx={{ fontSize: 2 }}>{`${cards.length} cards`}</Text>
-            <Box p={2}/>
-            {hasFilters && <Flex pb={1} sx={{ flexDirection: 'column' }}>
+            <Box p={2} />
+            <Flex pb={1} sx={{ flexDirection: 'column' }}>
                 <Flex sx={{ justifyContent: 'space-between', flexDirection: 'row', width: '100%' }}>
-                    <Button onClick={() => setShowFilter(!showFilters)} variant="outline" sx={{ opacity: showFilters ? 0.5 : 1 }}>Filter</Button>
+                {hasFilters &&  <Button onClick={() => setShowFilter(!showFilters)} variant="outline" sx={{ opacity: showFilters ? 0.5 : 1 }}>Filter</Button>}
+                    <Box variant='spacer'/>
                     <Box>
                         <IconButton><Image src='/view_module-black-18dp.svg' width='48px' height='48px'></Image></IconButton>
                         <IconButton><Image src='/view_list-black-18dp.svg' width='48px' height='48px'></Image></IconButton>
                     </Box>
                 </Flex>
                 {showFilters && <MagicCardsFilters onChange={setFilterAndEnsureAll} />}
-            </Flex>}
+            </Flex>
             <Flex sx={{
                 flexDirection: 'row',
                 flexWrap: 'wrap',
