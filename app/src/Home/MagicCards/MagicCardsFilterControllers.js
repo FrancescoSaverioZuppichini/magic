@@ -43,7 +43,7 @@ const MagicCardsFilters = ({ onChange }) =>
 
     </Flex>)
 
-
+// DEPRECATED
 const MagicCardsFilterControllers = ({ cards=[], children }) => {
     const [showFilters, setShowFilter] = useState(false)
     const [filteredCards, setFilteredCards] = useState([...cards])
