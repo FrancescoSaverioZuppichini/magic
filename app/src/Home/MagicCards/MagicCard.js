@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Flex, Card, IconButton } from 'theme-ui'
+import { Box, Flex, Card, IconButton, Text } from 'theme-ui'
 import Modal from '../Modal.js'
 // TODO would be better to go to the next if clicked
 const MagicCardZoom = ({ scryfallId, onClose, active }) => (
@@ -12,6 +12,9 @@ const MagicCardZoom = ({ scryfallId, onClose, active }) => (
         </Card>
     </Modal>
 )
+
+const MagicCardRow = ({ name, colors, convertedManaCost}) => 
+<Flex sx={{flexDirection: 'row'}}><Text>{name}</Text><Text>{colors}</Text><Text>convertedManaCost</Text></Flex>
 
 const MagicCardImg = ({ scryfallId, onClick, width='100%', height='auto'  }) => (
     <img src={`/cards/${scryfallId}.jpg`} width={width} height={height} style={{ borderRadius: '4%' }}
