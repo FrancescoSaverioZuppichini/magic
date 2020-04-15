@@ -1,5 +1,8 @@
 const socket = require('socket.io')
 const logger = require('./logger')
+const { Room } = require('./models/index.js')
+
+const MAX_PLAYERS = 2
 
 class WSServer {
     constructor(httpServer) {
@@ -10,12 +13,26 @@ class WSServer {
         this.io.on('connection', (socket) => {
             logger.info('a user connected')
 
-            socket.on('room', ({ name, id}) => {
+            socket.on('room', async ({ name, userId, roomId }) => {
                 // prevent user to join multiple time the same room
-                socket.userId = id
-                logger.info(`User ${socket.userId} connect to room ${name}`)
-                socket.join(name)
-                socket.to(name).emit('join', id)
+                socket.userId = userId
+                const room = await Room.findById(roomId)
+                if (!room) socket.emit('error', { mgs: 'Invalid or expired invite' })
+                const isRoomFull = room.users.length >= MAX_PLAYERS
+                if (isRoomFull) socket.emit('error', { mgs: 'Room is full' })
+                else {
+                    logger.debug(room.users)
+                    const userIsNotIn = room.users.indexOf(userId) < 0
+                    if (userIsNotIn < 0) {
+                        room.users.push(userId)
+                        await room.save()
+                    }
+
+                    logger.info(`User ${socket.userId} connect to room ${name}`)
+                    socket.join(name)
+                    socket.to(name).emit('join', userId)
+                }
+
 
             })
 
@@ -26,10 +43,10 @@ class WSServer {
 
             socket.on('disconnect', () => {
                 this.io.emit('user disconnected')
-              })
+            })
         })
         // https://gist.github.com/crtr0/2896891
-    
+
     }
 }
 module.exports = WSServer

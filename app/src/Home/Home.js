@@ -84,15 +84,13 @@ function Home() {
                             <Link to='/home/decks'><Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Your Decks</Text></Link>
                             <Box p={2} />
                             <Text>Latest created</Text>
+                            <Box py={2}></Box>
                             <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
-                                {data.me.decks.reverse().slice(0, 3).map(deck => <Box key={deck.id} pr={2} py={2}>
+                                {data.me.decks.reverse().slice(0, 3).map(deck => <Box key={deck.id} pr={2}>
                                     <DeckPreview key={deck.id} {...deck}>}</DeckPreview></Box>)}
-                                <Box px={3} />
-                                <Button
-                                    onClick={onNewDeckClick}>
-                                    Add
-                             </Button>
+                                    <Button onClick={onNewDeckClick}>Add</Button>
                             </Flex>
+                            
                             <Modal active={openNewDeck}>
                                 <NewDeck onClose={onNewDeckClose} />
                             </Modal>
@@ -104,10 +102,7 @@ function Home() {
                             <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
                                 {data.me.rooms.reverse().slice(0, 3).map(room => <Box key={room.id} pr={2} py={2}>
                                     <RoomPreview key={room.id} {...room}>}</RoomPreview></Box>)}
-                                <Box px={3} />
-                                <Button onClick={() => history.push("/home/rooms/newRoom")}>
-                                    Add
-                                </Button>
+                                <Button onClick={() => history.push("/home/rooms/newRoom")}>Add</Button>
                             </Flex>
 
                             {/* <Box py={2} />

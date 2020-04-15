@@ -5,8 +5,8 @@ import RoomContainer from '../../containers/RoomContainer'
 import queries from '../../queries'
 import { useQuery } from '@apollo/react-hooks'
 
-const JoinAutomatically = ({ room, name, userId }) => {
-    room.joinRoom(name, userId)
+const JoinAutomatically = ({ room, name, userId, roomId }) => {
+    room.joinRoom(name, userId, roomId)
     return ''
 }
 
@@ -26,7 +26,7 @@ export default function Game({ id }) {
                     {room => (
                         <Box>
                             <div>{roomData.room.name} </div>
-                            <JoinAutomatically room={room} name={roomData.room.name} userId={meData.me.id} />
+                            <JoinAutomatically room={room} name={roomData.room.name} userId={meData.me.id} roomId={id}/>
                             <Button onClick={() => room.emitAction(roomData.room.name, 'wee')}>Action</Button>
                         </Box>)
                     }
