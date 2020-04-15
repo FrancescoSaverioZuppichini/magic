@@ -42,7 +42,7 @@ const theme = {
   cards: {
     primary: {
       backgroundColor: 'white',
-      padding: [2, 3],
+      padding: [3, 4],
       borderRadius: '8px'
     },
     viewport: {

@@ -27,7 +27,9 @@ function NavBar({ user }) {
                 <Box px={3} />
                 <Box variant='spacer'/>
                 <Text><Link to={'/home/decks'}>Decks</Link></Text>
-                
+                <Box px={23} />
+                <Text><Link to={'/home/rooms'}>Rooms</Link></Text>
+
                 <Box px={[2, 3, 4]} />
                 <Text>{user.username}</Text>
             </Flex>

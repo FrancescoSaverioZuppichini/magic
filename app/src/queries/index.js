@@ -4,7 +4,12 @@ const queries = {
     GET_ME: gql`
         {
             me {
+                id
                 username,
+                rooms {
+                    name
+                    id
+                }
                 decks {
                     id
                     name

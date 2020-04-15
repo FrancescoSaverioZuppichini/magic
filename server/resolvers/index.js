@@ -40,7 +40,7 @@ const resolvers = {
 			return User.findById(user.id).populate({
 				path: 'decks', populate:
 					{ path: 'cards', model: 'Card' }
-			})
+			}).populate('rooms')
 		},
 		secret(ctx, { }, { user }) {
 			return `Psssh ${user.email}`
@@ -98,8 +98,10 @@ const resolvers = {
 			// add the master to the room creation
 			let roomWithOwner = { ...room, ...{ users: [ user.id], active: true}} 
 			const newRoom = new Room(roomWithOwner)
-			
 			const savedRoom = await newRoom.save()
+
+			user.rooms.push(savedRoom)
+			await user.save()
 
 			return savedRoom.populate('users').execPopulate()
 		}

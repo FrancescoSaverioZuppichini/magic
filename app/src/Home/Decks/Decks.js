@@ -14,6 +14,7 @@ export default function Decks() {
     return (
         <Box>
             <Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Decks</Text>
+            <Box py={2} p/>
             <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
                 {data.me.decks.reverse().map(deck => <Box key={deck.id} pr={2} py={2}>
                     <DeckPreview key={deck.id} {...deck}>}</DeckPreview></Box>)}

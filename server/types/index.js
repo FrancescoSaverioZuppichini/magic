@@ -21,6 +21,7 @@ const typeDefs = gql`
 		username: String!
 		email: String!
 		decks: [Deck]
+    rooms: [Room]
 	}
 
 	type Deck {
@@ -71,6 +72,7 @@ const typeDefs = gql`
 
 
 	type Room {
+    id: ID!
     name: String!,
     users: [User]
     active: Boolean

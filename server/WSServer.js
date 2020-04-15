@@ -1,4 +1,5 @@
 const socket = require('socket.io')
+const logger = require('./logger')
 
 class WSServer {
     constructor(httpServer) {
@@ -7,11 +8,26 @@ class WSServer {
 
     start() {
         this.io.on('connection', (socket) => {
-            console.log('a user connected');
+            logger.info('a user connected')
+
+            socket.on('room', ({ name, id}) => {
+                // prevent user to join multiple time the same room
+                socket.userId = id
+                logger.info(`User ${socket.userId} connect to room ${name}`)
+                socket.join(name)
+            })
+
+            socket.on('action', ({ room, action }) => {
+                console.log(action, room)
+                this.io.to(room).emit('action', action)
+            })
+
+            socket.on('disconnect', () => {
+                this.io.emit('user disconnected')
+              })
         })
-        this.io.on('room', (name) => {
-            socket.join(name)
-        })
+        // https://gist.github.com/crtr0/2896891
+    
     }
 }
 module.exports = WSServer
