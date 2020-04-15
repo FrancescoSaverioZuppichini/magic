@@ -16,10 +16,15 @@ class RoomContainer extends Container {
         this.socket.on('action', (action) => {
             console.log('Incoming message:', action);
         })
-    
+
+        this.socket.on('join', (id) => {
+            console.log(`User ${id} joined!`);
+            if(id === this.userId) console.log('You joined the same room twice!')
+        })
     }
 
     joinRoom(name, userId) {
+        this.userId = userId
         this.socket.emit('room', { name: name, id: userId });
 
     }

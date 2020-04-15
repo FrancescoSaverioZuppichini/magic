@@ -11,4 +11,5 @@ const DeckSchema = mongoose.Schema(
 	}
 )
 
+
 module.exports = mongoose.model('Deck', DeckSchema)

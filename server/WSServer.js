@@ -15,7 +15,7 @@ class WSServer {
                 socket.userId = id
                 logger.info(`User ${socket.userId} connect to room ${name}`)
                 socket.join(name)
-                socket.to(room).emit('joined', id)
+                socket.to(name).emit('join', id)
 
             })
 

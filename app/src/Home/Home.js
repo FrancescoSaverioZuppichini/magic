@@ -7,12 +7,17 @@ import { Switch, Route, Link, Redirect, useRouteMatch, useLocation, useHistory }
 import { Provider } from 'unstated';
 
 import Modal from './Modal'
+
 import NewDeck from './NewDeck'
 import DeckPreview from './Decks/DeckPreview'
 import Decks from './Decks/Decks.js'
+
 import Rooms from './Rooms/Rooms.js'
+import RoomPreview from './Rooms/RoomPreview'
 import NewRoom from './Rooms/NewRoom'
 import JoinRoom from './Rooms/JoinRoom'
+
+import Game from './Game/Game'
 
 import Search from './Search.js'
 import io from 'socket.io-client';
@@ -21,7 +26,6 @@ import { ACTIONS } from '../utils.js'
 function Home() {
     const [openNewDeck, setOpenDeck] = useState(false)
     const [openNewRoom, setNewRoom] = useState(false)
-    const location = useLocation()
     const history = useHistory()
     // const socket = io('http://localhost');
     const client = useApolloClient()
@@ -44,8 +48,8 @@ function Home() {
     const onJoinClick = () => {
         history.push("/home/rooms/join/123")
     }
- 
-    console.log(data)
+
+    if (data) console.log(data)
     // if   error here we have to redirect to login!
     return (
         <Provider>
@@ -66,20 +70,23 @@ function Home() {
                             <NewRoom onClose={onNewDeckClose} />
                         </Modal>
                     </Route>
-
                     <Route path='/home/rooms/join/:roomId'>
                         {({ match }) => match ? <Modal active={true}>
                             <JoinRoom onClose={onNewDeckClose} id={match.params.roomId} />
                         </Modal> : ''}
                     </Route>
+                    <Route path='/home/game/:gameId'>
+                        {({ match }) => match ? <Game id={match.params.gameId} /> : ''}
+                    </Route>
+
                     <Route path='/home/preview'>
                         <Box>
                             <Link to='/home/decks'><Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Your Decks</Text></Link>
                             <Box p={2} />
                             <Text>Latest created</Text>
                             <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
-                                {data.me.decks.reverse().slice(0, 3).map(deck => <Box key={deck.id} pr={2} py={2}><DeckPreview key={deck.id} {...deck}>}</DeckPreview></Box>)}
-
+                                {data.me.decks.reverse().slice(0, 3).map(deck => <Box key={deck.id} pr={2} py={2}>
+                                    <DeckPreview key={deck.id} {...deck}>}</DeckPreview></Box>)}
                                 <Box px={3} />
                                 <Button
                                     onClick={onNewDeckClick}>
@@ -92,20 +99,24 @@ function Home() {
                         </Box>
                         <Box py={3} />
                         <Box>
-                            <Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Rooms</Text>
-                            <Box py={2} />
-                            <Flex sx={{ alignItems: 'center', flexDirection: 'row' }}>
+                        <Link to='/home/rooms'><Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Your Rooms</Text></Link>
+                            <Text>Latest created</Text>
+                            <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
+                                {data.me.rooms.reverse().slice(0, 3).map(room => <Box key={room.id} pr={2} py={2}>
+                                    <RoomPreview key={room.id} {...room}>}</RoomPreview></Box>)}
+                                <Box px={3} />
                                 <Button onClick={() => history.push("/home/rooms/newRoom")}>
                                     Add
                                 </Button>
                             </Flex>
-                            <Box py={2} />
+
+                            {/* <Box py={2} />
                             <Text sx={{ fontSize: 2, fontWeight: 'thin' }}>Have an invite?</Text>
                             <Box py={2} />
                             <Button
                                 onClick={onJoinClick}>
                                 Join
-                             </Button>
+                             </Button> */}
                         </Box>
                     </Route>
                 </Card>}

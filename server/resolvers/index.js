@@ -88,6 +88,22 @@ const resolvers = {
 			}
 			return newDeck.populate('owner').populate('cards').execPopulate()
 		},
+		async deleteDeck( obj, { id }, { user }) {
+			const deck = await Deck.findById(id)
+
+			if(deck){
+				await deck.remove()
+				
+				const userDeckIdx = user.decks.indexOf(id)
+				user.decks.splice(userDeckIdx, 1)
+
+				console.log(user.decks)
+				await user.save()
+			}
+			return deck
+
+
+		},
 		async newCard(obj, { card }) {
 			const alreadyExist = Card.exists(card)
 			if (alreadyExist) throw new Error(`Another card with the same name ${card.name} exists.`)

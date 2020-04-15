@@ -83,7 +83,7 @@ export default function NewDeck({ onClose }) {
             me.decks.push(newDeck)
             cache.writeQuery({
                 query: queries.GET_ME,
-                data: { ...me },
+                data: me,
             });
         }
     })

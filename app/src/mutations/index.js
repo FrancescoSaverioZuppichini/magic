@@ -11,7 +11,7 @@ const mutations = {
                 }
         }
     }`,
-    NEW_USER : gql`
+    NEW_USER: gql`
         mutation newUser($input: UserInput!) {
             newUser(input: $input) {
                     id
@@ -21,15 +21,24 @@ const mutations = {
     NEW_DECK: gql`
         mutation newDeck($deck: DeckInput!) {
             newDeck(deck: $deck){
+                id
                     name
                 }
             }
         
     `,
+    DELETE_DECK: gql`
+        mutation deleteDeck($id: ID!) {
+            deleteDeck(id: $id){
+                    id
+            }
+        }
+    `,
     NEW_ROOM: gql`
     mutation newRoom($room: RoomInput!) {
         newRoom(room: $room){
                 name
+                id
             }
         }
     
