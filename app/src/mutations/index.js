@@ -25,7 +25,15 @@ const mutations = {
                 }
             }
         
-    `
+    `,
+    NEW_ROOM: gql`
+    mutation newRoom($room: RoomInput!) {
+        newRoom(room: $room){
+                name
+            }
+        }
+    
+`
 }
 
 export default mutations

@@ -3,11 +3,17 @@ import NavBar from './NavBar'
 import queries from '../queries'
 import { useQuery, useApolloClient } from '@apollo/react-hooks'
 import { Card, Text, Flex, Box, IconButton, Button } from 'theme-ui'
-import { Switch, Route, Link, Redirect, useRouteMatch, useLocation, useHistory } from "react-router-dom";
+import { Switch, Route, Link, Redirect, useRouteMatch, useLocation, useHistory } from "react-router-dom"
+import { Provider } from 'unstated';
+
 import Modal from './Modal'
 import NewDeck from './NewDeck'
 import DeckPreview from './Decks/DeckPreview'
 import Decks from './Decks/Decks.js'
+import Rooms from './Rooms/Rooms.js'
+import NewRoom from './Rooms/NewRoom'
+import JoinRoom from './Rooms/JoinRoom'
+
 import Search from './Search.js'
 import io from 'socket.io-client';
 import { ACTIONS } from '../utils.js'
@@ -24,7 +30,7 @@ function Home() {
 
 
     const onNewDeckClick = () => {
-        history.push("/home/decks/newDeck");
+        history.push("/home/decks/newDeck")
         // setOpenDeck(true)
         client.writeData({ data: { action: ACTIONS.NEW_DECK } })
     }
@@ -34,55 +40,79 @@ function Home() {
         // setOpenDeck(false)
         client.writeData({ data: { action: null } })
     }
-    // if error here we have to redirect to login!
+
+    const onJoinClick = () => {
+        history.push("/home/rooms/join/123")
+    }
+ 
+    console.log(data)
+    // if   error here we have to redirect to login!
     return (
-        <Box>
-            {data && <NavBar user={data.me} />}
-            {data && <Card variant='container'>
-                <Route path='/home/search' component={Search}></Route>
-                <Route path='/home/decks' component={Decks}></Route>
-                <Route path='/home/decks/newDeck'>
-                    <Modal active={true}>
-                        <NewDeck onClose={onNewDeckClose} />
-                    </Modal>
-                </Route>
-                <Route path='/home/preview'>
-                    <Box>
-                        <Link to='/home/decks'><Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Your Decks</Text></Link>
-                        <Box p={2} />
-                        <Text>Latest created</Text>
-                        <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
-                            {data.me.decks.reverse().slice(0, 3).map(deck => <Box key={deck.id} pr={2} py={2}><DeckPreview key={deck.id} {...deck}>}</DeckPreview></Box>)}
+        <Provider>
+            <Box>
+                {data && <NavBar user={data.me} />}
+                {data && <Card variant='container'>
+                    <Route path='/home/search' component={Search}></Route>
+                    <Route path='/home/decks' component={Decks}></Route>
+                    <Route path='/home/rooms' component={Rooms}></Route>
 
-                            <Box px={3} />
-
-                            <Button
-                                onClick={onNewDeckClick}>
-                                Add
-                    </Button>
-                        </Flex>
-                        <Modal active={openNewDeck}>
+                    <Route path='/home/decks/newDeck'>
+                        <Modal active={true}>
                             <NewDeck onClose={onNewDeckClose} />
                         </Modal>
-                    </Box>
-                    <Box py={3} />
-                    <Box>
-                        <Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Rooms</Text>
-                        <Box p={2} />
-                        <Flex sx={{ alignItems: 'center', flexDirection: 'row' }}>
-                            <Button
-                                onClick={() => setNewRoom(true)}>
-                                Add
-                    </Button>
-                        </Flex>
-                        <Modal active={openNewRoom}> asdsd
-                    <Button onClick={() => setNewRoom(false)}>Close</Button>
-                        </Modal>
-                    </Box>
-                </Route>
-            </Card>}
+                    </Route>
 
-        </Box>
+                    <Route path='/home/rooms/newRoom'>
+                        <Modal active={true}>
+                            <NewRoom onClose={onNewDeckClose} />
+                        </Modal>
+                    </Route>
+
+                    <Route path='/home/rooms/join/:roomId'>
+                        {({ match }) => match ? <Modal active={true}>
+                            <JoinRoom onClose={onNewDeckClose} id={match.params.roomId} />
+                        </Modal> : ''}
+                    </Route>
+                    <Route path='/home/preview'>
+                        <Box>
+                            <Link to='/home/decks'><Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Your Decks</Text></Link>
+                            <Box p={2} />
+                            <Text>Latest created</Text>
+                            <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
+                                {data.me.decks.reverse().slice(0, 3).map(deck => <Box key={deck.id} pr={2} py={2}><DeckPreview key={deck.id} {...deck}>}</DeckPreview></Box>)}
+
+                                <Box px={3} />
+                                <Button
+                                    onClick={onNewDeckClick}>
+                                    Add
+                             </Button>
+                            </Flex>
+                            <Modal active={openNewDeck}>
+                                <NewDeck onClose={onNewDeckClose} />
+                            </Modal>
+                        </Box>
+                        <Box py={3} />
+                        <Box>
+                            <Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Rooms</Text>
+                            <Box py={2} />
+                            <Flex sx={{ alignItems: 'center', flexDirection: 'row' }}>
+                                <Button onClick={() => history.push("/home/rooms/newRoom")}>
+                                    Add
+                                </Button>
+                            </Flex>
+                            <Box py={2} />
+                            <Text sx={{ fontSize: 2, fontWeight: 'thin' }}>Have an invite?</Text>
+                            <Box py={2} />
+                            <Button
+                                onClick={onJoinClick}>
+                                Join
+                             </Button>
+                        </Box>
+                    </Route>
+                </Card>}
+
+            </Box>
+        </Provider>
 
     )
 }

@@ -19,7 +19,7 @@ const DeckCardsPickedPreview = ({ cards, onCardClick }) => {
     const [showMoreCards, setShowMoreCard] = useState(false)
     const subsetOfCards = [...cards].reverse().slice(0, 8)
     const thereAreMoreCards = cards.length > subsetOfCards.length
-    console.log('DeckCardsPickedPreview', cards)
+
     return (
         <Flex sx={{ flexDirection: 'row', alignItems: 'center', height: '8vh', flexWrap: 'wrap' }}>
             {/* Show the last 4 picked cards */}
