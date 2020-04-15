@@ -18,6 +18,7 @@ const SearchPage = ({ }) => {
             <Flex sx={{ justifyContent: 'flex-end' }}>
                 <Button onClick={history.goBack}>Close</Button>
             </Flex>
+            <Box py={2}></Box>
             <SearchBar  onSearchEnd={history.goBack}>{({ cards, onLoadMore }) => (<Box>
                 {cards && <Box pt={3}>
                     <MagicCards cards={cards} hasFilters={false}>

@@ -8,7 +8,6 @@ export default function RoomPreview( {name, id, createdAt }) {
         <Card>
             <Link to={`/home/rooms/show/${id}`}><Text sx={{ fontSize: 2 }}>{name}</Text></Link>
             <Text sx={{fontSize: 0}}>{moment(createdAt).format('MMM Do YY')}</Text>
-            <Text>{id}</Text>
         </Card>
     )
 }

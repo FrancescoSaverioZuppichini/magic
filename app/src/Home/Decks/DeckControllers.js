@@ -4,16 +4,35 @@ import { Flex, Box, Button } from 'theme-ui'
 import { useHistory } from "react-router-dom";
 import ConfirmationCard from '../ConfirmationCard'
 import Modal from '../Modal'
+import mutations from '../../mutations/index'
+import queries from '../../queries/index.js'
+import { useMutation } from '@apollo/react-hooks'
 
 export default function DeckControllers({ id }) {
     const history = useHistory()
     const [showConfirmationModal, setShowConfirmationModal] = useState(false)
-
+    const [deleteDeck, { deleteDeckError }] = useMutation(mutations.DELETE_DECK, {
+        onCompleted({ deleteDeck }) {
+            console.log(deleteDeck)
+        },
+        update(cache, { data: { deleteDeck } }) {
+            let { me } = cache.readQuery({ query: queries.GET_ME })
+            console.log(me.decks.length)
+            me.decks = me.decks.filter(deck => deck.id !== deleteDeck.id)
+            console.log(me.decks.length)
+            cache.writeQuery({
+                query: queries.GET_ME,
+                data: me,
+            })
+        }
+    })
+ 
     const onDeleteClick = () => setShowConfirmationModal(true)
 
 
     const onConfirmDeleteClick = () => {
         // TODO call mutation
+        deleteDeck({ variables: { id } })
         setShowConfirmationModal(false)
     }
 
@@ -25,7 +44,6 @@ export default function DeckControllers({ id }) {
         // switch to edit mode!
         // TODO push history
     }
-
 
 
     return (

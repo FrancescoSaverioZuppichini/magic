@@ -9,7 +9,7 @@ export default function JoinRoom({ onClose, id }) {
     }
 
     return (
-        <Card sx={{ width: ['100%', '100%', '66%', '50%'] }}>
+        <Card sx={{ width: ['100%', '100%', '66%'] }}>
             <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Join Room?</Text>
             <Box py={3} />
             <Text pb={2}>{id}</Text>

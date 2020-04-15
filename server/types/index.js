@@ -117,6 +117,7 @@ const typeDefs = gql`
 		newUser(input: UserInput): User
 		newAuth(username: String!, password: String!): Auth
     newDeck(deck: DeckInput): Deck @isAuthenticated
+    deleteDeck(id: ID!): Deck @isAuthenticated
     newCard(card: CardFilter): Card
     newRoom(room: RoomInput) : Room @isAuthenticated
     joinRoom(name: String!): Room
