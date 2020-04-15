@@ -55,7 +55,6 @@ function Home() {
                     <Route path='/home/search' component={Search}></Route>
                     <Route path='/home/decks' component={Decks}></Route>
                     <Route path='/home/rooms' component={Rooms}></Route>
-
                     <Route path='/home/decks/newDeck'>
                         <Modal active={true}>
                             <NewDeck onClose={onNewDeckClose} />
