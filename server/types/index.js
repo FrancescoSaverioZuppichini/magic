@@ -13,7 +13,7 @@ const typeDefs = gql`
     card(id: ID!): Card 
     cards(filter: CardFilter, cursor: CursorInput!): CardConnection
     cardsInDeck(filter: CardFilter, cursor: CursorInput!, deck: ID!): CardConnection
-
+    room(id: ID!): Room
 	}
 
 	type User {
@@ -65,17 +65,14 @@ const typeDefs = gql`
     skip: Int!
   }
 
-  input CursorInput {
-    limit: Int!
-    skip: Int!
-  }
-
 
 	type Room {
     id: ID!
     name: String!,
     users: [User]
     active: Boolean
+    createdAt: String
+
 	}
 
 	type Auth {
@@ -98,6 +95,12 @@ const typeDefs = gql`
     toughness: Int
     power: Int
   }
+
+  input CursorInput {
+    limit: Int!
+    skip: Int!
+  }
+
 
   input UserInput {
     id: ID

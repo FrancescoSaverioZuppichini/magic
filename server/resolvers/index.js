@@ -57,7 +57,8 @@ const resolvers = {
 		},
 		card(ctx, { id }) {
 			return Card.findById(id)
-		}
+		},
+		room: (ctx, { id }) => Room.findById(id)
 	},
 	Mutation: {
 		async newUser(obj, { input }) {

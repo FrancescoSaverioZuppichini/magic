@@ -65,7 +65,17 @@ const queries = {
             }
         }
 
+    `,
+
+    GET_ROOM : gql`
+        query room($id: ID!) {
+            room(id: $id) {
+                id
+                name
+            }
+        }
     `
+
 
 }
 

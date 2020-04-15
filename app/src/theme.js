@@ -75,6 +75,8 @@ const theme = {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+
   },
   vCentering: {
     justifyContent: 'center',
