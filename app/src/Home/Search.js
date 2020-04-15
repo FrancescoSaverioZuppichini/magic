@@ -21,11 +21,10 @@ const SearchPage = ({ }) => {
             <Box py={2}></Box>
             <SearchBar  onSearchEnd={history.goBack}>{({ cards, onLoadMore }) => (<Box>
                 {cards && <Box pt={3}>
-                    <MagicCards cards={cards} hasFilters={false}>
-                        {card => <MagicCard key={card.id} {...card} isZoomable={true} />
-                        }
+                    <MagicCards cards={cards.cards} hasFilters={false}>
+                        {card => <MagicCard key={card.id} {...card} isZoomable={true} /> }
                     </MagicCards>
-                    {cards && cards.hasMore &&
+                    {cards.hasMore &&
                         <Flex p={2} sx={{ width: '100%' }}>
                             <Box variant='spacer' />
                             <Button onClick={onLoadMore}>More</Button>

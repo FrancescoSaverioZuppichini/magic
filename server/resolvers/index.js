@@ -8,7 +8,7 @@ const cards = async (ctx, { filter, cursor }) => {
 	let cardFilter = {}
 
 	if (filter.type) cardFilter.types = { '$in': [filter.type] }
-	if (filter.name) cardFilter.name = { '$regex': filter.name }
+	if (filter.name) cardFilter.name = { '$regex': filter.name, '$options': 'i' }
 	if (filter.colors) cardFilter.colors = { '$all': filter.colors }
 	if (filter.convertedManaCost) {
 		const convertedManaCost = filter.convertedManaCost.split(' ') // we can also pass 10 + 
@@ -38,9 +38,18 @@ const resolvers = {
 		},
 		me: async (ctx, { id }, { user }) => {
 			return User.findById(user.id).populate({
-				path: 'decks', populate:
-					{ path: 'cards', model: 'Card' }
-			}).populate('rooms')
+				path: 'decks', populate: {
+					path: 'cards', model: 'Card'
+				},
+				options: {
+					sort: { createdAt: -1 }
+				}
+			}).populate({
+				path: 'rooms',
+				options: {
+					sort: { createdAt: -1 }
+				}
+			})
 		},
 		secret(ctx, { }, { user }) {
 			return `Psssh ${user.email}`
@@ -88,21 +97,18 @@ const resolvers = {
 			}
 			return newDeck.populate('owner').populate('cards').execPopulate()
 		},
-		async deleteDeck( obj, { id }, { user }) {
+		async deleteDeck(obj, { id }, { user }) {
 			const deck = await Deck.findById(id)
 
-			if(deck){
+			if (deck) {
 				await deck.remove()
-				
+
 				const userDeckIdx = user.decks.indexOf(id)
 				user.decks.splice(userDeckIdx, 1)
 
-				console.log(user.decks)
 				await user.save()
 			}
 			return deck
-
-
 		},
 		async newCard(obj, { card }) {
 			const alreadyExist = Card.exists(card)
@@ -113,7 +119,7 @@ const resolvers = {
 		async newRoom(obj, { room }, { user }) {
 			// TODO should check if the room alrays exist for a single user
 			// add the master to the room creation
-			let roomWithOwner = { ...room, ...{ users: [ user.id], active: true}} 
+			let roomWithOwner = { ...room, ...{ users: [user.id], active: true } }
 			const newRoom = new Room(roomWithOwner)
 			const savedRoom = await newRoom.save()
 

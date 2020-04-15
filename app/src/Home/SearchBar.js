@@ -122,7 +122,7 @@ function SearchBar({ children, onChange, onSearchEnd, inputVariant = 'searchbar'
                 </Flex>
             </Flex>
             {!data && <Flex sx={{ flexGrow: 1 }} pt={5} variant='centering'><Text sx={{ fontSize: 3, fontWeight: 'thin' }} >Nothing so far</Text></Flex>}
-            {data && !hideCards && children({ cards: data.cards.cards, onLoadMore, filter, setFilter, searchCards })}
+            {data && !hideCards && children({ cards: data.cards, onLoadMore, filter, setFilter, searchCards })}
         </Flex>
     )
 }

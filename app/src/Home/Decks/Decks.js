@@ -16,16 +16,16 @@ export default function Decks() {
     return (
         <Box>
             <Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Decks</Text>
+            {data.me.decks.length <= 0 && <Text pt={2} sx={{fontSize: 2, fontWeight: 'thin'}}>No decks! Create one</Text>}
             <Box py={2} p/>
             <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
-                {data.me.decks.reverse().map(deck => <Box key={deck.id} pr={2} py={2}>
+                {data.me.decks.map(deck => <Box key={deck.id} pr={2} py={2}>
                     <DeckPreview key={deck.id} {...deck}>}</DeckPreview>
                     </Box>)}
-                    <Box px={2} />
                 <Button
                     onClick={() => history.push('/home/decks/newDeck')}>
                     Add
-                    </Button>
+                </Button>
             </Flex>
             {/* edit a deck */}
             <Route path='/home/decks/edit/:deckId'>

@@ -21,11 +21,16 @@ class RoomContainer extends Container {
             console.log(`User ${id} joined!`);
             if(id === this.userId) console.log('You joined the same room twice!')
         })
+
+
+        this.socket.on('error', ({ msg }) => {
+            console.log(`Error ${msg}`);
+        })
     }
 
-    joinRoom(name, userId) {
+    joinRoom(name, userId, roomId) {
         this.userId = userId
-        this.socket.emit('room', { name: name, id: userId });
+        this.socket.emit('room', { name,  userId, roomId });
 
     }
 

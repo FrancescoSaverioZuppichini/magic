@@ -42,8 +42,8 @@ const typeDefs = gql`
     manaCost: [String],
     convertedManaCost: Float,
     text: String,
-    power: Float
-,   toughness: Float,
+    power: Float,
+    toughness: Float,
     type: String,
     types: [String],
     subtypes: [String],
@@ -64,7 +64,6 @@ const typeDefs = gql`
     limit: Int!
     skip: Int!
   }
-
 
 	type Room {
     id: ID!
@@ -100,7 +99,6 @@ const typeDefs = gql`
     limit: Int!
     skip: Int!
   }
-
 
   input UserInput {
     id: ID
