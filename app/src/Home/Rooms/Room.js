@@ -31,7 +31,7 @@ export default function Room({ id }) {
                 <Text sx={{ fontSize: 1, fontWeight: 'thin' }}>Just send it to your friends!</Text>
                 <Box py={1} />
                 <Text>{sharableLink}</Text>
-                <Flex pt={5}>
+                <Flex pt={4}>
                     <Box variant="spacer" />
                     <Button onClick={onJoin}>Join</Button>
                 </Flex>

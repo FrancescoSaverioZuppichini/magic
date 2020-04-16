@@ -4,6 +4,7 @@ const theme = {
     textLight: 'white',
     background: '#F4F4F4',
     primary: '#6A66F2',
+    primaryLight: 'A29FFF',
     dark: '#413BFF',
     gray: 'C4C4C4',
     warning: '#F26666',
@@ -80,6 +81,11 @@ const theme = {
   },
   vCentering: {
     justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    display: 'flex',
+    width: '100%'
+
   },
   forms: {
     input: {
@@ -125,6 +131,7 @@ const theme = {
       padding: '14px',
       borderWidth: '2px',
       borderColor: 'primary',
+      flex: 1,
       fontSize: 1,
       '&:active': {
         // backgroundColor: 'active',
@@ -226,7 +233,17 @@ const theme = {
       '&:hover': {
         opacity: 0.5,
         // outline:'none'
+      },
+    static: {
+      '&:active': {
+        opacity: 1,
+        // outline:'none'
+      },
+      '&:hover': {
+        opacity: 1,
+        // outline:'none'
       }
+    }
     },
     close: {
       position: 'absolute',

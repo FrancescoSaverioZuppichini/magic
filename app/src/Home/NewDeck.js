@@ -116,25 +116,27 @@ export default function NewDeck({ onClose }) {
     }
 
     return (
-        <Card sx={{ width: '100%' }}>
-            <Stages initialStage={1}>
+        <Box sx={{ width: '100%' }}>
+            <Stages initialStage={0}>
                 {({ onNext }) => (
-                    <Card p={2}>
-                        <Text sx={{ fontSize: 4 }}>New Deck</Text>
-                        <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Info</Text>
-                        <Box py={2} />
-                        <Box>
-                            <Text pb={2}>Name</Text>
-                            <InputWithErrors sx={{ width: ['100%', '100%', '50%'] }}
-                                onChange={(el) => setDeck(Object.assign(deck, { name: el.target.value }))}
-                            />
-                        </Box>
-                        <Flex pt={5}>
-                            <Button onClick={onClose}>Close</Button>
-                            <Box variant="spacer" />
-                            <Button onClick={() => onInfoDeckComplete(onNext)}>Next</Button>
-                        </Flex>
-                    </Card>
+                    <Box variant="vCentering">
+                        <Card p={2} sx={{ width: ['100%', '100%', '66%', '50%'] }}>
+                            <Text sx={{ fontSize: 4 }}>New Deck</Text>
+                            <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Info</Text>
+                            <Box py={2} />
+                            <Box>
+                                <Text pb={2}>Name</Text>
+                                <InputWithErrors
+                                    onChange={(el) => setDeck(Object.assign(deck, { name: el.target.value }))}
+                                />
+                            </Box>
+                            <Flex pt={4}>
+                                <Button onClick={onClose}>Close</Button>
+                                <Box variant="spacer" />
+                                <Button onClick={() => onInfoDeckComplete(onNext)}>Next</Button>
+                            </Flex>
+                        </Card>
+                    </Box>
                 )}
                 {({ onBack, onNext }) => (
                     <Card p={2} sx={{ maxHeight: '95vh' }}>
@@ -162,7 +164,7 @@ export default function NewDeck({ onClose }) {
                                 <Text pb={2}>So far</Text>
                                 <DeckCardsPickedPreview {...deck} onCardClick={removeCardFromDeck} />
                             </Box>}
-                            <Flex pt={5} >
+                            <Flex pt={4} >
                                 <Button onClick={onBack}>Back</Button>
                                 <Box variant="spacer" />
                                 <Button onClick={onNext}>Next</Button>
@@ -171,20 +173,23 @@ export default function NewDeck({ onClose }) {
                     </Card>
                 )}
                 {({ onBack }) => (
-                    <Card p={2}>
-                        <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Preview</Text>
-                        <Box p={3} />
-                        <Card sx={{width: '100%', bg:'background'}}>
-                        <DeckPreview {...deck} controllers={false} />
+                    <Box variant="vCentering">
+
+                        <Card p={2} sx={{ width: ['100%', '100%', '66%', '50%'] }}>
+                            <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Preview</Text>
+                            <Box p={3} />
+                            <Card sx={{ width: '100%', bg: 'background' }}>
+                                <DeckPreview {...deck} controllers={false} linkable={false} />
+                            </Card>
+                            <Flex pt={4}>
+                                <Button onClick={onBack}>Back</Button>
+                                <Box variant="spacer" />
+                                <Button onClick={onDone}>Done</Button>
+                            </Flex>
                         </Card>
-                        <Flex pt={5}>
-                            <Button onClick={onBack}>Back</Button>
-                            <Box variant="spacer" />
-                            <Button onClick={onDone}>Done</Button>
-                        </Flex>
-                    </Card>
+                    </Box>
                 )}
             </Stages>
-        </Card>
+        </Box>
     )
 }

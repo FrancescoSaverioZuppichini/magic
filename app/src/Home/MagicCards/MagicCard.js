@@ -13,8 +13,7 @@ const MagicCardZoom = ({ scryfallId, onClose, active }) => (
     </Modal>
 )
 
-const MagicCardRow = ({ name, colors, convertedManaCost}) => 
-<Flex sx={{flexDirection: 'row'}}><Text>{name}</Text><Text>{colors}</Text><Text>convertedManaCost</Text></Flex>
+const MagicCardRow = ({ name, colors, convertedManaCost}) => <Flex sx={{flexDirection: 'row'}}><Text>{name}</Text><Text>{colors}</Text><Text>convertedManaCost</Text></Flex>
 
 const MagicCardImg = ({ scryfallId, onClick, width='100%', height='auto'  }) => (
     <img src={`/cards/${scryfallId}.jpg`} width={width} height={height} style={{ borderRadius: '4%' }}
