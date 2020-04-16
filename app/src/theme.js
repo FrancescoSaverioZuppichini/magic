@@ -90,10 +90,30 @@ const theme = {
   forms: {
     input: {
       borderColor: 'primary',
+      backgroundColor: 'white',
       borderRadius: '28px',
       borderWidth: '2px',
       outline: 'none',
       padding: '14px',
+      fontSize: 1,
+      '&:active': {
+        // backgroundColor: 'active',
+        borderColor: 'active',
+        outline: 'none'
+      },
+      '&:focus': {
+        // backgroundColor: 'active',
+        borderColor: 'active',
+        outline: 'none'
+      }
+    },
+    inputTiny: {
+      borderColor: 'primary',
+      backgroundColor: 'white',
+      borderRadius: '28px',
+      borderWidth: '2px',
+      outline: 'none',
+      padding: '10px',
       fontSize: 1,
       '&:active': {
         // backgroundColor: 'active',
