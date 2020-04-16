@@ -10,7 +10,6 @@ const SearchPage = ({ }) => {
     const history = useHistory()
 
     return (
-
         <Flex p={[2, 3, 4]} sx={{
             position: 'absolute', left: 0, top: 0, bg: 'white',
             flexDirection: 'column', zIndex: 99, width: '100%', minHeight: '100vh'
