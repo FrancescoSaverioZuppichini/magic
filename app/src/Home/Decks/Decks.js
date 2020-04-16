@@ -6,6 +6,7 @@ import { Card, Flex, Text, Box, Button, IconButton } from 'theme-ui'
 import Modal from '../Modal'
 import Deck from './Deck'
 import DeckPreview from './DeckPreview'
+import DecksSearchBar from './DecksSearchBar'
 
 export default function Decks() {
     const { error, data } = useQuery(queries.GET_ME)
@@ -15,6 +16,9 @@ export default function Decks() {
     console.log(data, 'Decks')
     return (
         <Box>
+            <DecksSearchBar decks={data.me.decks}>
+                {decks => decks.map(deck => <Box key={deck.id} p={2}>{deck.name}</Box>)}
+                </DecksSearchBar>
             <Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Decks</Text>
             {data.me.decks.length <= 0 && <Text pt={2} sx={{fontSize: 2, fontWeight: 'thin'}}>No decks! Create one</Text>}
             <Box py={2} p/>
