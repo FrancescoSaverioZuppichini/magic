@@ -5,7 +5,6 @@ import { MagicCardsFilters } from './MagicCardsFilterControllers'
 import { filterMagicCards } from '../../utils'
 
 export default function MagicCards({ cards, children, hasFilters = true, width = ['100%', '33%', '25%', '20%', '15%'] }) {
-
     const [showFilters, setShowFilter] = useState(false)
     const [filteredCards, setFilteredCards] = useState([...cards])
     const [cardsVisMode, setCardVisMode] = useState('BLOCK')
@@ -47,13 +46,14 @@ export default function MagicCards({ cards, children, hasFilters = true, width =
                 flexDirection: 'row',
                 flexWrap: 'wrap',
             }}>
-                {cardsVisMode === 'BLOCK' && filteredCards.map((card, i) =>
-                    <Box key={i} p={1} sx={{ flexBasis: width }}>
-                        {children(card)}
-                    </Box>)}
+                {cardsVisMode === 'BLOCK' &&
+                    filteredCards.map((card, i) =>
+                        <Box key={i} p={1} sx={{ flexBasis: width }}>
+                            {children(card)}
+                        </Box>)
+                }
 
                 {cardsVisMode === 'TABLE' && <div>show table</div>}
-
                 {filteredCards.length === 0 && <Flex variant="centering" sx={{ width: '100%', height: '150px' }}>
                     <Text sx={{ fontSize: 3 }}> No cards</Text> </Flex>}
             </Flex>
