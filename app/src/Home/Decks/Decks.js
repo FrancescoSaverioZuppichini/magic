@@ -16,21 +16,25 @@ export default function Decks() {
     console.log(data, 'Decks')
     return (
         <Box>
-            <DecksSearchBar decks={data.me.decks}>
-                {decks => decks.map(deck => <Box key={deck.id} p={2}>{deck.name}</Box>)}
-                </DecksSearchBar>
             <Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Decks</Text>
-            {data.me.decks.length <= 0 && <Text pt={2} sx={{fontSize: 2, fontWeight: 'thin'}}>No decks! Create one</Text>}
-            <Box py={2} p/>
-            <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
-                {data.me.decks.map(deck => <Box key={deck.id} pr={2} py={2}>
-                    <DeckPreview key={deck.id} {...deck}>}</DeckPreview>
-                    </Box>)}
-                <Button
-                    onClick={() => history.push('/home/decks/newDeck')}>
-                    Add
-                </Button>
-            </Flex>
+            {data.me.decks.length <= 0 &&
+                <Text pt={2} sx={{ fontSize: 2, fontWeight: 'thin' }}>No decks! Create one</Text>}
+            <Box py={2} p />
+            <DecksSearchBar sx={{ maxWidth: '250px' }} decks={data.me.decks}>
+                {decks =>
+                    <Flex sx={{ alignItems: 'center', flexDirection: ['column', 'row'], flexWrap: 'wrap' }}>
+                        {decks.map(deck => <Box key={deck.id} pr={2} py={2}>
+                            <DeckPreview key={deck.id} {...deck}>}</DeckPreview>
+                        </Box>)}
+                        <Box sx={{ flex: 1 }}>
+                            <Button
+                                onClick={() => history.push('/home/decks/newDeck')}>
+                                Add
+                         </Button>
+                        </Box>
+                    </Flex>
+                }
+            </DecksSearchBar>
             {/* edit a deck */}
             <Route path='/home/decks/edit/:deckId'>
                 {({ match }) => match ? <Modal active={true}>
