@@ -13,7 +13,7 @@ export default function JoinRoom({ onClose, id }) {
             <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Join Room?</Text>
             <Box py={3} />
             <Text pb={2}>{id}</Text>
-            <Flex pt={5}>
+            <Flex pt={4}>
                 <Button onClick={onClose}>Close</Button>
                 <Box variant="spacer" />
                 <Button onClick={onJoin}>Join</Button>

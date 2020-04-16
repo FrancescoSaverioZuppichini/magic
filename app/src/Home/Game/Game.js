@@ -13,7 +13,7 @@ const JoinAutomatically = ({ room, name, userId, roomId }) => {
 export default function Game({ id }) {
     const roomRes = useQuery(queries.GET_ROOM, { variables: { id } })
     const meRes = useQuery(queries.GET_ME)
-
+    
     const roomData = roomRes.data
     const meData = meRes.data
 

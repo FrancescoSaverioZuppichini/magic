@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { Button, Flex } from 'theme-ui'
+import { Box } from 'theme-ui'
 
 
 const Stage = ({ visible, children }) => (
 
-    <div style={{ transform: visible ? '' : 'scale(0)', height: visible ? 'auto' : '0px' }}>{children}</div>
+    <div style={{ transform: visible ? '' : 'scale(0)', height: visible ? 'auto' : '0px', width:'inherit' }}>{children}</div>
 )
 
 export default function Stages({ children, initialStage }) {
@@ -21,10 +21,10 @@ export default function Stages({ children, initialStage }) {
     const hasNext = stageKey < children.length - 1
 
     return (
-        <div>
+        <Box variant='vCentering'>
             {children.map((el, i) => <Stage key={i} visible={i === stageKey}>
                 {el({ onBack, onNext, hasBack, hasNext })}
             </Stage>)}
-        </div>
+        </Box>
     )
 }

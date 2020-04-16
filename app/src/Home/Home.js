@@ -4,7 +4,8 @@ import queries from '../queries'
 import { useQuery, useApolloClient } from '@apollo/react-hooks'
 import { Card, Text, Flex, Box, IconButton, Button } from 'theme-ui'
 import { Switch, Route, Link, Redirect, useRouteMatch, useLocation, useHistory } from "react-router-dom"
-import { Provider } from 'unstated';
+import { Provider, Subscribe } from 'unstated';
+import loader from '../containers/LoaderContainer'
 
 import Modal from './Modal'
 
@@ -18,6 +19,7 @@ import NewRoom from './Rooms/NewRoom'
 import JoinRoom from './Rooms/JoinRoom'
 
 import Game from './Game/Game'
+import Loader from '../Loader.js'
 
 import Search from './Search.js'
 import io from 'socket.io-client';
@@ -29,9 +31,12 @@ function Home() {
     const history = useHistory()
     // const socket = io('http://localhost');
     const client = useApolloClient()
-    const { error, data } = useQuery(queries.GET_ME)
+    const { error, loading, data } = useQuery(queries.GET_ME)
     let { path, url } = useRouteMatch()
 
+
+    if(loading) loader.show()
+    if(data || error) loader.hide()
 
     const onNewDeckClick = () => {
         history.push("/home/decks/newDeck")
@@ -54,6 +59,9 @@ function Home() {
     return (
         <Provider>
             <Box>
+                <Subscribe to={[loader]}>
+                    { ({ state }) => state.show && <Loader/>}
+                </Subscribe>
                 {data && <NavBar user={data.me} />}
                 {data && <Card variant='container'>
                     <Route path='/home/search' component={Search}></Route>
