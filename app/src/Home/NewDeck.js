@@ -120,7 +120,7 @@ export default function NewDeck({ onClose }) {
             <Stages initialStage={0}>
                 {({ onNext }) => (
                     <Box variant="vCentering">
-                        <Card p={2} sx={{ width: ['100%', '100%', '66%', '50%'] }}>
+                        <Card p={2} sx={{ width: ['100%', '100%', '50%', '450px'] }}>
                             <Text sx={{ fontSize: 4 }}>New Deck</Text>
                             <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Info</Text>
                             <Box py={2} />

@@ -22,9 +22,12 @@ const mutations = {
         mutation newDeck($deck: DeckInput!) {
             newDeck(deck: $deck){
                 id
-                    name
-                }
+                name
+                cards {
+                    id
+                }   
             }
+        }
         
     `,
     DELETE_DECK: gql`
