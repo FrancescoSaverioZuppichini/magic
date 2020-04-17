@@ -3,7 +3,7 @@ import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
 import { Card, Text, Flex, Box, IconButton, Button, Input } from 'theme-ui'
 import SearchBar from './SearchBar'
 import Modal from './Modal'
-import { MagicCard, MagicCardImg } from './MagicCards/MagicCard'
+import { MagicCard, MagicCardImg, CardPage } from './MagicCards/MagicCard'
 import DeckPreview from './Decks/DeckPreview'
 import MagicCards from './MagicCards/MagicCards.js'
 import queries from '../queries/index.js'
@@ -12,16 +12,41 @@ import Stages from './Stages'
 import InputWithErrors from '../InputWithErrors'
 // const PickableMagicCard
 
+const RemovableFromDeck = ({ name, sx, scryfallId, id, onRemove }) => {
+    const [isRemoving, setIsRemoving] = useState(false)
+
+    return (
+        <Box sx={sx}>
+            <MagicCardImg onClick={() => setIsRemoving(true)} scryfallId={scryfallId}>
+            </MagicCardImg>
+            <Modal active={isRemoving} position={'fixed'} variant='vCentering'>
+                <CardPage id={id} scryfallId={scryfallId} name={name} onClose={() => setIsRemoving(false)}>
+                    <Flex sx={{ justifyContent: 'center' }}>
+                        <Button onClick={() => {
+                            onRemove()
+                            setIsRemoving(false)
+                            }}>Remove</Button>
+                    </Flex>
+                </CardPage>
+            </Modal>
+        </Box >
+    )
+}
+
+
 const DeckCardsPickedPreview = ({ cards, onCardClick }) => {
     /**
      * This component shows the cards selected so far. It can be expansed to show all the cards added to the deck so far.
      */
     const [showMoreCards, setShowMoreCard] = useState(false)
+    const [selectedCards, setSelectedCard] = useState([])
     const subsetOfCards = [...cards].reverse().slice(0, 8)
     const thereAreMoreCards = cards.length > subsetOfCards.length
 
+    // const
+    const onRemove = () => console.log('removing')
     return (
-        <Flex sx={{ flexDirection: 'row', alignItems: 'center', height: '8vh', flexWrap: 'wrap' }}>
+        <Flex sx={{ flexDirection: 'row', alignItems: 'center', height: '200px', flexWrap: 'wrap' }}>
             {/* Show the last 4 picked cards */}
             {subsetOfCards.map((card, i) =>
                 <Box key={i} p={2} sx={{ height: '100%' }}>
@@ -41,12 +66,11 @@ const DeckCardsPickedPreview = ({ cards, onCardClick }) => {
                 </IconButton>
                 <Card sx={{ flex: '1' }}>
                     <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>So far</Text>
-                    <Text sx={{ fontSize: 1 }}>click to remove them from the deck</Text>
-
+                    <Text sx={{ fontSize: 1 }}>click on a card to remove or zoom</Text>
                     {/* All the cards in the deck so far */}
                     <Box mt={2}></Box>
                     <MagicCards cards={cards} width={['100%', '33%', '25%']}>
-                        {(card, i) => <MagicCardImg key={i} {...card} onClick={() => onCardClick(card)} />}
+                        {(card, i) => <RemovableFromDeck key={i} {...card} onRemove={() => onCardClick(card)} />}
                     </MagicCards>
                 </Card>
             </Modal>
@@ -58,7 +82,16 @@ const AddAndRemoveMagicCard = ({ onAdd, onRemove, card, numberInDeck }) => (
      * Wrapper around MagicCard to easily add or remove it from the deck
      */
     <Box sx={{ position: 'relative' }}>
-        <MagicCard {...card} sx={{ backgroundColor: 'primary', borderRadius: '8px 8px 0px 0px' }} isZoomable={true} />
+        <MagicCard {...card} sx={{ backgroundColor: 'primary', borderRadius: '8px 8px 0px 0px' }} isZoomable={true} addable={false} />
+        {/*         
+        {numberInDeck > 0 && <IconButton onClick={onAdd} sx={{position: 'absolute', top: -2, left: -2}} variant="circle">
+                <img  src='/remove-white-18dp.svg'></img></IconButton>}
+            <Box variant="spacer" />
+            {numberInDeck > 0 && <Text sx={{ fontSize: 2, color: 'white' }}>{numberInDeck}</Text>}
+            <Box variant="spacer" />
+            <IconButton onClick={onAdd} sx={{position: 'absolute', top: -2, right: -2}} variant="circle">
+                <img  src='/add-white-18dp.svg'></img></IconButton> */}
+        
         <Flex pb={2} px={2} sx={{ bg: 'primary', borderRadius: '0px 0px 16px 16px', alignItems: 'center' }}>
             {numberInDeck > 0 && <Button onClick={onRemove} >Remove</Button>}
             <Box variant="spacer" />
@@ -117,7 +150,7 @@ export default function NewDeck({ onClose }) {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <Stages initialStage={0}>
+            <Stages initialStage={1}>
                 {({ onNext }) => (
                     <Box variant="vCentering">
                         <Card p={2} sx={{ width: ['100%', '100%', '50%', '450px'] }}>
@@ -139,14 +172,14 @@ export default function NewDeck({ onClose }) {
                     </Box>
                 )}
                 {({ onBack, onNext }) => (
-                    <Card p={2}>
+                    <Card p={2} >
                         <Flex sx={{ flexDirection: 'column' }}>
                             <Box >
                                 <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Cards</Text>
                                 <Box py={3} />
                             </Box>
                             <SearchBar>{({ cards, onLoadMore }) =>
-                                <Box sx={{ maxHeight: '100%', overflowY: 'scroll' }}>
+                                <Box sx={{ maxHeight: '60vh', overflowY: 'scroll' }}>
                                     <MagicCards cards={cards.cards} hasFilters={false}>
                                         {card => <AddAndRemoveMagicCard
                                             card={card}
@@ -160,10 +193,10 @@ export default function NewDeck({ onClose }) {
                                 </Box>
                             }</SearchBar>
                             <Box py={2} />
-                            {deck.cards.length > 0 && <Box>
+                            <Box>
                                 <Text pb={2}>So far</Text>
                                 <DeckCardsPickedPreview {...deck} onCardClick={removeCardFromDeck} />
-                            </Box>}
+                            </Box>
                             <Flex pt={4} >
                                 <Button onClick={onBack}>Back</Button>
                                 <Box variant="spacer" />

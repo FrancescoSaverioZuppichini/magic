@@ -38,7 +38,24 @@ const WithControllers = (props) => (
     </Card>
 )
 
-const CardPage = ({ id, name, scryfallId, onClose }) => {
+const CardPage = ({ id, name, scryfallId, onClose, children }) => (
+    <Box variant="vCentering">
+
+        <Card>
+            <Flex sx={{ flexDirection: 'column' }}>
+                <Flex>
+                    <Box variant='spacer' />
+                    <Button onClick={onClose}>Close</Button>
+                </Flex>
+                <Box p={2} />
+                <MagicCard scryfallId={scryfallId} />
+                {children && <Box pt={2}>{children}</Box>}
+            </Flex>
+        </Card>
+    </Box>
+)
+
+const AddableCardPage = ({ id, name, scryfallId, onClose }) => {
     const [decksSelected, setDeckSelected] = useState([])
     const [numberOfCards, setNumberOfCards] = useState(1)
 
@@ -75,7 +92,8 @@ const CardPage = ({ id, name, scryfallId, onClose }) => {
         const updates = decksSelected.map(AddAndMutate)
         Promise.all(updates)
     }
-    console.log(decksSelected)
+
+
     return (
         <Stages initialStage={0}>
             {({ onNext }) =>
@@ -132,23 +150,23 @@ const CardPage = ({ id, name, scryfallId, onClose }) => {
                         </Flex>
                     </Card>
                 </Box>
-
             }
         </Stages>
     )
 }
 
-const MagicCard = ({ name, sx, scryfallId, id, upControllers, downControllers, isZoomable = false, variant = 'primary', addable = true }) => {
+const MagicCard = ({ name, sx, scryfallId, id, upControllers, downControllers, isZoomable = false, variant = 'primary', addable = true, children }) => {
     const [isZooming, setIsZooming] = useState(false)
+    const onClose = () => setIsZooming(false)
     return (
         <Box sx={sx}>
             <MagicCardImg onClick={() => setIsZooming(true)} scryfallId={scryfallId}>
             </MagicCardImg>
             {isZoomable && <Modal active={isZooming} position={'fixed'} variant='vCentering'>
-                <CardPage id={id} scryfallId={scryfallId} name={name} onClose={() => setIsZooming(false)} />
+                {children ? children({name, id, scryfallId, onClose }) : <CardPage id={id} scryfallId={scryfallId} name={name} onClose={onClose} />}
             </Modal>}
         </Box>
     )
 }
 
-export { MagicCard, MagicCardZoom, MagicCardImg, WithControllers }
+export { MagicCard, MagicCardZoom, MagicCardImg, WithControllers, CardPage, AddableCardPage }

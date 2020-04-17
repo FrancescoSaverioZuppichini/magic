@@ -77,7 +77,7 @@ function SearchBar({ children, onChange, onSearchEnd, inputVariant = 'searchbar'
     }
 
     return (
-        <Flex sx={{ flexDirection: 'column', flexGrow: '1' }}>
+        <Flex sx={{ flexDirection: 'column', flex: 1}}>
                 <Flex sx={{ flexDirection: 'column' }}>
                     <Flex sx={{  position: 'relative', alignItems: 'center'}}>
                         <Input variant={inputVariant} placeholder='Search for cards...'
@@ -126,7 +126,7 @@ function SearchBar({ children, onChange, onSearchEnd, inputVariant = 'searchbar'
                     </Box>
 
             </Flex>
-            {!data && <Flex sx={{ flexGrow: 1 }} pt={5} variant='centering'><Text sx={{ fontSize: 3, fontWeight: 'thin' }} >Nothing so far</Text></Flex>}
+            {!data && <Flex sx={{ flex: '1 1'}} pt={5} variant='centering'><Text sx={{ fontSize: 3, fontWeight: 'thin' }} >Nothing so far</Text></Flex>}
             {data && !hideCards && children({ cards: data.cards, onLoadMore, filter, setFilter, searchCards })}
         </Flex>
     )
