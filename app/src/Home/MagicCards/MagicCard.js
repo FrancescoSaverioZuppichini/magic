@@ -5,6 +5,7 @@ import Stages from '../Stages'
 import DecksSearchBar from '../Decks/DecksSearchBar'
 import { useQuery } from '@apollo/react-hooks'
 import queries from '../../queries/index.js'
+import DeckRow from '../Decks/DeckRow'
 
 // TODO would be better to go to the next if clicked
 const MagicCardZoom = ({ scryfallId, onClose, active }) => (
@@ -35,9 +36,20 @@ const WithControllers = (props) => (
     </Card>
 )
 
-const CardPage = ({ scryfallId, onClose }) => {
-
+const CardPage = ({ name, scryfallId, onClose }) => {
+    const [decksSelected, setDeckSelected] = useState([])
     const { error, data } = useQuery(queries.GET_ME)
+
+    const isDeckSelected = (deck) => decksSelected.filter(d => d.id === deck.id).length > 0
+    const onDeckRowClick = (deck) => {
+        console.log(isDeckSelected(deck), decksSelected.filter(d => d.id === deck.id))
+        if (isDeckSelected(deck)) setDeckSelected(decksSelected.filter(d => d.id !== deck.id))
+        else {
+            setDeckSelected([...decksSelected, deck])
+        }
+    }
+
+    console.log(decksSelected)
     return (
         <Stages initialStage={0}>
             {({ onNext }) =>
@@ -65,10 +77,18 @@ const CardPage = ({ scryfallId, onClose }) => {
                         <Text sx={{ fontSize: 2 }}>Add to deck</Text>
                         <Box py={2} />
                         <DecksSearchBar decks={data.me.decks} variant="inputTiny">
-                            {decks => decks.map(deck => <Box py={2}>{deck.name}</Box>)
+                            {decks => <Box sx={{ bg: 'background' }}>
+                                {decks.map(deck => <Box p={2} key={deck.id}>
+                                    <DeckRow deck={deck}
+                                        key={deck.id}
+                                        onClick={onDeckRowClick}
+                                        isSelected={isDeckSelected(deck)} />
+                                </Box>)}
+                            </Box>
                             }
                         </DecksSearchBar>
-                        <Flex sx={{ justifyContent: 'space-between' }}>
+                        {decksSelected.length > 0 && <Text>{`Add ${name} to ${decksSelected.length} decks`}</Text>}
+                        <Flex pt={3} sx={{ justifyContent: 'space-between' }}>
                             <Button onClick={onBack}>Cancel</Button>
                             <Button onClick={onNext}>Add</Button>
                         </Flex>
@@ -87,7 +107,7 @@ const MagicCard = ({ name, sx, scryfallId, id, upControllers, downControllers, i
             <MagicCardImg onClick={() => setIsZooming(true)} scryfallId={scryfallId}>
             </MagicCardImg>
             {isZoomable && <Modal active={isZooming} position={'fixed'} variant='vCentering'>
-                <CardPage scryfallId={scryfallId} onClose={() => setIsZooming(false)} />
+                <CardPage scryfallId={scryfallId} name={name} onClose={() => setIsZooming(false)} />
             </Modal>}
         </Box>
     )

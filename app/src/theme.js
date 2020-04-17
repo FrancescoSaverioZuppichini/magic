@@ -9,7 +9,8 @@ const theme = {
     gray: 'C4C4C4',
     warning: '#F26666',
     warningActive: '#FF6099',
-    active: '#9B66F2'
+    active: '#9B66F2',
+    cardBg: 'white'
   },
   fonts: {
     body: "'Roboto', sans-serif",
@@ -44,6 +45,17 @@ const theme = {
     primary: {
       backgroundColor: 'white',
       padding: [3, 4],
+      borderColor: 'white',
+      borderWidth: '2px',
+      borderStyle: 'solid',
+      borderRadius: '8px'
+    },
+    tiny: {
+      backgroundColor: 'white',
+      padding: [2],
+      borderColor: 'white',
+      borderWidth: '2px',
+      borderStyle: 'solid',
       borderRadius: '8px'
     },
     viewport: {
@@ -60,8 +72,9 @@ const theme = {
     },
     selected: {
       borderColor: 'primary',
-      borderWidth: '4px',
+      borderWidth: '2px',
       borderStyle: 'solid',
+      borderRadius: '8px'
     }
   },
   text: {
