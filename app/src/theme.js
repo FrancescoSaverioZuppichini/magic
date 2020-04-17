@@ -101,6 +101,11 @@ const theme = {
 
   },
   forms: {
+    slider: {
+      color: 'primary',
+      bg: 'background'
+      // adjust default styles here
+    },
     input: {
       borderColor: 'primary',
       backgroundColor: 'white',

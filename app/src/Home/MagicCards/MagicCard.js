@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import { Box, Flex, Card, IconButton, Text, Button } from 'theme-ui'
+import { Box, Flex, Card, IconButton, Text, Button, Slider } from 'theme-ui'
 import Modal from '../Modal.js'
 import Stages from '../Stages'
 import DecksSearchBar from '../Decks/DecksSearchBar'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 import queries from '../../queries/index.js'
+import mutations from '../../mutations/index.js'
+
 import DeckRow from '../Decks/DeckRow'
 
 // TODO would be better to go to the next if clicked
@@ -36,19 +38,50 @@ const WithControllers = (props) => (
     </Card>
 )
 
-const CardPage = ({ name, scryfallId, onClose }) => {
+const CardPage = ({ id, name, scryfallId, onClose }) => {
     const [decksSelected, setDeckSelected] = useState([])
+    const [numberOfCards, setNumberOfCards] = useState(1)
+
     const { error, data } = useQuery(queries.GET_ME)
+    const [newDeck, { newDeckError }] = useMutation(mutations.NEW_DECK, {
+        onCompleted({ newDeck }) {
+            onClose()
+        },
+        // update(cache, { data: { newDeck } }) {
+        //     let { me } = cache.readQuery({ query: queries.GET_ME })
+        //     me.decks.push(newDeck)
+        //     cache.writeQuery({
+        //         query: queries.GET_ME,
+        //         data: me,
+        //     });
+        // }
+    })
 
     const isDeckSelected = (deck) => decksSelected.filter(d => d.id === deck.id).length > 0
+
     const onDeckRowClick = (deck) => {
-        console.log(isDeckSelected(deck), decksSelected.filter(d => d.id === deck.id))
+        /**
+         * Add or remove the clicked deck from `decksSelected`
+         */
         if (isDeckSelected(deck)) setDeckSelected(decksSelected.filter(d => d.id !== deck.id))
         else {
             setDeckSelected([...decksSelected, deck])
         }
     }
 
+    const onSliderChange = (el) => setNumberOfCards(el.target.value)
+
+    const AddAndMutate = (deck) => {
+        for (let i = 0; i < numberOfCards; i++) {
+            deck.cards.push({ id })
+        }
+        const deckInput = { id: deck.id, cards: deck.cards.map(c => c.id), name: deck.name }
+        return newDeck({ variables: { deck: deckInput } })
+    }
+    const onAdd = () => {
+        const updates = decksSelected.map(AddAndMutate)
+        Promise.all(updates)
+    }
     console.log(decksSelected)
     return (
         <Stages initialStage={0}>
@@ -73,11 +106,11 @@ const CardPage = ({ name, scryfallId, onClose }) => {
             }
             {({ onBack, onNext }) =>
                 <Box variant="vCentering">
-                    <Card>
+                    <Card sx={{ width: ['100%', '100%', '50%', '450px'] }}>
                         <Text sx={{ fontSize: 2 }}>Add to deck</Text>
                         <Box py={2} />
                         <DecksSearchBar decks={data.me.decks} variant="inputTiny">
-                            {decks => <Box sx={{ bg: 'background' }}>
+                            {decks => <Box mt={2} sx={{ bg: 'background' }}>
                                 {decks.map(deck => <Box p={2} key={deck.id}>
                                     <DeckRow deck={deck}
                                         key={deck.id}
@@ -87,10 +120,22 @@ const CardPage = ({ name, scryfallId, onClose }) => {
                             </Box>
                             }
                         </DecksSearchBar>
-                        {decksSelected.length > 0 && <Text>{`Add ${name} to ${decksSelected.length} decks`}</Text>}
-                        <Flex pt={3} sx={{ justifyContent: 'space-between' }}>
+                        {decksSelected.length > 0 && <Text pt={2}>{`Add ${numberOfCards} cards to ${decksSelected.length} decks`}</Text>}
+                        {decksSelected.length > 0 && <Box>
+                            <Box p={1} />
+                            <Text sx={{ fontSize: 0 }}>How many?</Text>
+                            <Box p={1} />
+                            <Slider
+                                onChange={onSliderChange}
+                                defaultValue={1}
+                                min={1}
+                                max={10}
+                                step={1}
+                            />
+                        </Box>}
+                        <Flex pt={4} sx={{ justifyContent: 'space-between' }}>
                             <Button onClick={onBack}>Cancel</Button>
-                            <Button onClick={onNext}>Add</Button>
+                            <Button onClick={onAdd}>Add</Button>
                         </Flex>
                     </Card>
                 </Box>
@@ -107,7 +152,7 @@ const MagicCard = ({ name, sx, scryfallId, id, upControllers, downControllers, i
             <MagicCardImg onClick={() => setIsZooming(true)} scryfallId={scryfallId}>
             </MagicCardImg>
             {isZoomable && <Modal active={isZooming} position={'fixed'} variant='vCentering'>
-                <CardPage scryfallId={scryfallId} name={name} onClose={() => setIsZooming(false)} />
+                <CardPage id={id} scryfallId={scryfallId} name={name} onClose={() => setIsZooming(false)} />
             </Modal>}
         </Box>
     )

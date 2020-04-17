@@ -18,7 +18,7 @@ export default function Room({ id }) {
     }
 
     return (
-        <Card>
+        <Card sx={{ width: ['100%', '100%', '50%', '450px'] }}>
             {data && <Box>
                 <Flex sx={{ justifyContent: 'space-between', flexWrap: 'wrap' }}>
                     <Text sx={{ fontSize: 4 }}>{data.room.name}</Text>

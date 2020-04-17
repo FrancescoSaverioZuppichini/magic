@@ -30,7 +30,7 @@ export default function NewRoom({ onClose }) {
     }
 
     return (
-        <Card sx={{ width: ['100%', '100%', '66%', '50%'] }}>
+        <Card sx={{ width: ['100%', '100%', '50%', '450px'] }}>
             <Text sx={{ fontSize: 4 }}>New Room</Text>
             <Box py={3} />
             <Text pb={2}>Name</Text>
