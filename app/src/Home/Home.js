@@ -3,7 +3,7 @@ import NavBar from './NavBar'
 import queries from '../queries'
 import { useQuery, useApolloClient } from '@apollo/react-hooks'
 import { Card, Text, Flex, Box, IconButton, Button } from 'theme-ui'
-import { Switch, Route, Link, Redirect, useRouteMatch, useLocation, useHistory } from "react-router-dom"
+import { Route, Link, Redirect, useRouteMatch, useLocation, useHistory } from "react-router-dom"
 import { Provider, Subscribe } from 'unstated';
 import loader from '../containers/LoaderContainer'
 
@@ -22,7 +22,7 @@ import Game from './Game/Game'
 import Loader from '../Loader.js'
 
 import Search from './Search.js'
-import io from 'socket.io-client';
+
 import { ACTIONS } from '../utils.js'
 
 function Home() {
