@@ -139,14 +139,14 @@ export default function NewDeck({ onClose }) {
                     </Box>
                 )}
                 {({ onBack, onNext }) => (
-                    <Card p={2} sx={{ maxHeight: '95vh' }}>
+                    <Card p={2}>
                         <Flex sx={{ flexDirection: 'column' }}>
                             <Box >
                                 <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Cards</Text>
                                 <Box py={3} />
                             </Box>
                             <SearchBar>{({ cards, onLoadMore }) =>
-                                <Box sx={{ maxHeight: '65vh', overflowY: 'scroll' }}>
+                                <Box sx={{ maxHeight: '100%', overflowY: 'scroll' }}>
                                     <MagicCards cards={cards.cards} hasFilters={false}>
                                         {card => <AddAndRemoveMagicCard
                                             card={card}
