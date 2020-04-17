@@ -44,17 +44,10 @@ const CardPage = ({ id, name, scryfallId, onClose }) => {
 
     const { error, data } = useQuery(queries.GET_ME)
     const [newDeck, { newDeckError }] = useMutation(mutations.NEW_DECK, {
-        onCompleted({ newDeck }) {
+        onCompleted() {
             onClose()
         },
-        // update(cache, { data: { newDeck } }) {
-        //     let { me } = cache.readQuery({ query: queries.GET_ME })
-        //     me.decks.push(newDeck)
-        //     cache.writeQuery({
-        //         query: queries.GET_ME,
-        //         data: me,
-        //     });
-        // }
+
     })
 
     const isDeckSelected = (deck) => decksSelected.filter(d => d.id === deck.id).length > 0
