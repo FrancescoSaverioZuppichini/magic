@@ -3,7 +3,6 @@ import { Card, Text, Flex, Box, IconButton, Button, Input } from 'theme-ui'
 
 export default function JoinRoom({ onClose, id }) {
 
-
     const onJoin = () => {
         console.log('onJoin')
     }
