@@ -35,8 +35,8 @@ function Home() {
     let { path, url } = useRouteMatch()
 
 
-    if(loading) loader.show()
-    if(data || error) loader.hide()
+    if (loading) loader.show()
+    if (data || error) loader.hide()
 
     const onNewDeckClick = () => {
         history.push("/home/decks/newDeck")
@@ -60,7 +60,7 @@ function Home() {
         <Provider>
             <Box>
                 <Subscribe to={[loader]}>
-                    { ({ state }) => state.show && <Loader/>}
+                    {({ state }) => state.show && <Loader />}
                 </Subscribe>
                 {data && <NavBar user={data.me} />}
                 {data && <Card variant='container'>
@@ -90,22 +90,23 @@ function Home() {
                     <Route path='/home/preview'>
                         <Box>
                             <Link to='/home/decks'><Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Your Decks</Text></Link>
-                            <Box p={2} />
+                            <Box p={1} />
                             <Text>Latest created</Text>
                             <Box py={2}></Box>
                             <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
                                 {data.me.decks.reverse().slice(0, 3).map(deck => <Box key={deck.id} pr={2}>
                                     <DeckPreview key={deck.id} {...deck}>}</DeckPreview></Box>)}
-                                    <Button onClick={onNewDeckClick}>Add</Button>
+                                <Button onClick={onNewDeckClick}>Add</Button>
                             </Flex>
-                            
+
                             <Modal active={openNewDeck}>
                                 <NewDeck onClose={onNewDeckClose} />
                             </Modal>
                         </Box>
                         <Box py={3} />
                         <Box>
-                        <Link to='/home/rooms'><Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Your Rooms</Text></Link>
+                            <Link to='/home/rooms'><Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Your Rooms</Text></Link>
+                            <Box p={1} />
                             <Text>Latest created</Text>
                             <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
                                 {data.me.rooms.reverse().slice(0, 3).map(room => <Box key={room.id} pr={2} py={2}>

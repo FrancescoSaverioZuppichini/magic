@@ -10,10 +10,8 @@ import DecksSearchBar from './DecksSearchBar'
 
 export default function Decks() {
     const { error, data } = useQuery(queries.GET_ME)
-
     const history = useHistory()
 
-    console.log(data, 'Decks')
     return (
         <Box>
             <Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Decks</Text>

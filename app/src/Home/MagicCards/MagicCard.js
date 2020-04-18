@@ -192,8 +192,8 @@ const ZoomMagiCardAction = ({ scryfallId, id, name, children }) => {
 
     return (
         <Box>
-            <IconButton onClick={onClick}>
-                <img height='48px' src='/zoom_in-white-18dp.svg'></img>
+            <IconButton onClick={onClick} sx={{width: '38px'}}>
+                <img width='38px' src='/zoom_in-white-18dp.svg'></img>
             </IconButton>
             <Modal active={isZooming} position={'fixed'} variant='vCentering'>
                 {children ? children : <CardPage id={id} scryfallId={scryfallId} name={name} onClose={onClose} />}
@@ -213,7 +213,6 @@ const MagicCard = (props) => (
         </MagicCardActions>
     </Card>
 )
-
 
 const ZommableMagicCard = (props) => (
     <MagicCard {...props} actions={() => <Box>

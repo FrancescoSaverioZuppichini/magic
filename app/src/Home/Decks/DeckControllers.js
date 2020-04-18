@@ -11,6 +11,7 @@ import { useMutation } from '@apollo/react-hooks'
 export default function DeckControllers({ id }) {
     const history = useHistory()
     const [showConfirmationModal, setShowConfirmationModal] = useState(false)
+    
     const [deleteDeck, { deleteDeckError }] = useMutation(mutations.DELETE_DECK, {
         onCompleted({ deleteDeck }) {
             console.log(deleteDeck)
