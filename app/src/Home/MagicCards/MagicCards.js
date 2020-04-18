@@ -1,20 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Flex, Box, Text, Select, Button, IconButton, Image } from 'theme-ui'
+import { Flex, Box, Text, Button, IconButton, Image } from 'theme-ui'
 import { MagicCardsFilters } from './MagicCardsFilterControllers'
 import { filterMagicCards } from '../../utils'
 
 export default function MagicCards({ cards, children, hasFilters = true, width = ['100%', '50%', '33%', '20%'] }) {
+    /**
+     * Container for cards. It allows to filter the cards is `harFilters=true`. 
+     * Custom card types can be passed as children.
+     */
     const [showFilters, setShowFilter] = useState(false)
     const [filteredCards, setFilteredCards] = useState([...cards])
     const [cardsVisMode, setCardVisMode] = useState('BLOCK')
     const [filter, setFilter] = useState({})
 
     useEffect(() => {
+        /**
+         * Filters cards when different cards are passed
+         */
         setFilteredCards(filterMagicCards(cards, filter))
     }, [cards.length])
 
     const setFilterAndEnsureAll = (val) => {
-        // TODO copied from SearchBar
+        /**
+         * Build up the filter and filter the cards client side.
+         */
         let newFilter = {}
         if (Object.values(val)[0] !== undefined) newFilter = { ...filter, ...val }
         else {
@@ -41,6 +50,7 @@ export default function MagicCards({ cards, children, hasFilters = true, width =
                 {showFilters && <MagicCardsFilters onChange={setFilterAndEnsureAll} />}
             </Flex>
             {!hasFilters && <Box p={2} />}
+            {/* cards */}
             <Flex p={2} sx={{
                 flexDirection: 'row',
                 flexWrap: 'wrap',
@@ -53,7 +63,6 @@ export default function MagicCards({ cards, children, hasFilters = true, width =
                             {children(card)}
                         </Box>)
                 }
-
                 {cardsVisMode === 'TABLE' && <div>show table</div>}
                 {filteredCards.length === 0 && <Flex variant="centering" sx={{ width: '100%', height: '150px' }}>
                     <Text sx={{ fontSize: 3 }}> No cards</Text> </Flex>}

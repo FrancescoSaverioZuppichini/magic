@@ -10,16 +10,11 @@ import queries from '../queries/index.js'
 import mutations from '../mutations/index.js'
 import Stages from './Stages'
 import InputWithErrors from '../InputWithErrors'
-// const PickableMagicCard
-
-// const RemoveFromDeckActions = () => (
-//     <Button onClick={() => {
-//         onRemove()
-//         setIsRemoving(false)
-//     }}>Remove</Button>
-// )
 
 const RemovableFromDeckAction = ({ onRemove }) => (
+    /**
+     * Button used to remove the current card picked from the deck
+     */
     <Flex sx={{ justifyContent: 'center' }}>
         <Button onClick={() => {
             onRemove()
@@ -28,8 +23,6 @@ const RemovableFromDeckAction = ({ onRemove }) => (
 )
 
 const RemovableFromDeckCard = ({ name, sx, scryfallId, id, onRemove }) => {
-    const [isRemoving, setIsRemoving] = useState(false)
-
     return (
         <MagicCard scryfallId={scryfallId}
             actions={props => (
@@ -38,12 +31,9 @@ const RemovableFromDeckCard = ({ name, sx, scryfallId, id, onRemove }) => {
                 <ZoomMagiCardAction {...props}/>
                 </Flex>
             )}>
-
         </MagicCard>
-
     )
 }
-
 
 const DeckCardsPickedPreview = ({ cards, removeCardFromDeck }) => {
     /**
@@ -92,6 +82,9 @@ const DeckCardsPickedPreview = ({ cards, removeCardFromDeck }) => {
 }
 
 const AddAndRemoveActions = ({ onAdd, onRemove, numberInDeck }) => (
+    /**
+     * Buttons allowing to add and remove a card from the current deck.
+     */
     <Flex>
         {numberInDeck > 0 && <Button mr={1} onClick={onRemove} >Remove</Button>}
         {/* <Box variant="spacer" /> */}

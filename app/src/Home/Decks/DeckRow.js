@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React  from 'react'
 import { Card, Text } from 'theme-ui'
-export default function DeckRow({ deck, onClick, isSelected }) {
 
+export default function DeckRow({ deck, onClick, isSelected }) {
+    /**
+     * Display decks in a row.
+     */
     return (
         <Card
             sx={{ borderColor: isSelected ? 'primary': 'cardBg'  }}

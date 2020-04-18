@@ -9,9 +9,12 @@ import queries from '../../queries/index.js'
 import { useMutation } from '@apollo/react-hooks'
 
 export default function DeckControllers({ id }) {
+    /**
+     * Buttons for decks. They supports delete and edit
+     */
     const history = useHistory()
     const [showConfirmationModal, setShowConfirmationModal] = useState(false)
-    
+
     const [deleteDeck, { deleteDeckError }] = useMutation(mutations.DELETE_DECK, {
         onCompleted({ deleteDeck }) {
             console.log(deleteDeck)
@@ -27,9 +30,8 @@ export default function DeckControllers({ id }) {
             })
         }
     })
- 
-    const onDeleteClick = () => setShowConfirmationModal(true)
 
+    const onDeleteClick = () => setShowConfirmationModal(true)
 
     const onConfirmDeleteClick = () => {
         // TODO call mutation
@@ -43,7 +45,6 @@ export default function DeckControllers({ id }) {
     const onEditClick = () => {
         history.push(`/home/decks/edit/${id}`)
         // switch to edit mode!
-        // TODO push history
     }
 
 

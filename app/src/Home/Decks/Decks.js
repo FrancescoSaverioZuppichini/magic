@@ -1,15 +1,18 @@
 import React from 'react'
 import { useQuery, useApolloClient } from '@apollo/react-hooks'
 import queries from '../../queries'
-import { Route, useParams, useHistory } from "react-router-dom";
-import { Card, Flex, Text, Box, Button, IconButton } from 'theme-ui'
+import { Route, useHistory } from "react-router-dom";
+import { Flex, Text, Box, Button, IconButton } from 'theme-ui'
 import Modal from '../Modal'
 import Deck from './Deck'
 import DeckPreview from './DeckPreview'
 import DecksSearchBar from './DecksSearchBar'
 
 export default function Decks() {
-    const { error, data } = useQuery(queries.GET_ME)
+    /**
+     * Decks page.
+     */
+    const { data } = useQuery(queries.GET_ME)
     const history = useHistory()
 
     return (

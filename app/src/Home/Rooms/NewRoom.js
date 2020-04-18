@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { Card, Text, Flex, Box, IconButton, Button, Input } from 'theme-ui'
-import Stages from '../Stages'
 import mutations from '../../mutations/index'
-import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
+import { useMutation  } from '@apollo/react-hooks'
 import queries from '../../queries/index.js'
 
 export default function NewRoom({ onClose }) {
+    /**
+     * Create a room.
+     */
     const [room, setRoom] = useState({ name: '' })
 
     const [newRoom, { newRoomError }] = useMutation(mutations.NEW_ROOM, {

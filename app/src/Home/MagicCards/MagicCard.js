@@ -9,26 +9,15 @@ import mutations from '../../mutations/index.js'
 
 import DeckRow from '../Decks/DeckRow'
 
-// TODO would be better to go to the next if clicked
-const MagicCardZoom = ({ scryfallId, onClose, active }) => (
-    <Modal active={active}>
-        <Card sx={{ width: ['100%', '50%'] }}>
-            <Button onClick={onClose}>Close</Button>
-            <MagicCardImg scryfallId={scryfallId} />
-        </Card>
-    </Modal>
-)
 
 const MagicCardRow = ({ name, colors, convertedManaCost }) => <Flex sx={{ flexDirection: 'row' }}><Text>{name}</Text><Text>{colors}</Text><Text>convertedManaCost</Text></Flex>
-
-// const MagicCardImg = ({ scryfallId, onClick, width = '100%', height = 'auto' }) => (
-//     <img src={`/cards/${scryfallId}.jpg`} width={width} height={height} style={{ borderRadius: '4%' }}
-//         onClick={onClick}></img>
-// )
 
 
 
 const CardPage = ({ id, name, scryfallId, onClose, children }) => (
+    /**
+     * Single cards highlighted
+     */
     <Box variant="vCentering">
         <Card>
             <Flex sx={{ flexDirection: 'column' }}>
@@ -90,16 +79,10 @@ const MagicCardStats = ({ power = '-', toughness = '-' }) => (
     </Box>
 )
 
-const MagicCardActions = ({ children }) => {
-
-    return (
-        <Box>
-            {children}
-        </Box>
-    )
-}
-
 const AddToDeckMagiCardAction = ({ scryfallId, id, name }) => {
+    /**
+     * Button for adding a cards to different decks.
+     */
     const [isAdding, setIsAdding] = useState(false)
     const onClose = () => setIsAdding(false)
     const onClick = () => setIsAdding(true)
@@ -145,7 +128,7 @@ const AddToDeckMagiCardAction = ({ scryfallId, id, name }) => {
     return (
         <Box>
             <Button onClick={onClick} variant='action'>
-               Add
+                Add
             </Button>
             <Modal active={isAdding} position={'fixed'} variant='vCentering'>
                 <Card sx={{ width: ['100%', '100%', '50%', '450px'] }}>
@@ -186,13 +169,16 @@ const AddToDeckMagiCardAction = ({ scryfallId, id, name }) => {
 }
 
 const ZoomMagiCardAction = ({ scryfallId, id, name, children }) => {
+    /**
+     * Button for zooming on a card.
+     */
     const [isZooming, setIsZooming] = useState(false)
     const onClose = () => setIsZooming(false)
     const onClick = () => setIsZooming(true)
 
     return (
         <Box>
-            <IconButton onClick={onClick} sx={{width: '38px'}}>
+            <IconButton onClick={onClick} sx={{ width: '38px' }}>
                 <img width='38px' src='/zoom_in-white-18dp.svg'></img>
             </IconButton>
             <Modal active={isZooming} position={'fixed'} variant='vCentering'>
@@ -201,6 +187,16 @@ const ZoomMagiCardAction = ({ scryfallId, id, name, children }) => {
         </Box>
     )
 }
+
+const MagicCardActions = ({ children }) => {
+
+    return (
+        <Box>
+            {children}
+        </Box>
+    )
+}
+
 
 const MagicCard = (props) => (
     <Card variant='tiny'>
@@ -214,15 +210,4 @@ const MagicCard = (props) => (
     </Card>
 )
 
-const ZommableMagicCard = (props) => (
-    <MagicCard {...props} actions={() => <Box>
-        {props.actions}
-        <ZoomMagiCardAction {...props}>
-            {props.children}
-        </ZoomMagiCardAction>
-    </Box>
-    }>
-    </MagicCard>
-)
-
-export { MagicCard, MagicCardZoom, MagicCardImg, CardPage, ZommableMagicCard, AddToDeckMagiCardAction, ZoomMagiCardAction }
+export { MagicCard, MagicCardImg, CardPage, AddToDeckMagiCardAction, ZoomMagiCardAction }

@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import { Input, IconButton, Box, Flex } from 'theme-ui'
 
 export default function DecksSearchBar({ decks, children, sx }) {
+    /**
+     * Local search in decks. The results are passed to the children.
+     */
 
     const [matchedDecks, setMatchedDecks] = useState(decks)
 
     const filter = (name) => setMatchedDecks(decks.filter(deck => deck.name.includes(name)))
-
 
     return (
         <Flex sx={{flexDirection: 'column'}}>
