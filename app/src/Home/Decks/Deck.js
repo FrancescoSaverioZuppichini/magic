@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/react-hooks'
 import queries from '../../queries'
 import { Card, Flex, Button, Text, Box } from 'theme-ui'
 import MagicCards from '../MagicCards/MagicCards'
-import { MagicCard } from '../MagicCards/MagicCard'
+import { MagicCard, ZoomMagiCardAction, AddToDeckMagiCardAction } from '../MagicCards/MagicCard'
 import DeckControllers from './DeckControllers'
 import { useHistory } from "react-router-dom";
 
@@ -12,7 +12,7 @@ export default function Deck({ id }) {
     const { loading, error, data } = useQuery(queries.GET_DECK, { variables: { id: id } })
     const history = useHistory()
 
-return (<Card sx={{ width: ['100%'] }}>
+    return (<Card sx={{ width: ['100%'] }}>
         {data &&
             <Box>
                 <Flex sx={{ justifyContent: 'space-between' }}>
@@ -23,9 +23,12 @@ return (<Card sx={{ width: ['100%'] }}>
                 <Text sx={{ fontSize: 0 }}>{moment(Number(data.deck.createdAt)).format('MMM Do YY')}</Text>
                 <Box p={2} />
                 <DeckControllers id={data.deck.id} />
-                <Box p={3} />
-                <MagicCards cards={data.deck.cards }>
-                    {(card, i) => <MagicCard key={i} {...card} isZoomable />}
+                <Box p={2} />
+                <MagicCards cards={data.deck.cards}>
+                    {(card, i) => <MagicCard key={i} {...card}
+                        actions={props => <Flex sx={{ justifyContent: 'space-between', alignItems: 'center'}}>
+                            <AddToDeckMagiCardAction {...props}/>
+                            <ZoomMagiCardAction {...props} /> </Flex>} />}
                 </MagicCards>
             </Box>
         }
