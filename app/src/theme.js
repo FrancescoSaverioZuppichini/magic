@@ -209,12 +209,11 @@ const theme = {
         // outline:'none'
       }
     },
-    primaryCard: {
-      borderRadius: '8px',
+    action: {
+      borderRadius: '16px',
       borderStyle: 'solid',
       borderColor: 'primary',
       outline: 'none',
-      boxShadow: '-4px -4px 4px rgba(133, 129, 245, 0.5), 0px 4px 4px #43419C',
       fontSize: 0,
       '&:active': {
         backgroundColor: 'active',

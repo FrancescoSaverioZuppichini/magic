@@ -1,7 +1,7 @@
 import React from 'react'
 import { Flex, Box, Text, Button, Card, Input } from 'theme-ui'
 import SearchBar from './SearchBar'
-import { MagicCard, AddableCardPage } from './MagicCards/MagicCard'
+import { MagicCard, AddToDeckMagiCardAction, ZoomMagiCardAction } from './MagicCards/MagicCard'
 import MagicCards from './MagicCards/MagicCards.js'
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
@@ -21,8 +21,13 @@ const SearchPage = ({ }) => {
             <SearchBar onSearchEnd={history.goBack}>{({ cards, onLoadMore }) => (<Box>
                 {cards && <Box pt={3}>
                     <MagicCards cards={cards.cards} hasFilters={false}>
-                        {card => <MagicCard key={card.id} {...card} isZoomable={true}>
-                            {props => <AddableCardPage {...props} />}
+                        {card => <MagicCard key={card.id} {...card} actions={
+                            (props => <Flex sx={{alignItems: 'center', justifyContent: 'space-between'}}>
+                                <AddToDeckMagiCardAction {...props} />
+                                <ZoomMagiCardAction {...props} />
+                            </Flex>)
+                        }>
+
                         </MagicCard>}
                     </MagicCards>
                     {cards.hasMore &&
