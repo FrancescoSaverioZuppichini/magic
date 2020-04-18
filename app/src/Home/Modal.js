@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
-import { Box, Flex, Card } from 'theme-ui'
+import React from 'react'
+import { Box, Flex } from 'theme-ui'
 import { CSSTransition } from 'react-transition-group'
 
 export default function Modal(props) {
+    /**
+     * A modal.
+     */
     return (<Box>
         {props.active && <Flex p={2} sx={{
             flexDirection: 'column',

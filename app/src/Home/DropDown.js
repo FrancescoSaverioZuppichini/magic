@@ -2,6 +2,9 @@ import React from 'react'
 import { Box, Card } from 'theme-ui'
 
 export default function DropDown({ children, open, width }) {
+    /**
+     * An easy peasy dropdown.
+     */
     return (
         <Box>
             {open && <Card sx={{

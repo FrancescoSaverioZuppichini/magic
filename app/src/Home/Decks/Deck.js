@@ -9,25 +9,28 @@ import DeckControllers from './DeckControllers'
 import { useHistory } from "react-router-dom";
 
 export default function Deck({ id }) {
-    const { loading, error, data } = useQuery(queries.GET_DECK, { variables: { id: id } })
+    /**
+     * Single Deck
+     */
+    const { data } = useQuery(queries.GET_DECK, { variables: { id: id } })
     const history = useHistory()
 
-    return (<Card sx={{ width: ['100%'] }}>
+    return (<Card >
         {data &&
             <Box>
                 <Flex sx={{ justifyContent: 'space-between' }}>
                     <Text sx={{ fontSize: 4 }}>{data.deck.name}</Text>
                     <Button onClick={history.goBack}>Close</Button>
                 </Flex>
-
                 <Text sx={{ fontSize: 0 }}>{moment(Number(data.deck.createdAt)).format('MMM Do YY')}</Text>
                 <Box p={2} />
                 <DeckControllers id={data.deck.id} />
                 <Box p={2} />
+                {/* cards */}
                 <MagicCards cards={data.deck.cards}>
                     {(card, i) => <MagicCard key={i} {...card}
-                        actions={props => <Flex sx={{ justifyContent: 'space-between', alignItems: 'center'}}>
-                            <AddToDeckMagiCardAction {...props}/>
+                        actions={props => <Flex sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                            <AddToDeckMagiCardAction {...props} />
                             <ZoomMagiCardAction {...props} /> </Flex>} />}
                 </MagicCards>
             </Box>

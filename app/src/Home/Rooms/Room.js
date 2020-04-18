@@ -5,18 +5,17 @@ import queries from '../../queries'
 import { useQuery } from '@apollo/react-hooks'
 
 export default function Room({ id }) {
+    /**
+     * This cards display the room's information as well as how to join it.
+     */
     const history = useHistory()
     const location = useLocation()
-
-
-    const { loading, error, data } = useQuery(queries.GET_ROOM, { variables: { id: id } })
+    const {  data } = useQuery(queries.GET_ROOM, { variables: { id: id } })
 
     const sharableLink = `/home/game/${id}`
+    // join is simply a redirect to /home/game/{id}
+    const onJoin = () => window.location = sharableLink
     
-    const onJoin = () => {
-        window.location = sharableLink
-    }
-
     return (
         <Card sx={{ width: ['100%', '100%', '50%', '450px'] }}>
             {data && <Box>
