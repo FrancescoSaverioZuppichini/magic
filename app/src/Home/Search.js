@@ -1,9 +1,8 @@
 import React from 'react'
-import { Flex, Box, Text, Button, Card, Input } from 'theme-ui'
+import { Flex, Box, Text, Button } from 'theme-ui'
 import SearchBar from './SearchBar'
 import { MagicCard, AddToDeckMagiCardAction, ZoomMagiCardAction } from './MagicCards/MagicCard'
 import MagicCards from './MagicCards/MagicCards.js'
-import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
 const SearchPage = ({ }) => {

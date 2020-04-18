@@ -52,7 +52,7 @@ const theme = {
     },
     tiny: {
       backgroundColor: 'white',
-      padding: [2],
+      padding: 2,
       borderColor: 'white',
       borderWidth: '2px',
       borderStyle: 'solid',
