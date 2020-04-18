@@ -4,7 +4,7 @@ import { Flex, Box, Text, Select, Button, IconButton, Image } from 'theme-ui'
 import { MagicCardsFilters } from './MagicCardsFilterControllers'
 import { filterMagicCards } from '../../utils'
 
-export default function MagicCards({ cards, children, hasFilters = true, width = ['100%', '50%', '33%', '20%', '15%'] }) {
+export default function MagicCards({ cards, children, hasFilters = true, width = ['100%', '50%', '33%', '25%'] }) {
     const [showFilters, setShowFilter] = useState(false)
     const [filteredCards, setFilteredCards] = useState([...cards])
     const [cardsVisMode, setCardVisMode] = useState('BLOCK')
@@ -42,9 +42,10 @@ export default function MagicCards({ cards, children, hasFilters = true, width =
                 {showFilters && <MagicCardsFilters onChange={setFilterAndEnsureAll} />}
             </Flex>
             {!hasFilters && <Box p={2} />}
-            <Flex sx={{
+            <Flex p={2} sx={{
                 flexDirection: 'row',
                 flexWrap: 'wrap',
+                backgroundColor: 'background'
             }}>
                 {cardsVisMode === 'BLOCK' &&
                     filteredCards.map((card, i) =>

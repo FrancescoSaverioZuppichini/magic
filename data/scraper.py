@@ -5,22 +5,20 @@ import pandas as pd
 from pypeln import process, thread
 from pathlib import Path
 
-with open('./data/AllCards.json') as f:
+with open('./AllCards.json') as f:
     cards = json.load(f)
 
 cards_df = pd.DataFrame(cards)
-SAVE_DIR = Path('/home/francesco/Documents/MagicCards')
-
+SAVE_DIR = Path('/home/francesco/Documents/MagicCardsArtCrop')
 SAVE_DIR.mkdir(exist_ok=True)
 
 bar = tqdm.tqdm
 
+
 def store_card_img(i, row):
     scryfallId = row['scryfallId']
-    url = f'https://api.scryfall.com/cards/{scryfallId}?format=image'
+    url = f'https://api.scryfall.com/cards/{scryfallId}?format=image&version=art_crop'
     res = requests.get(url)
-    # bar.update(1)
-    # bar.set_description(f'{res.status_code} - {scryfallId}')
 
     file = open(f"{SAVE_DIR}/{scryfallId}.jpg", "wb")
     file.write(res.content)

@@ -33,12 +33,20 @@ const queries = {
         query cards($filter: CardFilter!, $cursor: CursorInput!){
             cards(filter: $filter, cursor: $cursor) @connection(key: "cards"){
                 cards {
-                    id
                     name
+                    id
                     scryfallId
-                    types
                     colors
                     convertedManaCost
+                    manaCost
+                    artist
+                    types
+                    subtypes
+                    text
+                    power
+                    colorIndicator
+                    toughness
+                    life
                 },
                 hasMore
                 cursor {
@@ -58,16 +66,23 @@ const queries = {
                     name
                     id
                     scryfallId
-                    types
                     colors
                     convertedManaCost
+                    manaCost
+                    artist
+                    types
+                    subtypes
+                    text
+                    colorIndicator
+                    toughness
+                    life
                 }
             }
         }
 
     `,
 
-    GET_ROOM : gql`
+    GET_ROOM: gql`
         query room($id: ID!) {
             room(id: $id) {
                 id

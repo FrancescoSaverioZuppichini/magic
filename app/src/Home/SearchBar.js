@@ -31,7 +31,7 @@ function SearchBar({ children, onChange, onSearchEnd, inputVariant = 'searchbar'
          * In order we first ensure that cards are displayed and we fix the input.
          * Then we get the cards and, finally, we update the history
          */
-        let cursor = { skip: 0, limit: 32 }
+        let cursor = { skip: 0, limit: 4 }
 
 
         setHideCards(false)
