@@ -37,8 +37,6 @@ const MagicCardsFilters = ({ onChange }) =>
             </Select>
 
         </Box>
-        <Box pr={2}>
-        </Box>
 
 
     </Flex>)
@@ -71,8 +69,9 @@ const MagicCardsFilterControllers = ({ cards=[], children }) => {
                         <IconButton><Image src='/view_module-black-18dp.svg' width='48px' height='48px'></Image></IconButton>
                         <IconButton><Image src='/view_list-black-18dp.svg' width='48px' height='48px'></Image></IconButton>
                     </Box>
+                    {showFilters && <MagicCardsFilters onChange={setFilterAndEnsureAll} />}
+
                 </Flex>
-                {showFilters && <MagicCardsFilters onChange={setFilterAndEnsureAll} />}
             </Flex>
             {children(filteredCards)}
         </Box>

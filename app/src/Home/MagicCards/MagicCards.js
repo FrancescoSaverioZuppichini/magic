@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { MagicCard } from './MagicCard'
 import { Flex, Box, Text, Select, Button, IconButton, Image } from 'theme-ui'
 import { MagicCardsFilters } from './MagicCardsFilterControllers'
 import { filterMagicCards } from '../../utils'
@@ -30,7 +29,7 @@ export default function MagicCards({ cards, children, hasFilters = true, width =
     return (
         <Box sx={{ width: '100%' }}>
             <Text sx={{ fontSize: 2 }}>{`${cards.length} cards`}</Text>
-            <Flex pb={1} sx={{ flexDirection: 'column' }}>
+            <Flex pb={2} sx={{ flexDirection: 'column' }}>
                 <Flex sx={{ justifyContent: 'space-between', flexDirection: 'row', width: '100%' }}>
                     {hasFilters && <Button onClick={() => setShowFilter(!showFilters)} variant="outline" sx={{ opacity: showFilters ? 0.5 : 1 }}>Filter</Button>}
                     <Box variant='spacer' />

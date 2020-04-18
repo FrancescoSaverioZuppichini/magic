@@ -27,7 +27,6 @@ const SearchPage = ({ }) => {
                                 <ZoomMagiCardAction {...props} />
                             </Flex>)
                         }>
-
                         </MagicCard>}
                     </MagicCards>
                     {cards.hasMore &&
