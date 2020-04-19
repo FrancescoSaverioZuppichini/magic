@@ -1,7 +1,9 @@
 import React from 'react'
 import { Flex, Box, Text, Button } from 'theme-ui'
 import SearchBar from './SearchBar'
-import { MagicCard, AddToDeckMagiCardAction, ZoomMagiCardAction } from './MagicCards/MagicCard'
+import { MagicCard, AddToDeckMagiCardAction, ZoomMagiCardAction, AddToDeckMagiCardsAction } from './MagicCards/MagicCard'
+import { SelectableMagigCards } from './MagicCards/SelectableMagicCards'
+
 import MagicCards from './MagicCards/MagicCards.js'
 import { useHistory } from "react-router-dom";
 
@@ -19,15 +21,28 @@ const SearchPage = ({ }) => {
             <Box py={2}></Box>
             <SearchBar onSearchEnd={history.goBack}>{({ cards, onLoadMore }) => (<Box>
                 {cards && <Box pt={3}>
-                    <MagicCards cards={cards.cards} hasFilters={false}>
-                        {card => <MagicCard key={card.id} {...card} actions={
-                            (props => <Flex sx={{alignItems: 'center', justifyContent: 'space-between'}}>
-                                <AddToDeckMagiCardAction {...props} />
-                                <ZoomMagiCardAction {...props} />
-                            </Flex>)
-                        }>
-                        </MagicCard>}
-                    </MagicCards>
+                    <SelectableMagigCards cards={cards.cards}
+                        card={(card, i, setSelectedCard) =>
+                            <MagicCard key={card.id} card={card}
+                                onClick={() => setSelectedCard(card, i)}
+                                actions={
+                                    (props =>
+                                        <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <AddToDeckMagiCardAction {...props} />
+                                            <ZoomMagiCardAction {...props} />
+                                        </Flex>)
+                                }>
+                            </MagicCard>}>
+                        {(selectedCards, onClear) => <Box>
+                            {selectedCards.length > 0 &&
+                                <Flex sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <Text >{`${selectedCards.length} selected`}</Text>
+                                    <AddToDeckMagiCardsAction cards={selectedCards} onDone={() => onClear()} />
+                                </Flex>
+                            }
+                        </Box>
+                        }
+                    </SelectableMagigCards>
                     {cards.hasMore &&
                         <Flex p={2} sx={{ width: '100%' }}>
                             <Box variant='spacer' />

@@ -60,7 +60,7 @@ export default function MagicCards({ cards, children, hasFilters = true, width =
                 {cardsVisMode === 'BLOCK' &&
                     filteredCards.map((card, i) =>
                         <Box key={i} p={2} sx={{ flexBasis: width }}>
-                            {children(card)}
+                            {children(card, i)}
                         </Box>)
                 }
                 {cardsVisMode === 'TABLE' && <div>show table</div>}

@@ -1,57 +1,71 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import moment from 'moment'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
 import queries from '../../queries'
 import { Card, Flex, Button, Text, Box } from 'theme-ui'
 import MagicCards from '../MagicCards/MagicCards'
-import { MagicCard, ZoomMagiCardAction, AddToDeckMagiCardAction } from '../MagicCards/MagicCard'
+import { MagicCard, ZoomMagiCardAction, AddToDeckMagiCardAction, CardPage } from '../MagicCards/MagicCard'
+import { SelectableMagigCards } from '../MagicCards/SelectableMagicCards.js'
 import DeckControllers from './DeckControllers'
 import { useHistory } from "react-router-dom";
+import mutations from '../../mutations/index.js'
 
-const SelectableMagigCards = (props) => {
-    const [selectedCards, setSelectedCard] = useState([])
-    const containCard = (card) => selectedCards.filter(c => c.id === card.id).length > 0
-
-    const onCardClick = (card) => {
-        let cards = selectedCards
-        if (containCard(card)) {
-            // remove first occurrence
-            for (let i = 0; i < selectedCards.length; i++) {
-                if (selectedCards[i].id === card.id) {
-                    selectedCards.splice(i, 1)
-                    console.log(i)
-                    break
-                }
-            }
-
-            cards = [...selectedCards]
+const SelectedCardsActions = ({ cards, onRemove }) => (
+    <Box>
+        {cards.length > 0 &&
+            <Flex sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                <Text >{`${cards.length} selected`}</Text>
+                <Button onClick={onRemove} variant='actionWarning' >Remove</Button>
+            </Flex>
         }
-        else {
-            cards = [...selectedCards, card]
-        }
-
-        setSelectedCard(cards)
-    }
-
-    return (
-        <Box>
-            <Box>
-                {props.children(selectedCards)}
-            </Box>
-            <MagicCards cards={props.cards}>
-                {(card, i) => props.card(card, i, onCardClick)}
-            </MagicCards>
-        </Box>
-    )
-}
+    </Box>
+)
 
 
 export default function Deck({ id }) {
     /**
      * Single Deck
      */
+    const [deck, setDeck] = useState({})
     const { data } = useQuery(queries.GET_DECK, { variables: { id: id } })
     const history = useHistory()
+
+    useEffect(() => {
+        // local copy
+        if (data) setDeck({ ...data.deck })
+    }, [data])
+
+
+    const [newDeck, { newDeckError }] = useMutation(mutations.NEW_DECK, {
+        onCompleted({ newDeck }) {
+            // onClose()
+        },
+        update(cache, { data: { newDeck } }) {
+            // let { me } = cache.readQuery({ query: queries.GET_ME })
+            // cache.writeQuery({
+            //     query: queries.GET_ME,
+            //     data: me,
+            // });
+        }
+    })
+
+    const onDone = (el) => {
+        let deckInput = { id: deck.id, name: deck.name, cards: deck.cards }
+        deckInput.cards = deckInput.cards.map(el => el.id)
+        newDeck({ variables: { deck: deckInput } })
+    }
+
+    const removeCardFromDeck = (card) => {
+        let newDeck = { ...deck }
+        newDeck.cards.splice(newDeck.cards.indexOf(card), 1)
+        setDeck(newDeck)
+    }
+
+    const removeCardsFromDeck = (cards) => {
+        cards.map(card => removeCardFromDeck(card))
+        onDone()
+
+    }
 
     return (<Card >
         {data &&
@@ -65,15 +79,30 @@ export default function Deck({ id }) {
                 <DeckControllers id={data.deck.id} />
                 <Box p={2} />
                 {/* cards */}
-
                 <SelectableMagigCards cards={data.deck.cards} card={
                     (card, i, setSelectedCard) => <MagicCard key={i} card={card}
-                        onClick={setSelectedCard}
+                        onClick={() => setSelectedCard(card, i)}
                         actions={props => <Flex sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-                            <AddToDeckMagiCardAction {...props} />
-                            <ZoomMagiCardAction {...props} /> </Flex>} />}
+                            <AddToDeckMagiCardAction {...props} selectedDecks={[data.deck]} />
+                            <ZoomMagiCardAction {...props}>
+                                {onClose => <CardPage {...props} onClose={onClose}>
+                                    <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <Button onClick={() => {
+                                            removeCardsFromDeck([props])
+                                            onClose()
+                                        }} variant='warning'>Remove</Button>
+                                        <AddToDeckMagiCardAction {...props} variant='primary' selectedDecks={[data.deck]}/>
+
+                                    </Flex>
+                                </CardPage>}
+                            </ZoomMagiCardAction> </Flex>} />}
                 >
-                    {selectedCards => <Text >{`${selectedCards.length} selected`}</Text>
+                    {(selectedCards, onClear) =>
+                        <SelectedCardsActions cards={selectedCards}
+                            onRemove={() => {
+                                removeCardFromDeck()
+                                onClear()
+                            }} />
                     }
                 </SelectableMagigCards>
                 {/* <MagicCards cards={data.deck.cards}>

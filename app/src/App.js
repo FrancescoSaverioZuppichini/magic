@@ -32,14 +32,14 @@ const myOnErrorLink = onError(({ graphQLErrors, networkError }) => {
       ),
     )
 
-  if (networkError) console.log(`[Network error]: ${networkError}`)
+  if (networkError) console.log(`[Network error]: ${networkError}`, 'PORCODIOOOOOOOOO')
 })
 
 const myHttpLink = new HttpLink({
   uri: '/graphql',
 })
 // https://www.apollographql.com/docs/link/composition/
-const link = ApolloLink.from([myHttpLink, myOnErrorLink])
+const link = ApolloLink.from([myOnErrorLink, myHttpLink])
 
 const client = new ApolloClient({
   link,
