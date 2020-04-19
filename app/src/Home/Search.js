@@ -19,39 +19,41 @@ const SearchPage = ({ }) => {
                 <Button onClick={history.goBack}>Close</Button>
             </Flex>
             <Box py={2}></Box>
-            <SearchBar onSearchEnd={history.goBack}>{({ cards, onLoadMore }) => (<Box>
-                {cards && <Box pt={3}>
-                    <SelectableMagigCards cards={cards.cards}
-                        card={(card, i, setSelectedCard) =>
-                            <MagicCard key={card.id} card={card}
-                                onClick={() => setSelectedCard(card, i)}
-                                actions={
-                                    (props =>
-                                        <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                                            <AddToDeckMagiCardAction {...props} />
-                                            <ZoomMagiCardAction {...props} />
-                                        </Flex>)
-                                }>
-                            </MagicCard>}>
-                        {(selectedCards, onClear) => <Box>
-                            {selectedCards.length > 0 &&
-                                <Flex sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <Text >{`${selectedCards.length} selected`}</Text>
-                                    <AddToDeckMagiCardsAction cards={selectedCards} onDone={() => onClear()} />
-                                </Flex>
+            <SearchBar onSearchEnd={history.goBack}>
+                {({ cards, onLoadMore }) => (<Box>
+                    {cards && <Box pt={3}>
+                        <SelectableMagigCards cards={cards.cards}
+                            card={(card, i, setSelectedCard) =>
+                                <MagicCard key={card.id} card={card}
+                                    onClick={() => setSelectedCard(card, i)}
+                                    actions={
+                                        (props =>
+                                            <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+                                                <AddToDeckMagiCardAction {...props} />
+                                                <ZoomMagiCardAction {...props} />
+                                            </Flex>)
+                                    }>
+                                </MagicCard>}>
+                            {/* selected view */}
+                            {(selectedCards, onClear) => <Box>
+                                {selectedCards.length > 0 &&
+                                    <Flex sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <Text >{`${selectedCards.length} selected`}</Text>
+                                        <AddToDeckMagiCardsAction cards={selectedCards} onDone={() => onClear()} />
+                                    </Flex>
+                                }
+                            </Box>
                             }
-                        </Box>
-                        }
-                    </SelectableMagigCards>
-                    {cards.hasMore &&
-                        <Flex p={2} sx={{ width: '100%' }}>
-                            <Box variant='spacer' />
-                            <Button onClick={onLoadMore}>More</Button>
-                            <Box variant='spacer' />
-                        </Flex>}
-                </Box>}
-            </Box>
-            )}
+                        </SelectableMagigCards>
+                        {cards.hasMore &&
+                            <Flex p={2} sx={{ width: '100%' }}>
+                                <Box variant='spacer' />
+                                <Button onClick={onLoadMore}>More</Button>
+                                <Box variant='spacer' />
+                            </Flex>}
+                    </Box>}
+                </Box>
+                )}
             </SearchBar>
         </Flex>
     )
