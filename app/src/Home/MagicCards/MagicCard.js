@@ -53,8 +53,8 @@ const MagicCardHeader = ({ name, manaCost }) => (
     </Flex>
 )
 
-const MagicCardImg = ({ scryfallId }) => (
-    <img width='100%' src={`/cards/${scryfallId}.jpg`} />
+const MagicCardImg = ({ scryfallId, onClick }) => (
+    <img width='100%' src={`/cards/${scryfallId}.jpg`} onClick={onClick} />
 
 )
 
@@ -202,10 +202,10 @@ const MagicCard = (props) => (
     <Card variant='tiny'>
         {/* <MagicCardHeader {...props} />
         <Box py={1} /> */}
-        <MagicCardImg {...props} />
+        <MagicCardImg {...props.card} onClick={() => props.onClick(props.card)} />
         {/* <MagicCardText {...props} /> */}
         <MagicCardActions>
-            {props.actions && props.actions(props)}
+            {props.actions && props.actions(props.card)}
         </MagicCardActions>
     </Card>
 )
