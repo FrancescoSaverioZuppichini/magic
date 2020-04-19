@@ -26,7 +26,7 @@ const CardPage = ({ id, name, scryfallId, onClose, children }) => (
                     <Button onClick={onClose}>Close</Button>
                 </Flex>
                 <Box p={2} />
-                <MagicCard card={{scryfallId}} />
+                <MagicCard card={{ scryfallId }} />
                 {children && <Box pt={2}>{children}</Box>}
             </Flex>
         </Card>
@@ -79,7 +79,7 @@ const MagicCardStats = ({ power = '-', toughness = '-' }) => (
     </Box>
 )
 
-const AddToDeckMagiCardAction = ({ scryfallId, id, name, variant, selectedDecks=[] }) => {
+const AddToDeckMagiCardAction = ({ scryfallId, id, name, variant, selectedDecks = [] }) => {
     /**
      * Button for adding a cards to different decks.
      */
@@ -168,7 +168,7 @@ const AddToDeckMagiCardAction = ({ scryfallId, id, name, variant, selectedDecks=
     )
 }
 
-const AddToDeckMagiCardsAction = ({ cards, selectedDecks=[], variant, onDone }) => {
+const AddToDeckMagiCardsAction = ({ cards, selectedDecks = [], variant, onDone }) => {
     /**
      * Button for adding a cards to different decks.
      */
@@ -198,7 +198,7 @@ const AddToDeckMagiCardsAction = ({ cards, selectedDecks=[], variant, onDone }) 
     }
 
     const AddAndMutate = (deck) => {
-        const cardsIDs =  [...deck.cards.map(c => c.id), ...cards.map(c => c.id)]
+        const cardsIDs = [...deck.cards.map(c => c.id), ...cards.map(c => c.id)]
         const deckInput = { id: deck.id, cards: cardsIDs, name: deck.name }
         console.log(deckInput)
         return newDeck({ variables: { deck: deckInput } })
@@ -207,7 +207,7 @@ const AddToDeckMagiCardsAction = ({ cards, selectedDecks=[], variant, onDone }) 
         const updates = decksSelected.map(AddAndMutate)
         Promise.all(updates)
         onDone()
-        
+
     }
 
     return (
@@ -255,7 +255,7 @@ const ZoomMagiCardAction = ({ scryfallId, id, name, children }) => {
                 <img width='38px' src='/zoom_in-white-18dp.svg'></img>
             </IconButton>
             <Modal active={isZooming} position={'fixed'} variant='vCentering'>
-                {children ? children(onClose) : <CardPage { ... {scryfallId, id, name}} onClose={onClose} />}
+                {children ? children(onClose) : <CardPage {... { scryfallId, id, name }} onClose={onClose} />}
             </Modal>
         </Box>
     )
