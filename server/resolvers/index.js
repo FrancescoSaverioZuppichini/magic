@@ -67,7 +67,7 @@ const resolvers = {
 		card(ctx, { id }) {
 			return Card.findById(id)
 		},
-		room: (ctx, { id }) => Room.findById(id)
+		room: (ctx, { id }) => Room.findById(id).populate('users').populate('decks')
 	},
 	Mutation: {
 		async newUser(obj, { input }) {

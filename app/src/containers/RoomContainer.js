@@ -1,9 +1,16 @@
 import { Container } from 'unstated'
 import io from 'socket.io-client'
 
+
 class RoomContainer extends Container {
+    PHASES = {
+        PRE : 'PRE',
+        GAME: 'GAME',
+        END : 'END'
+    }
     state = {
-        count: 0
+        count: 0,
+        phase: this.PHASES.PRE
     }
 
     constructor() {
@@ -31,6 +38,10 @@ class RoomContainer extends Container {
     joinRoom(name, userId, roomId) {
         this.userId = userId
         this.socket.emit('room', { name,  userId, roomId });
+
+    }
+
+    selectDeck(deck) {
 
     }
 

@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const RoomSchema = mongoose.Schema({
 	name: { type: String, require: true },
 	users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+	decks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Deck' }],
 	active: { type: Boolean, default: true },
 
 	},

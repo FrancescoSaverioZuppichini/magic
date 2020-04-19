@@ -78,7 +78,7 @@ const MagicCardStats = ({ power = '-', toughness = '-' }) => (
         <Text sx={{ fontSize: 2 }}>{`${power}/${toughness}`}</Text>
     </Box>
 )
-
+// TODO better to pass card!
 const AddToDeckMagiCardAction = ({ scryfallId, id, name, variant, selectedDecks = [] }) => {
     /**
      * Button for adding a cards to different decks.
@@ -114,7 +114,7 @@ const AddToDeckMagiCardAction = ({ scryfallId, id, name, variant, selectedDecks 
 
     const AddAndMutate = (deck) => {
         for (let i = 0; i < numberOfCards; i++) {
-            deck.cards.push({ id })
+            deck.cards.push({ id, scryfallId })
         }
         const deckInput = { id: deck.id, cards: deck.cards.map(c => c.id), name: deck.name }
         return newDeck({ variables: { deck: deckInput } })
@@ -200,7 +200,6 @@ const AddToDeckMagiCardsAction = ({ cards, selectedDecks = [], variant, onDone }
     const AddAndMutate = (deck) => {
         const cardsIDs = [...deck.cards.map(c => c.id), ...cards.map(c => c.id)]
         const deckInput = { id: deck.id, cards: cardsIDs, name: deck.name }
-        console.log(deckInput)
         return newDeck({ variables: { deck: deckInput } })
     }
     const onAdd = () => {
