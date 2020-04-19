@@ -42,7 +42,7 @@ const myHttpLink = new HttpLink({
 const link = ApolloLink.from([myOnErrorLink, myHttpLink])
 
 const client = new ApolloClient({
-  link,
+  link: myOnErrorLink.concat(myHttpLink),
   request: (operation) => {
     const token = localStorage.getItem('token')
     if (token) {
