@@ -87,7 +87,13 @@ const queries = {
             room(id: $id) {
                 id
                 name
-            }
+                users {
+                    username
+                }
+                decks {
+                    name
+                }
+            } 
         }
     `
 

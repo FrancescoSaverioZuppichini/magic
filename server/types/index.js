@@ -69,6 +69,7 @@ const typeDefs = gql`
     id: ID!
     name: String!,
     users: [User]
+    decks: [Deck]
     active: Boolean
     createdAt: String
 

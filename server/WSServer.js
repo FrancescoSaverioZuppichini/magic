@@ -22,6 +22,7 @@ class WSServer {
                 if (isRoomFull) socket.emit('error', { mgs: 'Room is full' })
                 else {
                     logger.debug(room.users)
+                    
                     const userIsNotIn = room.users.indexOf(userId) < 0
                     if (userIsNotIn < 0) {
                         room.users.push(userId)
