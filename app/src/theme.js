@@ -72,7 +72,7 @@ const theme = {
     },
     selected: {
       borderColor: 'primary',
-      borderWidth: '2px',
+      borderWidth: '4px',
       borderStyle: 'solid',
       borderRadius: '8px'
     }
@@ -221,6 +221,19 @@ const theme = {
         // outline:'none'
       }
 
+    },
+    actionWarning: {
+      borderRadius: '16px',
+      borderStyle: 'solid',
+      backgroundColor: 'warning',
+      borderColor: 'warning',
+      outline: 'none',
+      fontSize: 0,
+      '&:active': {
+        backgroundColor: 'warningActive',
+        borderColor: 'warningActive',
+        // outline:'none'
+      }
     },
     outline: {
       borderRadius: '20px',

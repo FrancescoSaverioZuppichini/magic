@@ -26,7 +26,7 @@ const CardPage = ({ id, name, scryfallId, onClose, children }) => (
                     <Button onClick={onClose}>Close</Button>
                 </Flex>
                 <Box p={2} />
-                <MagicCard scryfallId={scryfallId} />
+                <MagicCard card={{scryfallId}} />
                 {children && <Box pt={2}>{children}</Box>}
             </Flex>
         </Card>
@@ -79,7 +79,7 @@ const MagicCardStats = ({ power = '-', toughness = '-' }) => (
     </Box>
 )
 
-const AddToDeckMagiCardAction = ({ scryfallId, id, name }) => {
+const AddToDeckMagiCardAction = ({ scryfallId, id, name, variant, selectedDecks=[] }) => {
     /**
      * Button for adding a cards to different decks.
      */
@@ -87,7 +87,7 @@ const AddToDeckMagiCardAction = ({ scryfallId, id, name }) => {
     const onClose = () => setIsAdding(false)
     const onClick = () => setIsAdding(true)
 
-    const [decksSelected, setDeckSelected] = useState([])
+    const [decksSelected, setDeckSelected] = useState(selectedDecks)
     const [numberOfCards, setNumberOfCards] = useState(1)
 
     const { error, data } = useQuery(queries.GET_ME)
@@ -127,7 +127,7 @@ const AddToDeckMagiCardAction = ({ scryfallId, id, name }) => {
 
     return (
         <Box>
-            <Button onClick={onClick} variant='action'>
+            <Button onClick={onClick} variant={variant || 'action'}>
                 Add
             </Button>
             <Modal active={isAdding} position={'fixed'} variant='vCentering'>
@@ -168,6 +168,79 @@ const AddToDeckMagiCardAction = ({ scryfallId, id, name }) => {
     )
 }
 
+const AddToDeckMagiCardsAction = ({ cards, selectedDecks=[], variant, onDone }) => {
+    /**
+     * Button for adding a cards to different decks.
+     */
+    const [isAdding, setIsAdding] = useState(false)
+    const onClose = () => setIsAdding(false)
+    const onClick = () => setIsAdding(true)
+
+    const [decksSelected, setDeckSelected] = useState(selectedDecks)
+
+    const { error, data } = useQuery(queries.GET_ME)
+    const [newDeck, { newDeckError }] = useMutation(mutations.NEW_DECK, {
+        onCompleted() {
+            onClose()
+        },
+    })
+
+    const isDeckSelected = (deck) => decksSelected.filter(d => d.id === deck.id).length > 0
+
+    const onDeckRowClick = (deck) => {
+        /**
+         * Add or remove the clicked deck from `decksSelected`
+         */
+        if (isDeckSelected(deck)) setDeckSelected(decksSelected.filter(d => d.id !== deck.id))
+        else {
+            setDeckSelected([...decksSelected, deck])
+        }
+    }
+
+    const AddAndMutate = (deck) => {
+        const cardsIDs =  [...deck.cards.map(c => c.id), ...cards.map(c => c.id)]
+        const deckInput = { id: deck.id, cards: cardsIDs, name: deck.name }
+        console.log(deckInput)
+        return newDeck({ variables: { deck: deckInput } })
+    }
+    const onAdd = () => {
+        const updates = decksSelected.map(AddAndMutate)
+        Promise.all(updates)
+        onDone()
+        
+    }
+
+    return (
+        <Box>
+            <Button onClick={onClick} variant={variant || 'action'}>
+                Add
+            </Button>
+            <Modal active={isAdding} position={'fixed'} variant='vCentering'>
+                <Card sx={{ width: ['100%', '100%', '50%', '450px'] }}>
+                    <Text sx={{ fontSize: 2 }}>Add to deck</Text>
+                    <Box py={2} />
+                    <DecksSearchBar decks={data.me.decks} variant="inputTiny">
+                        {decks => <Box mt={2} sx={{ bg: 'background' }}>
+                            {decks.map(deck => <Box p={2} key={deck.id}>
+                                <DeckRow deck={deck}
+                                    key={deck.id}
+                                    onClick={onDeckRowClick}
+                                    isSelected={isDeckSelected(deck)} />
+                            </Box>)}
+                        </Box>
+                        }
+                    </DecksSearchBar>
+                    {decksSelected.length > 0 && <Text pt={2}>{`Add ${cards.length} cards to ${decksSelected.length} decks`}</Text>}
+                    <Flex pt={4} sx={{ justifyContent: 'space-between' }}>
+                        <Button onClick={onClose}>Cancel</Button>
+                        <Button onClick={onAdd}>Add</Button>
+                    </Flex>
+                </Card>
+            </Modal>
+        </Box>
+    )
+}
+
 const ZoomMagiCardAction = ({ scryfallId, id, name, children }) => {
     /**
      * Button for zooming on a card.
@@ -182,7 +255,7 @@ const ZoomMagiCardAction = ({ scryfallId, id, name, children }) => {
                 <img width='38px' src='/zoom_in-white-18dp.svg'></img>
             </IconButton>
             <Modal active={isZooming} position={'fixed'} variant='vCentering'>
-                {children ? children : <CardPage id={id} scryfallId={scryfallId} name={name} onClose={onClose} />}
+                {children ? children(onClose) : <CardPage { ... {scryfallId, id, name}} onClose={onClose} />}
             </Modal>
         </Box>
     )
@@ -202,7 +275,7 @@ const MagicCard = (props) => (
     <Card variant='tiny'>
         {/* <MagicCardHeader {...props} />
         <Box py={1} /> */}
-        <MagicCardImg {...props.card} onClick={() => props.onClick(props.card)} />
+        <MagicCardImg {...props.card} onClick={props.onClick} />
         {/* <MagicCardText {...props} /> */}
         <MagicCardActions>
             {props.actions && props.actions(props.card)}
@@ -210,4 +283,4 @@ const MagicCard = (props) => (
     </Card>
 )
 
-export { MagicCard, MagicCardImg, CardPage, AddToDeckMagiCardAction, ZoomMagiCardAction }
+export { MagicCard, MagicCardImg, CardPage, AddToDeckMagiCardAction, ZoomMagiCardAction, AddToDeckMagiCardsAction }
