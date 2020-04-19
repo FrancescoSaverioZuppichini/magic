@@ -38,7 +38,7 @@ export default function Deck({ id }) {
 
     const [newDeck, { newDeckError }] = useMutation(mutations.NEW_DECK, {
         onCompleted({ newDeck }) {
-            onDone()
+
             // onClose()
         },
         update(cache, { data: { newDeck } }) {
@@ -50,12 +50,6 @@ export default function Deck({ id }) {
         }
     })
 
-    const onDone = (el) => {
-        let deckInput = { id: deck.id, name: deck.name, cards: deck.cards }
-        deckInput.cards = deckInput.cards.map(el => el.id)
-        newDeck({ variables: { deck: deckInput } })
-    }
-
     const removeCardFromDeck = (card) => {
         let newDeck = { ...deck }
         newDeck.cards.splice(newDeck.cards.indexOf(card), 1)
@@ -64,6 +58,9 @@ export default function Deck({ id }) {
 
     const removeCardsFromDeck = (cards) => {
         cards.map(card => removeCardFromDeck(card))
+        let deckInput = { id: deck.id, name: deck.name, cards: deck.cards }
+        deckInput.cards = deckInput.cards.map(el => el.id)
+        newDeck({ variables: { deck: deckInput } })
     }
 
     return (<Card >
