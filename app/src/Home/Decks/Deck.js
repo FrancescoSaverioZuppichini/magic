@@ -15,7 +15,7 @@ const SelectedCardsActions = ({ cards, onRemove }) => (
         {cards.length > 0 &&
             <Flex sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
                 <Text >{`${cards.length} selected`}</Text>
-                <Button onClick={onRemove} variant='actionWarning' >Remove</Button>
+                <Button onClick={onRemove} variant='actionWarning'>Remove</Button>
             </Flex>
         }
     </Box>
@@ -38,6 +38,7 @@ export default function Deck({ id }) {
 
     const [newDeck, { newDeckError }] = useMutation(mutations.NEW_DECK, {
         onCompleted({ newDeck }) {
+            onDone()
             // onClose()
         },
         update(cache, { data: { newDeck } }) {
@@ -63,8 +64,6 @@ export default function Deck({ id }) {
 
     const removeCardsFromDeck = (cards) => {
         cards.map(card => removeCardFromDeck(card))
-        onDone()
-
     }
 
     return (<Card >
@@ -91,7 +90,7 @@ export default function Deck({ id }) {
                                             removeCardsFromDeck([props])
                                             onClose()
                                         }} variant='warning'>Remove</Button>
-                                        <AddToDeckMagiCardAction {...props} variant='primary' selectedDecks={[data.deck]}/>
+                                        <AddToDeckMagiCardAction {...props} variant='primary' selectedDecks={[data.deck]} />
 
                                     </Flex>
                                 </CardPage>}
@@ -100,7 +99,7 @@ export default function Deck({ id }) {
                     {(selectedCards, onClear) =>
                         <SelectedCardsActions cards={selectedCards}
                             onRemove={() => {
-                                removeCardFromDeck()
+                                removeCardsFromDeck(selectedCards)
                                 onClear()
                             }} />
                     }
