@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import { useApolloClient } from '@apollo/react-hooks'
 import { Flex, Box, Button } from 'theme-ui'
-import { useHistory } from "react-router-dom";
 import ConfirmationCard from '../ConfirmationCard'
 import Modal from '../Modal'
 import mutations from '../../mutations/index'
@@ -12,7 +10,6 @@ export default function RoomControllers({ id, name, onCompleted }) {
     /**
      * Buttons for room. They supports delete
      */
-    const history = useHistory()
     const [showConfirmationModal, setShowConfirmationModal] = useState(false)
     console.log(id)
     const [deleteRoom, { deleteRoomError }] = useMutation(mutations.DELETE_ROOM, {
