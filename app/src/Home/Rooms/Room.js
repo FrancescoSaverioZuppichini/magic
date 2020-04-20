@@ -3,6 +3,7 @@ import { Flex, Text, Box, Card, Button } from 'theme-ui'
 import { useHistory, useLocation } from "react-router-dom";
 import queries from '../../queries'
 import { useQuery } from '@apollo/react-hooks'
+import RoomControllers from './RoomControllers'
 
 export default function Room({ id }) {
     /**
@@ -31,6 +32,7 @@ export default function Room({ id }) {
                 <Box py={1} />
                 <Text>{sharableLink}</Text>
                 <Flex pt={4}>
+                    <RoomControllers {...data.room} onCompleted={history.goBack}/>
                     <Box variant="spacer" />
                     <Button onClick={onJoin}>Join</Button>
                 </Flex>
