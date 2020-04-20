@@ -29,6 +29,10 @@ class RoomContainer extends Container {
             if(id === this.userId) console.log('You joined the same room twice!')
         })
 
+        this.socket.on('start', () => {
+            console.log('start')
+            this.setState({ phase: this.PHASES.GAME})
+        })
 
         this.socket.on('error', ({ msg }) => {
             console.log(`Error ${msg}`);
@@ -36,13 +40,17 @@ class RoomContainer extends Container {
     }
 
     joinRoom(name, userId, roomId) {
+        this.roomId = roomId
         this.userId = userId
         this.socket.emit('room', { name,  userId, roomId });
-
     }
 
-    selectDeck(deck) {
+    selectDeck({ id }) {
+        this.socket.emit('selectDeck', { id })
+    }
 
+    deselectDeck() {
+        this.socket.emit('selectDeck', {})
     }
 
     emitAction(room, action) {

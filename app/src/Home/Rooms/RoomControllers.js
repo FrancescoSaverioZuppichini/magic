@@ -8,22 +8,20 @@ import mutations from '../../mutations/index'
 import queries from '../../queries/index.js'
 import { useMutation } from '@apollo/react-hooks'
 
-export default function DeckControllers({ id, name }) {
+export default function RoomControllers({ id, name }) {
     /**
-     * Buttons for decks. They supports delete and edit
+     * Buttons for room. They supports delete
      */
     const history = useHistory()
     const [showConfirmationModal, setShowConfirmationModal] = useState(false)
-
-    const [deleteDeck, { deleteDeckError }] = useMutation(mutations.DELETE_DECK, {
-        onCompleted({ deleteDeck }) {
-            console.log(deleteDeck)
+    console.log(id)
+    const [deleteRoom, { deleteRoomError }] = useMutation(mutations.DELETE_ROOM, {
+        onCompleted({ deleteRoom }) {
+            console.log(deleteRoom)
         },
-        update(cache, { data: { deleteDeck } }) {
+        update(cache, { data: { deleteRoom } }) {
             let { me } = cache.readQuery({ query: queries.GET_ME })
-            console.log(me.decks.length)
-            me.decks = me.decks.filter(deck => deck.id !== deleteDeck.id)
-            console.log(me.decks.length)
+            me.rooms = me.rooms.filter(room => room.id !== deleteRoom.id)
             cache.writeQuery({
                 query: queries.GET_ME,
                 data: me,
@@ -35,29 +33,22 @@ export default function DeckControllers({ id, name }) {
 
     const onConfirmDeleteClick = () => {
         // TODO call mutation
-        deleteDeck({ variables: { id } })
+        deleteRoom({ variables: { id } })
         setShowConfirmationModal(false)
     }
 
     const onConfirmCancelClick = () => setShowConfirmationModal(false)
 
 
-    const onEditClick = () => {
-        history.push(`/home/decks/edit/${id}`)
-        // switch to edit mode!
-    }
-
-
     return (
         <Flex sx={{ flexDirection: 'row' }}>
-            <Button variant='warning' onClick={onDeleteClick} variant='actionWarning'>Delete</Button>
+            <Button variant='warning' onClick={onDeleteClick}>Delete</Button>
             <Box px={2}></Box>
-            {/* <Button onClick={onEditClick}>Edit</Button> */}
             <Modal active={showConfirmationModal}>
                 <ConfirmationCard
                     onDeleteClick={onConfirmDeleteClick}
                     onCancelClick={onConfirmCancelClick}
-                    text={`Do you really want to delete deck "${name}?"`} />
+                    text={`Do you really want to delete room "${name}?"`} />
             </Modal>
         </Flex>
     )

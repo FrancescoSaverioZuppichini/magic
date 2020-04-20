@@ -94,7 +94,7 @@ function Home() {
                             <Text>Latest created</Text>
                             <Box py={2}></Box>
                             <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
-                                {data.me.decks.reverse().slice(0, 3).map(deck => <Box key={deck.id} pr={2}>
+                                {data.me.decks.reverse().slice(0, 3).map(deck => <Box key={deck.id} p={2}>
                                     <DeckPreview key={deck.id} {...deck}>}</DeckPreview></Box>)}
                                 <Button onClick={onNewDeckClick}>Add</Button>
                             </Flex>
@@ -109,7 +109,7 @@ function Home() {
                             <Box p={1} />
                             <Text>Latest created</Text>
                             <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
-                                {data.me.rooms.reverse().slice(0, 3).map(room => <Box key={room.id} pr={2} py={2}>
+                                {data.me.rooms.reverse().slice(0, 3).map(room => <Box key={room.id} p={2}>
                                     <RoomPreview key={room.id} {...room}>}</RoomPreview></Box>)}
                                 <Button onClick={() => history.push("/home/rooms/newRoom")}>Add</Button>
                             </Flex>

@@ -23,16 +23,16 @@ export default function Decks() {
             <Box py={2} p />
             <DecksSearchBar sx={{ maxWidth: '250px' }} decks={data.me.decks}>
                 {decks =>
-                    <Flex sx={{ alignItems: 'center', flexDirection: ['column', 'row'], flexWrap: 'wrap' }}>
+                    <Flex sx={{ flexDirection: ['column', 'row'], flexWrap: 'wrap' }}>
                         {decks.map(deck => <Box key={deck.id} pr={2} py={2}>
                             <DeckPreview key={deck.id} {...deck}>}</DeckPreview>
                         </Box>)}
-                        <Box sx={{ flex: 1 }}>
+                        <Flex sx={{ flex: 1, alignItems: 'center'}}>
                             <Button
                                 onClick={() => history.push('/home/decks/newDeck')}>
                                 Add
                          </Button>
-                        </Box>
+                        </Flex>
                     </Flex>
                 }
             </DecksSearchBar>

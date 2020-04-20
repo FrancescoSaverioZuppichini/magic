@@ -69,6 +69,7 @@ const typeDefs = gql`
     id: ID!
     name: String!,
     users: [User]
+    readyUsers: [User]
     decks: [Deck]
     active: Boolean
     createdAt: String
@@ -117,8 +118,9 @@ const typeDefs = gql`
 		newAuth(username: String!, password: String!): Auth
     newDeck(deck: DeckInput): Deck @isAuthenticated
     deleteDeck(id: ID!): Deck @isAuthenticated
-    newCard(card: CardFilter): Card
+    newCard(card: CardFilter): Card @isAuthenticated
     newRoom(room: RoomInput) : Room @isAuthenticated
+    deleteRoom(id: ID!): Room @isAuthenticated
     joinRoom(name: String!): Room
 	}
 `

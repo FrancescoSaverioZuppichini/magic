@@ -153,7 +153,7 @@ export default function NewDeck({ onClose }) {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <Stages initialStage={1}>
+            <Stages initialStage={0}>
                 {({ onNext }) => (
                     <Box variant="vCentering">
                         <Card p={2} sx={{ width: ['100%', '100%', '50%', '450px'] }}>

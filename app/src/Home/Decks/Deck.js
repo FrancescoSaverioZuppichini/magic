@@ -72,7 +72,7 @@ export default function Deck({ id }) {
                 </Flex>
                 <Text sx={{ fontSize: 0 }}>{moment(Number(data.deck.createdAt)).format('MMM Do YY')}</Text>
                 <Box p={2} />
-                <DeckControllers id={data.deck.id} />
+                <DeckControllers {...data.deck}/>
                 <Box p={2} />
                 {/* cards */}
                 <SelectableMagigCards cards={data.deck.cards} card={
