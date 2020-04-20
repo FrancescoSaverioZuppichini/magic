@@ -8,7 +8,7 @@ import mutations from '../../mutations/index'
 import queries from '../../queries/index.js'
 import { useMutation } from '@apollo/react-hooks'
 
-export default function RoomControllers({ id, name }) {
+export default function RoomControllers({ id, name, onCompleted }) {
     /**
      * Buttons for room. They supports delete
      */
@@ -17,7 +17,8 @@ export default function RoomControllers({ id, name }) {
     console.log(id)
     const [deleteRoom, { deleteRoomError }] = useMutation(mutations.DELETE_ROOM, {
         onCompleted({ deleteRoom }) {
-            console.log(deleteRoom)
+            console.log(onCompleted)
+            if(onCompleted) onCompleted(deleteRoom)
         },
         update(cache, { data: { deleteRoom } }) {
             let { me } = cache.readQuery({ query: queries.GET_ME })
@@ -38,7 +39,6 @@ export default function RoomControllers({ id, name }) {
     }
 
     const onConfirmCancelClick = () => setShowConfirmationModal(false)
-
 
     return (
         <Flex sx={{ flexDirection: 'row' }}>
