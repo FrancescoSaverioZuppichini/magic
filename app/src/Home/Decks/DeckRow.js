@@ -10,7 +10,6 @@ export default function DeckRow({ deck, onClick, isSelected }) {
             sx={{ borderColor: isSelected ? 'primary': 'cardBg'  }}
             variant='tiny'
             onClick={() => onClick(deck)}>
-                {deck.id}
             <Text sx={{ fontSize: 2 }}>{deck.name}</Text>
             <Text sx={{ fontSize: 0 }}>{`${deck.cards.length} cards`}</Text>
         </Card>

@@ -127,7 +127,20 @@ const resolvers = {
 			await user.save()
 
 			return savedRoom.populate('users').execPopulate()
-		}
+		},
+		async deleteRoom(obj, { id }, { user }) {
+			const room = await Room.findById(id)
+
+			if (room) {
+				await room.remove()
+
+				const userRoomIdx = user.rooms.indexOf(id)
+				user.rooms.splice(userRoomIdx, 1)
+
+				await user.save()
+			}
+			return room
+		},
 	}
 }
 

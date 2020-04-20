@@ -16,7 +16,7 @@ function DeckPreview({ id, name, cards=[], createdAt=moment(), controllers=true,
             <Box p={2}></Box>
             {cards && <Text sx={{ fontSize: 0 }}>{`${cards.length} cards`}</Text>}
             <Box p={2}></Box>
-            {controllers && <DeckControllers id={id}/>}
+            {controllers && <DeckControllers id={id} name={name}/>}
         </Card>
     )
 }

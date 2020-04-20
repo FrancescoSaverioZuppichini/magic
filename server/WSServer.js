@@ -16,25 +16,57 @@ class WSServer {
             socket.on('room', async ({ name, userId, roomId }) => {
                 // prevent user to join multiple time the same room
                 socket.userId = userId
+                socket.roomId = roomId
                 const room = await Room.findById(roomId)
+                logger.debug(room.users, room.name)
                 if (!room) socket.emit('error', { mgs: 'Invalid or expired invite' })
-                const isRoomFull = room.users.length >= MAX_PLAYERS
-                if (isRoomFull) socket.emit('error', { mgs: 'Room is full' })
+                const isRoomFull = room.users.length > MAX_PLAYERS
+                if (isRoomFull) socket.to(roomId).emit('error', { mgs: 'Room is full' })
                 else {
-                    logger.debug(room.users)
-                    
+                    // add user only if it is not already in
                     const userIsNotIn = room.users.indexOf(userId) < 0
-                    if (userIsNotIn < 0) {
+                    if (userIsNotIn) {
                         room.users.push(userId)
                         await room.save()
                     }
 
-                    logger.info(`User ${socket.userId} connect to room ${name}`)
-                    socket.join(name)
-                    socket.to(name).emit('join', userId)
+                    // join and notify all the users inside!
+                    logger.info(`User ${socket.userId} connect to room ${roomId}`)
+                    socket.join(roomId)
+                    socket.to(roomId).emit('join', userId)
+                    
                 }
 
+                console.log(room.readyUsers)
 
+
+            })
+            
+            socket.on('selectDeck', async({ id }) => {
+                const { userId, roomId } = socket
+
+                const deselectedDeck = id === undefined
+                
+                const room = await Room.findById(roomId)
+                
+                if (deselectedDeck) {
+                    const idx = room.readyUsers.indexOf(userId)
+                    room.readyUsers.splice(idx, 1)
+                    await room.save()
+                }
+                else {
+                    const userIsNotIn = room.readyUsers.indexOf(userId) < 0
+                    if(userIsNotIn){
+                        room.readyUsers.push(userId)
+                        await room.save()
+                    }
+                    const allUsersReady = room.readyUsers.length === room.users.length
+                    if(allUsersReady) {
+                        logger.info(`emitting start to ${roomId}`)
+                        socket.emit('start')
+                        socket.to(roomId).emit('start')
+                    }
+                }
             })
 
             socket.on('action', ({ room, action }) => {
