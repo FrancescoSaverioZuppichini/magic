@@ -77,7 +77,7 @@ function SearchBar({ children, onChange, onSearchEnd, inputVariant = 'searchbar'
     }
 
     return (
-        <Flex sx={{ flexDirection: 'column', flex: 1 }}>
+        <Flex sx={{ flexDirection: 'column', flex: 1,  minHeight: 0  }}>
             <Flex sx={{ flexDirection: 'column' }}>
                 <Flex sx={{ position: 'relative', alignItems: 'center' }}>
                     <Input variant={inputVariant} placeholder='Search for cards...'
@@ -118,12 +118,12 @@ function SearchBar({ children, onChange, onSearchEnd, inputVariant = 'searchbar'
                                 Clear
                     </Button>}
                     </Box>
-
                 </Flex>
                 <Box p={2}></Box>
                 <Box sx={{ flex: 1 }}>
                     <MagicCardsFilters onChange={setFilterAndEnsureAll} />
                 </Box>
+                <Box py={1}></Box>
 
             </Flex>
             {!data && <Flex sx={{ flex: '1 1' }} pt={5} variant='centering'><Text sx={{ fontSize: 3, fontWeight: 'thin' }} >Nothing so far</Text></Flex>}
