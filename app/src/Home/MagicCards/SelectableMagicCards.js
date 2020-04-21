@@ -37,7 +37,7 @@ const SelectableMagigCards = (props) => {
             <Box>
                 {props.children(Object.values(selectedCards), onClear)}
             </Box>
-            <MagicCards cards={props.cards}>
+            <MagicCards {...props}>
                 {(card, i) => <Box key={i}
                     variant={selectedCards[i] ? 'cards.selected' : ''}
                 >
