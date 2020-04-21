@@ -22,7 +22,7 @@ const SearchPage = ({ }) => {
             <SearchBar onSearchEnd={history.goBack}>
                 {({ cards, onLoadMore }) => (<Box>
                     {cards && <Box pt={3}>
-                        <SelectableMagigCards cards={cards.cards}
+                        <SelectableMagigCards cards={cards.cards} hasFilters={false}
                             card={(card, i, setSelectedCard) =>
                                 <MagicCard key={card.id} card={card}
                                     onClick={() => setSelectedCard(card, i)}
