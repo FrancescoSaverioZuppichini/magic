@@ -21,6 +21,8 @@ const SelectedCardsActions = ({ cards, onRemove }) => (
     </Box>
 )
 
+const RemoveCardFromDeckAction = ({ onRemove, variant = 'warning' }) => (
+    <Button onClick={onRemove} variant={variant}>Remove</Button>)
 
 export default function Deck({ id }) {
     /**
@@ -72,26 +74,30 @@ export default function Deck({ id }) {
                 </Flex>
                 <Text sx={{ fontSize: 0 }}>{moment(Number(data.deck.createdAt)).format('MMM Do YY')}</Text>
                 <Box p={2} />
-                <DeckControllers {...data.deck}/>
+                <DeckControllers {...data.deck} />
                 <Box p={2} />
                 {/* cards */}
                 <SelectableMagigCards cards={data.deck.cards} card={
                     (card, i, setSelectedCard) => <MagicCard key={i} card={card}
                         onClick={() => setSelectedCard(card, i)}
-                        actions={props => <Flex sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-                            <AddToDeckMagiCardAction {...props} selectedDecks={[data.deck]} />
-                            <ZoomMagiCardAction {...props}>
-                                {onClose => <CardPage {...props} onClose={onClose}>
-                                    <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                                        <Button onClick={() => {
-                                            removeCardsFromDeck([props])
-                                            onClose()
-                                        }} variant='warning'>Remove</Button>
-                                        <AddToDeckMagiCardAction {...props} variant='primary' selectedDecks={[data.deck]} />
-
-                                    </Flex>
-                                </CardPage>}
-                            </ZoomMagiCardAction> </Flex>} />}
+                        actions={props => (
+                            // actions for the card
+                            <Flex sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                                <RemoveCardFromDeckAction onRemove={() => removeCardsFromDeck([card])} variant='actionWarning' />
+                                <AddToDeckMagiCardAction {...props} selectedDecks={[data.deck]} />
+                                <ZoomMagiCardAction {...props}>
+                                    {onClose => <CardPage {...props} onClose={onClose}>
+                                        <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <RemoveCardFromDeckAction onRemove={() => {
+                                                removeCardsFromDeck([props])
+                                                onClose()
+                                            }} />
+                                            <AddToDeckMagiCardAction {...props} variant='primary' selectedDecks={[data.deck]} />
+                                        </Flex>
+                                    </CardPage>}
+                                </ZoomMagiCardAction>
+                            </Flex>
+                        )} />}
                 >
                     {(selectedCards, onClear) =>
                         <SelectedCardsActions cards={selectedCards}

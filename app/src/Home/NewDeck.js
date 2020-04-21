@@ -184,7 +184,7 @@ export default function NewDeck({ onClose }) {
                             <Box py={3} />
                         </Box>
 
-                        <SearchBar>{({ cards, onLoadMore }) =>
+                        <SearchBar isClearable={false}>{({ cards, onLoadMore }) =>
                             <Flex sx={{ flexDirection: 'row', flex: 1, minHeight: 0 }}>
                                 {/* searched cards */}
                                 <Flex sx={{ flex: 1, minHeight: 0 }}>
