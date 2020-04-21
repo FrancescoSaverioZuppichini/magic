@@ -15,6 +15,7 @@ const queries = {
                     name
                     cards {
                         id
+                        scryfallId
                     }
                 }
             }
