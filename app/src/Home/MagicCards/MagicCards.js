@@ -36,7 +36,7 @@ export default function MagicCards({ cards, children, hasFilters = true, width =
     }
 
     return (
-        <Box sx={{ width: '100%' }}>
+        <Flex sx={{ width: '100%', flex: 1, flexDirection: 'column' }}>
             <Text sx={{ fontSize: 2 }}>{`${cards.length} cards`}</Text>
             <Flex pb={2} sx={{ flexDirection: 'column' }}>
                 <Flex sx={{ justifyContent: 'space-between', flexDirection: 'row', width: '100%' }}>
@@ -47,15 +47,15 @@ export default function MagicCards({ cards, children, hasFilters = true, width =
                         <IconButton onClick={() => setCardVisMode('TABLE')}><Image src='/view_list-black-18dp.svg' width='48px' height='48px'></Image></IconButton>
                     </Box>
                 </Flex>
-                {showFilters && <Box pb={2}><MagicCardsFilters onChange={setFilterAndEnsureAll} /></Box>}
+                {showFilters && <Box pb={2} ><MagicCardsFilters onChange={setFilterAndEnsureAll} /> </Box>}
             </Flex>
-            {!hasFilters && <Box p={2} />}
+            {!hasFilters && <Box p={1} />}
             {/* cards */}
-            <Flex p={2} sx={{
+            {filteredCards.length > 0 && (<Flex p={2} sx={{
                 flexDirection: 'row',
                 flexWrap: 'wrap',
                 backgroundColor: 'background',
-                borderRadius: '16px'
+                borderRadius: '16px',
             }}>
                 {cardsVisMode === 'BLOCK' &&
                     filteredCards.map((card, i) =>
@@ -64,10 +64,15 @@ export default function MagicCards({ cards, children, hasFilters = true, width =
                         </Box>)
                 }
                 {cardsVisMode === 'TABLE' && <div>show table</div>}
-                {filteredCards.length === 0 && <Flex variant="centering" sx={{ width: '100%', height: '150px' }}>
-                    <Text sx={{ fontSize: 3 }}> No cards</Text> </Flex>}
-            </Flex>
-        </Box>
+
+            </Flex>)}
+            {/* no cards warning */}
+            {filteredCards.length === 0 && (
+                <Flex variant="centering" sx={{ width: '100%', height: '150px' }}>
+                    <Text sx={{ fontSize: 3 }}> No cards</Text>
+                </Flex>)}
+
+        </Flex>
 
     )
 
