@@ -10,7 +10,7 @@ class RoomContainer extends Container {
     }
     state = {
         count: 0,
-        phase: this.PHASES.PRE
+        phase: this.PHASES.GAME
     }
 
     constructor() {

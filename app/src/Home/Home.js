@@ -58,12 +58,12 @@ function Home() {
     // if   error here we have to redirect to login!
     return (
         <Provider>
-            <Box>
+            <Flex sx={{flexDirection: 'column', height: '100%'}}>
                 <Subscribe to={[loader]}>
                     {({ state }) => state.show && <Loader />}
                 </Subscribe>
                 {data && <NavBar user={data.me} />}
-                {data && <Card variant='container'>
+                {data && <Card variant='container' sx={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
                     <Route path='/home/search' component={Search}></Route>
                     <Route path='/home/decks' component={Decks}></Route>
                     <Route path='/home/rooms' component={Rooms}></Route>
@@ -125,7 +125,7 @@ function Home() {
                     </Route>
                 </Card>}
 
-            </Box>
+            </Flex>
         </Provider>
 
     )
