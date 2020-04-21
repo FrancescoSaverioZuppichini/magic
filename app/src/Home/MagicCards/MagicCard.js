@@ -95,7 +95,6 @@ const AddToDeckMagiCardAction = ({ scryfallId, id, name, variant, selectedDecks 
         onCompleted() {
             onClose()
         },
-
     })
 
     const isDeckSelected = (deck) => decksSelected.filter(d => d.id === deck.id).length > 0
