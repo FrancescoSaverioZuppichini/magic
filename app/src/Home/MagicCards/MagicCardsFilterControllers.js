@@ -70,7 +70,6 @@ const MagicCardsFilterControllers = ({ cards=[], children }) => {
                         <IconButton><Image src='/view_list-black-18dp.svg' width='48px' height='48px'></Image></IconButton>
                     </Box>
                     {showFilters && <MagicCardsFilters onChange={setFilterAndEnsureAll} />}
-
                 </Flex>
             </Flex>
             {children(filteredCards)}
