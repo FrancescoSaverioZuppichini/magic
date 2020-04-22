@@ -16,7 +16,6 @@ const JoinAutomatically = ({ room, name, userId, roomId }) => {
 
 
 const Phases = ({ phase, room, game, me }) => {
-    console.log(phase)
     let children = <PreGame room={room} me={me} />
 
     if (phase === room.PHASES.GAME) children = <InGame room={room} game={game} deck={me.decks[0]} />
