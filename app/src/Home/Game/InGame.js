@@ -46,9 +46,11 @@ export default function InGame({ room, game, deck }) {
     }
 
     return (
-        <Flex sx={{ flexDirection: 'row', flexGrow: 1 }}>
+        <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
+                    {/* Battlefield */}
+                    <Flex sx={{flexDirection: 'row', flex: 1}}>
                     <Card sx={{ flex: 1, flexGrow: 1, display: 'flex' }}>
                         <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
                             <Box sx={{ flex: 1, alignItems: 'flex-end'}}></Box>
@@ -57,6 +59,21 @@ export default function InGame({ room, game, deck }) {
                             </Flex>
                         </Flex>
                     </Card>
+                     {/* show card on right */}
+                    {card && <Box
+                        pl={2}
+                        sx={{
+                            visibility: ['hidden', 'hidden', 'hidden', 'visible'],
+                            width: [0, 0, 0, '450px']
+                        }}>
+                        <Card variant='tiny'>
+                            <MagicCard card={card} />
+                            {!card.isPlayed ? 
+                            <InGameDeckActions onPlay={() => game.play(card)}/> :
+                            <InBattleFieldDeckActions onTap={() => game.tap(card)}/> }
+                        </Card>
+                    </Box>}
+                    </Flex>
                     <Box py={2} />
                     <Box>
                         {game.state.deck && <InGameDeck
@@ -80,20 +97,6 @@ export default function InGame({ room, game, deck }) {
                     </CardPage>
                 </Modal> 
             </Box>
-            {/* show card on right */}
-            {card && <Box
-                pl={2}
-                sx={{
-                    visibility: ['hidden', 'hidden', 'hidden', 'visible'],
-                    width: [0, 0, 0, '450px']
-                }}>
-                <Card variant='tiny'>
-                    <MagicCard card={card} />
-                    {!card.isPlayed ? 
-                    <InGameDeckActions onPlay={() => game.play(card)}/> :
-                    <InBattleFieldDeckActions onTap={() => game.tap(card)}/> }
-                </Card>
-            </Box>}
         </Flex>
     )
 }
