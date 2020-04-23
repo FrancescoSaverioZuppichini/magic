@@ -23,7 +23,7 @@ class GameContainer extends Container {
         deck: undefined
     }
 
-    originalDeck 
+    originalDeck
 
     shuffleDeck({ cards }) {
         // console.log(this.state.deck.cards)
@@ -35,27 +35,48 @@ class GameContainer extends Container {
     setDeck(deck) {
         this.originalDeck = deck
         // deep copy the deck, we are going to change it!
-        const deepDeck = { cards: [...deck.cards], name: deck.name}
+        const deepDeck = { cards: [...deck.cards], name: deck.name }
         this.shuffleDeck(deepDeck)
         const hand = deepDeck.cards.splice(0, 5)
-        this.setState ({ deck: deepDeck, hand })
+        
+        this.setState({ deck: deepDeck, hand })
     }
 
-    pickACard(){
+    pickACard() {
         const card = this.state.deck.cards.splice(0, 1)[0]
         const hand = [...this.state.hand, card]
-        this.setState ({ hand })
+        this.setState({ hand })
     }
 
-    unpickACard(card){
+    unpickACard(card) {
         const hand = this.state.hand.filter(c => c.id !== card.id)
-        this.setState ({ hand })
-
+        this.setState({ hand })
     }
 
-    shuffle(){
-        
+    swap(i, j, key) {
+        let cards = [...this.state[key]]
+        let temp = cards[i]
+        cards.splice(i, 1)
+        cards.splice(j, 0, temp)
+        let state = {}
+        state[key] = cards
+        this.setState(state)
     }
+
+    play(card) {
+        const playedCard = {...card, ...{ isPlayed: true, isTapped: false }}
+        let battlefield = [...this.state.battlefield, playedCard]
+        battlefield.map((el, i) => el.idx = i)
+        this.setState({battlefield})
+    }
+
+    tap(card) {
+        card.isTapped = !card.isTapped
+        let battlefield = [...this.state.battlefield]
+        battlefield[card.idx] = card
+        this.setState({})
+    }
+
 }
 
 export default GameContainer

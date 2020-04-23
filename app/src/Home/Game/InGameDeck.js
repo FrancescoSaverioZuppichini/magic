@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import { Card, Text, Flex, Box, IconButton, Button, Input } from 'theme-ui'
 import { MagicCard, ZoomMagiCardAction, CardPage } from '../MagicCards/MagicCard'
 import Modal from '../Modal.js'
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Droppable, Draggable } from "react-beautiful-dnd";
 
 // https://egghead.io/lessons/react-reorder-a-list-with-react-beautiful-dnd
 export default function InGameDeck({ game, onCardClick }) {
     const [isHiding, setIsHiding] = useState(false)
 
-    console.log(onCardClick)
+
     return (
         <Box>
             {isHiding ?
@@ -20,8 +20,7 @@ export default function InGameDeck({ game, onCardClick }) {
                 // hand
                 <Card>
                     <Flex sx={{ flexDirection: ['column', 'column', 'row'] }}>
-                        <DragDropContext>
-                            <Droppable droppableId={'inGameDeck'} direction="horizontal">
+                            <Droppable droppableId={'hand'} direction="horizontal">
                                 {(provided) => (
                                     <Flex key={0}
                                         sx={{ flexDirection: 'row', overflow: 'auto', flexGrow: 1, justifyContent: 'center' }}
@@ -47,7 +46,6 @@ export default function InGameDeck({ game, onCardClick }) {
                                     </Flex>
                                 )}
                             </Droppable>
-                        </DragDropContext>
                         <Flex sx={{ flexDirection: ['row', 'row', 'column'], justifyContent: 'space-between', alignItems: 'center' }}>
                             <Box>
                                 <Text>{game.state.deck.cards.length} in deck </Text>
