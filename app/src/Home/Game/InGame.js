@@ -6,22 +6,24 @@ import { Provider, Subscribe } from 'unstated'
 import InGameDeck from './InGameDeck'
 import Modal from '../Modal.js'
 import { MagicCard, ZoomMagiCardAction, CardPage } from '../MagicCards/MagicCard'
+import BattleField from './BattleField'
+import { DragDropContext } from "react-beautiful-dnd"
 
-const BattleField = ({ game }) => {
-    return ('')
-}
-
-const InGameDeckActions = ({ }) => (
+const InGameDeckActions = ({ onPlay }) => (
     <Flex sx={{ justifyContent: 'space-between' }}>
         <Button variant='warning'>Discard</Button>
+        <Button onClick={onPlay}>Play</Button>
+    </Flex>
+)
 
-        <Button>Play</Button>
-
+const InBattleFieldDeckActions = ({ onTap }) => (
+    <Flex sx={{ justifyContent: 'flex-end' }}>
+        <Button onClick={onTap}>Tap</Button>
     </Flex>
 )
 
 export default function InGame({ room, game, deck }) {
-    const [card, setCard] = useState()
+    const [card, setCard] = useState({})
     const [showCardModal, setShowCardModal] = useState(false)
 
     useEffect(() => {
@@ -35,20 +37,35 @@ export default function InGame({ room, game, deck }) {
         setShowCardModal(true)
     }
 
+    const onDragEnd = ({ source, destination }) => {
+        if (destination) {
+            if (source.droppableId === destination.droppableId){
+                game.swap(source.index, destination.index, destination.droppableId)
+            }
+        }
+    }
+
     return (
         <Flex sx={{ flexDirection: 'row', flexGrow: 1 }}>
-            <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
-                <Card sx={{ flex: 1 }}>
-                    {game.state.deck && <BattleField game={game} />}
-                </Card>
-                <Box py={2} />
-                <Box>
-                    {game.state.deck && <InGameDeck
-                        onCardClick={onCardClick}
-                        game={game}
-                    />}
-                </Box>
-            </Flex>
+            <DragDropContext onDragEnd={onDragEnd}>
+                <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
+                    <Card sx={{ flex: 1, flexGrow: 1, display: 'flex' }}>
+                        <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
+                            <Box sx={{ flex: 1, alignItems: 'flex-end'}}></Box>
+                            <Flex sx={{ flex: 1, alignItems: 'flex-end'}}>
+                                {game.state.deck && <BattleField onCardClick={onCardClick} game={game} />}
+                            </Flex>
+                        </Flex>
+                    </Card>
+                    <Box py={2} />
+                    <Box>
+                        {game.state.deck && <InGameDeck
+                            onCardClick={onCardClick}
+                            game={game}
+                        />}
+                    </Box>
+                </Flex>
+            </DragDropContext>
             {/* Show the card modal */}
             <Box
                 sx={{
@@ -57,10 +74,12 @@ export default function InGame({ room, game, deck }) {
                 }}>
                 <Modal active={showCardModal}>
                     <CardPage {...card} onClose={() => setShowCardModal(false)}>
-                        <InGameDeckActions />
+                    {!card.isPlayed ? 
+                    <InGameDeckActions onPlay={() => game.play(card)}/> :
+                    <InBattleFieldDeckActions onTap={() => game.tap(card)}/> }
                     </CardPage>
-                </Modal> </Box>
-
+                </Modal> 
+            </Box>
             {/* show card on right */}
             {card && <Box
                 pl={2}
@@ -70,7 +89,9 @@ export default function InGame({ room, game, deck }) {
                 }}>
                 <Card variant='tiny'>
                     <MagicCard card={card} />
-                    <InGameDeckActions />
+                    {!card.isPlayed ? 
+                    <InGameDeckActions onPlay={() => game.play(card)}/> :
+                    <InBattleFieldDeckActions onTap={() => game.tap(card)}/> }
                 </Card>
             </Box>}
         </Flex>
