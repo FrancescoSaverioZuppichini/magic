@@ -4,30 +4,11 @@ import { MagicCard, ZoomMagiCardAction, CardPage } from '../MagicCards/MagicCard
 import Modal from '../Modal.js'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-const InGameDeckActions = ({ }) => (
-    <Flex sx={{ justifyContent: 'space-between' }}>
-        <Button variant='warning'>Discard</Button>
-
-        <Button>Play</Button>
-
-    </Flex>
-)
-
 // https://egghead.io/lessons/react-reorder-a-list-with-react-beautiful-dnd
-export default function InGameDeck({ game }) {
+export default function InGameDeck({ game, onCardClick }) {
     const [isHiding, setIsHiding] = useState(false)
-    const [card, setCard] = useState()
-    const [showCardModal, setShowCardModal] = useState(false)
 
-    const onCardClick = (card) => {
-        setCard(card)
-        setShowCardModal(true)
-    }
-
-    const onDragEnd = res => {
-
-    }
-
+    console.log(onCardClick)
     return (
         <Box>
             {isHiding ?
@@ -38,7 +19,7 @@ export default function InGameDeck({ game }) {
                 :
                 // hand
                 <Card>
-                    <Flex sx={{ flexDirection: 'column' }}>
+                    <Flex sx={{ flexDirection: ['column', 'column', 'row'] }}>
                         <DragDropContext>
                             <Droppable droppableId={'inGameDeck'} direction="horizontal">
                                 {(provided) => (
@@ -56,7 +37,7 @@ export default function InGameDeck({ game }) {
                                                         {...provider.dragHandleProps}
                                                         ref={provider.innerRef}
                                                         key={i}
-                                                        sx={{ maxWidth: '225px', minWidth: '150px' }}>
+                                                        sx={{ width: '150px' }}>
                                                         <MagicCard card={card} onClick={() => onCardClick(card)} />
                                                     </Box>
                                                 )}
@@ -67,7 +48,7 @@ export default function InGameDeck({ game }) {
                                 )}
                             </Droppable>
                         </DragDropContext>
-                        <Flex sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Flex sx={{ flexDirection: ['row', 'row', 'column'], justifyContent: 'space-between', alignItems: 'center' }}>
                             <Box>
                                 <Text>{game.state.deck.cards.length} in deck </Text>
                             </Box>
@@ -79,12 +60,6 @@ export default function InGameDeck({ game }) {
                         </Flex>
                     </Flex>
                 </Card>}
-            {/* Show the card modal */}
-            {<Modal active={showCardModal}>
-                <CardPage {...card} onClose={() => setShowCardModal(false)}>
-                    <InGameDeckActions />
-                </CardPage>}
-               </Modal>}
 
         </Box>
     )
