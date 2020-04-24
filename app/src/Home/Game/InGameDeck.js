@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { Card, Text, Flex, Box, IconButton, Button, Input } from 'theme-ui'
-import { MagicCard, ZoomMagiCardAction, CardPage } from '../MagicCards/MagicCard'
+import InGameMagicCard from './InGameMagicCard'
 import Modal from '../Modal.js'
 import { Droppable, Draggable } from "react-beautiful-dnd";
 
 // https://egghead.io/lessons/react-reorder-a-list-with-react-beautiful-dnd
-export default function InGameDeck({ game, onCardClick }) {
+export default function InGameDeck({ game, onCardClick, selectedCard }) {
     const [isHiding, setIsHiding] = useState(false)
-
+    console.log(selectedCard)
 
     return (
         <Box>
@@ -19,34 +19,36 @@ export default function InGameDeck({ game, onCardClick }) {
                 :
                 // hand
                 <Card>
-                    <Flex sx={{ flexDirection: ['column', 'column', 'row'] }}>
-                            <Droppable droppableId={'hand'} direction="horizontal">
-                                {(provided) => (
-                                    <Flex key={0}
-                                        sx={{ flexDirection: 'row', overflow: 'auto', flexGrow: 1, justifyContent: 'center' }}
-                                        {...provided.droppableProps}
-                                        ref={provided.innerRef}
-                                    >
-                                        {game.state.hand.map((card, i) => (
-                                            <Draggable draggableId={'' + i} index={i}>
-                                                {(provider) => (
+                    <Flex sx={{ flexDirection: ['column', 'column', 'column'] }}>
+                        <Droppable droppableId={'hand'} direction="horizontal" isCombineEnabled={true}>
+                            {(provided) => (
+                                <Flex key={0}
+                                    sx={{ flexDirection: 'row', overflowX: 'auto', flexGrow: 1 }}
+                                    {...provided.droppableProps}
+                                    ref={provided.innerRef}
+                                >
+                                    {game.state.hand.map((card, i) => (
+                                        <Draggable draggableId={'' + i} index={i}>
+                                            {(provider) => (
 
-                                                    <Box
-                                                        {...provider.draggableProps}
-                                                        {...provider.dragHandleProps}
-                                                        ref={provider.innerRef}
-                                                        key={i}
-                                                        sx={{ width: '150px' }}>
-                                                        <MagicCard card={card} onClick={() => onCardClick(card)} />
-                                                    </Box>
-                                                )}
-                                            </Draggable>)
-                                        )}
-                                        {provided.placeholder}
-                                    </Flex>
-                                )}
-                            </Droppable>
-                        <Flex sx={{ flexDirection: ['row', 'row', 'column'], justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <Box
+                                                    px={1}
+                                                    {...provider.draggableProps}
+                                                    {...provider.dragHandleProps}
+                                                    ref={provider.innerRef}
+                                                    key={i}
+                                                    sx={{ minWidth: '150px', width: '150px' }}>
+                                                    <InGameMagicCard {...card} onClick={() => onCardClick(card)}
+                                                        selected={selectedCard.id === card.id} />
+                                                </Box>
+                                            )}
+                                        </Draggable>)
+                                    )}
+                                    {provided.placeholder}
+                                </Flex>
+                            )}
+                        </Droppable>
+                        <Flex sx={{ flexDirection: ['row', 'row', 'row'], justifyContent: 'space-between', alignItems: 'center', flex: 1 }}>
                             <Box>
                                 <Text>{game.state.deck.cards.length} in deck </Text>
                             </Box>

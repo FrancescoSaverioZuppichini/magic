@@ -77,6 +77,14 @@ const theme = {
       borderRadius: '8px'
     }
   },
+  img: {
+    selected: {
+      borderColor: 'primary',
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      borderRadius: '4px'
+    }
+  },
   text: {
     error: {
       color: 'red'
