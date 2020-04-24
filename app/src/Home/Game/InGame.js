@@ -8,6 +8,7 @@ import Modal from '../Modal.js'
 import { MagicCard, ZoomMagiCardAction, CardPage } from '../MagicCards/MagicCard'
 import BattleField from './BattleField'
 import { DragDropContext } from "react-beautiful-dnd"
+import InteractableMagicCads from './InteractableMagicCards'
 
 const InGameDeckActions = ({ onPlay }) => (
     <Flex sx={{ justifyContent: 'space-between' }}>
@@ -37,7 +38,8 @@ export default function InGame({ room, game, deck }) {
         setShowCardModal(true)
     }
 
-    const onDragEnd = ({ source, destination }) => {
+    const onDragEnd = ({ source, destination, combine }) => {
+        console.log(combine)
         if (destination) {
             if (source.droppableId === destination.droppableId){
                 game.swap(source.index, destination.index, destination.droppableId)
@@ -54,9 +56,7 @@ export default function InGame({ room, game, deck }) {
                     <Card sx={{ flex: 1, flexGrow: 1, display: 'flex' }}>
                         <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
                             <Box sx={{ flex: 1, alignItems: 'flex-end'}}></Box>
-                            <Flex sx={{ flex: 1, alignItems: 'flex-end'}}>
-                                {game.state.deck && <BattleField onCardClick={onCardClick} game={game} />}
-                            </Flex>
+                                {game.state.deck && <BattleField  game={game} selectedCard={card} onCardClick={onCardClick} />}
                         </Flex>
                     </Card>
                      {/* show card on right */}
@@ -76,9 +76,13 @@ export default function InGame({ room, game, deck }) {
                     </Flex>
                     <Box py={2} />
                     <Box>
-                        {game.state.deck && <InGameDeck
-                            onCardClick={onCardClick}
+                        {game.state.deck && 
+                        
+                        <InteractableMagicCads cards={game.state.hand}/>
+                        <InGameDeck
                             game={game}
+                            selectedCard={card}
+                            onCardClick={onCardClick}
                         />}
                     </Box>
                 </Flex>

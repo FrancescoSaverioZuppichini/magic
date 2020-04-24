@@ -39,7 +39,7 @@ class GameContainer extends Container {
         this.shuffleDeck(deepDeck)
         const hand = deepDeck.cards.splice(0, 5)
         
-        this.setState({ deck: deepDeck, hand })
+        this.setState({ deck: deepDeck, hand, battlefield: [...deck.cards] })
     }
 
     pickACard() {
