@@ -3,14 +3,13 @@ import { Card, Text, Flex, Box, IconButton, Button, Input } from 'theme-ui'
 import InGameMagicCard from './InGameMagicCard'
 import Modal from '../Modal.js'
 import { Droppable, Draggable } from "react-beautiful-dnd";
-
+import CombinedMagicCard from './CombinedMagicCard'
 // https://egghead.io/lessons/react-reorder-a-list-with-react-beautiful-dnd
 export default function InGameDeck({ game, onCardClick, selectedCard }) {
     const [isHiding, setIsHiding] = useState(false)
-    console.log(selectedCard)
 
     return (
-        <Box>
+        <Box sx={{position:'relative'}}>
             {isHiding ?
                 // button to show the hand
                 <Flex sx={{ justifyContent: 'flex-end' }} pb={2} pl={2}>
@@ -28,19 +27,22 @@ export default function InGameDeck({ game, onCardClick, selectedCard }) {
                                     ref={provided.innerRef}
                                 >
                                     {game.state.hand.map((card, i) => (
-                                        <Draggable draggableId={'' + i} index={i}>
+                                        <Draggable draggableId={i.toString()} index={i}>
                                             {(provider) => (
-
-                                                <Box
-                                                    px={1}
-                                                    {...provider.draggableProps}
+                                                <Box {...provider.draggableProps}
                                                     {...provider.dragHandleProps}
                                                     ref={provider.innerRef}
-                                                    key={i}
-                                                    sx={{ minWidth: '150px', width: '150px' }}>
-                                                    <InGameMagicCard {...card} onClick={() => onCardClick(card)}
-                                                        selected={selectedCard.id === card.id} />
+                                                    sx={{ minWidth: '150px', width: '150px' }}
+                                                    px={1}
+                                                    key={i}>
+                                                    <CombinedMagicCard
+                                                        card={card}>
+                                                        {card => (
+                                                            <InGameMagicCard {...card} onClick={() => onCardClick(card)}
+                                                                selected={selectedCard.id === card.id} />)}
+                                                    </CombinedMagicCard>
                                                 </Box>
+
                                             )}
                                         </Draggable>)
                                     )}

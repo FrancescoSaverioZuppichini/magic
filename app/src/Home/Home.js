@@ -32,8 +32,6 @@ function Home() {
     // const socket = io('http://localhost');
     const client = useApolloClient()
     const { error, loading, data } = useQuery(queries.GET_ME)
-    let { path, url } = useRouteMatch()
-
 
     if (loading) loader.show()
     if (data || error) loader.hide()
@@ -50,11 +48,6 @@ function Home() {
         client.writeData({ data: { action: null } })
     }
 
-    const onJoinClick = () => {
-        history.push("/home/rooms/join/123")
-    }
-
-    if (data) console.log(data)
     // if   error here we have to redirect to login!
     return (
         <Provider>
