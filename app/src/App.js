@@ -25,24 +25,24 @@ const typeDefs = gql`
 const resolvers = {}
 
 const myOnErrorLink = onError(({ graphQLErrors, networkError }) => {
-  console.log('ASDDASSDASDASD')
-  if (networkError)
-  console.log(graphQLErrors)
+  if (graphQLErrors)
     graphQLErrors.map(({ message, locations, path }) =>
       console.log(
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
       ),
     )
 
-  if (networkError) console.log(`[Network error]:`)
+  if (networkError) console.log(`[Network error]: ${networkError}`, 'PORCODIOOOOOOOOO')
 })
 
 const myHttpLink = new HttpLink({
   uri: '/graphql',
 })
 // https://www.apollographql.com/docs/link/composition/
+const link = ApolloLink.from([myOnErrorLink, myHttpLink])
+
 const client = new ApolloClient({
-  uri: myOnErrorLink.concat(myHttpLink),
+  link: myOnErrorLink.concat(myHttpLink),
   request: (operation) => {
     const token = localStorage.getItem('token')
     if (token) {
