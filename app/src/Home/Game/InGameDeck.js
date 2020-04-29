@@ -9,7 +9,7 @@ export default function InGameDeck({ game, onCardClick, selectedCard }) {
     const [isHiding, setIsHiding] = useState(false)
 
     return (
-        <Box sx={{position:'relative'}}>
+        <Box sx={{ position: 'relative' }}>
             {isHiding ?
                 // button to show the hand
                 <Flex sx={{ justifyContent: 'flex-end' }} pb={2} pl={2}>
@@ -28,14 +28,16 @@ export default function InGameDeck({ game, onCardClick, selectedCard }) {
                                 >
                                     {game.state.hand.map((card, i) => (
                                         <Draggable draggableId={i.toString()} index={i}>
-                                            {(provider) => (
-                                                <Box {...provider.draggableProps}
+                                            {(provider, snapshot) => (
+                                                <Box
+                                                    {...provider.draggableProps}
                                                     {...provider.dragHandleProps}
                                                     ref={provider.innerRef}
                                                     sx={{ minWidth: '150px', width: '150px' }}
                                                     px={1}
                                                     key={i}>
                                                     <CombinedMagicCard
+                                                        {...snapshot}
                                                         card={card}>
                                                         {card => (
                                                             <InGameMagicCard {...card} onClick={() => onCardClick(card)}
