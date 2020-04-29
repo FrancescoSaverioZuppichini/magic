@@ -28,8 +28,9 @@ export default function InGameDeck({ game, onCardClick, selectedCard }) {
                                 >
                                     {game.state.hand.map((card, i) => (
                                         <Draggable draggableId={i.toString()} index={i}>
-                                            {(provider, snapshot) => (
+                                            {(provider, shapshot) => (
                                                 <Box
+
                                                     {...provider.draggableProps}
                                                     {...provider.dragHandleProps}
                                                     ref={provider.innerRef}
@@ -37,7 +38,7 @@ export default function InGameDeck({ game, onCardClick, selectedCard }) {
                                                     px={1}
                                                     key={i}>
                                                     <CombinedMagicCard
-                                                        {...snapshot}
+                                                        {...shapshot}
                                                         card={card}>
                                                         {card => (
                                                             <InGameMagicCard {...card} onClick={() => onCardClick(card)}

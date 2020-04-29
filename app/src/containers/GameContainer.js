@@ -27,7 +27,8 @@ class GameContainer extends Container {
 
     shuffleDeck({ cards }) {
         // console.log(this.state.deck.cards)
-        shuffle(cards)
+        // shuffle(cards)
+
         // console.log(this.state.deck.cards)
         // const deck = {...this.state.deck, cards: [shuffledCards]}
     }
@@ -37,9 +38,20 @@ class GameContainer extends Container {
         // deep copy the deck, we are going to change it!
         const deepDeck = { cards: [...deck.cards], name: deck.name }
         this.shuffleDeck(deepDeck)
-        const hand = deepDeck.cards.splice(0, 5)
 
-        this.setState({ deck: deepDeck, hand, battlefield: [...deck.cards] })
+        // for(let i = 0; i < deepDeck.cards.length; i++){
+        //     console.log(i)
+        //     deepDeck.cards[i].idx = i
+        // }
+        // console.log(deepDeck)
+        let hand = [...deepDeck.cards.splice(0, 5)]
+        let diocane = []
+        for(let idx = 0; idx < hand.length; idx++){
+            hand[idx].idx = idx
+            diocane.push({ ... hand[idx], idx})
+        }
+        console.log(diocane)
+        this.setState({ deck: deepDeck, hand: diocane, battlefield: [...deck.cards] })
     }
 
     pickACard() {
