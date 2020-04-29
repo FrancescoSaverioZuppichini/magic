@@ -3,7 +3,7 @@ const express = require('express')
 const jwt = require('express-jwt')
 const logger = require('./logger')
 const expressLogger = require('express-pino-logger')({ logger })
-
+const { AuthenticationError } = require('apollo-server-express')
 const PORT = process.env.PORT || 4000
 const NODE_ENV = process.env.NODE_ENV || 'development'
 const TOKEN_SECRET = process.env.TOKEN_SECRET || 'pazzofurioso'
@@ -24,6 +24,12 @@ var app = express()
 app.use(express.static('public'))
 app.use(expressLogger)
 app.use(jwt({ secret: TOKEN_SECRET, credentialsRequired: false }))
+// app.use(function (err, req, res, next) {
+// 	if (err.name === 'UnauthorizedError') {
+// 	 throw new AuthenticationError('Token Expired')
+	 
+// 	}
+//   })
 
 GraphQLserver.applyMiddleware({ app })
 const server = app.listen({ port: PORT }, () => logger.info(`🚀 Server ready at http://localhost:${PORT}${GraphQLserver.graphqlPath}`))

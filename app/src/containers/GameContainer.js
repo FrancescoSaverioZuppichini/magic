@@ -38,7 +38,7 @@ class GameContainer extends Container {
         const deepDeck = { cards: [...deck.cards], name: deck.name }
         this.shuffleDeck(deepDeck)
         const hand = deepDeck.cards.splice(0, 5)
-        
+
         this.setState({ deck: deepDeck, hand, battlefield: [...deck.cards] })
     }
 
@@ -54,6 +54,9 @@ class GameContainer extends Container {
     }
 
     swap(i, j, key) {
+        /**
+         * Swap two cards
+         */
         let cards = [...this.state[key]]
         let temp = cards[i]
         cards.splice(i, 1)
@@ -63,11 +66,37 @@ class GameContainer extends Container {
         this.setState(state)
     }
 
+    combine(i, j, key) {
+        /**
+         * Combine two cards. There are three possible situation
+         * 1) booth inputs are cards
+         * 2) one is a card the other is an array
+         * 3) booth are arrays @NotImplemented
+         */
+        const cards = [...this.state[key]]
+        if(cards[j].length) return
+        if (cards[i].length > 0) cards[i] = [...cards[i], cards[j]]
+        else {
+            cards[i] = [cards[i], cards[j]]
+        }
+        cards.splice(j, 1)
+        let state = {}
+        state[key] = cards
+        this.setState(state)
+    }
+
+    decombine(combineIdx, destinationInd, key){
+        /**
+         * Remove a card from a combined group
+         */
+
+    }
+
     play(card) {
-        const playedCard = {...card, ...{ isPlayed: true, isTapped: false }}
+        const playedCard = { ...card, ...{ isPlayed: true, isTapped: false } }
         let battlefield = [...this.state.battlefield, playedCard]
         battlefield.map((el, i) => el.idx = i)
-        this.setState({battlefield})
+        this.setState({ battlefield })
     }
 
     tap(card) {
