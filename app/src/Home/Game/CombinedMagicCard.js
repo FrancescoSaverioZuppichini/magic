@@ -28,9 +28,8 @@ const CombinedMagicCardZoom = ({ cards, children }) => (
 
 const CombinedMagicCard = ({ card, children, innerRef, isDragging }) => {
     const [zoom, setZooom] = useState(false)
-    useEffect(() => setZooom(zoom && !isDragging), [isDragging])
     const onClick = () => setZooom(!zoom)
-
+    useEffect(() => setZooom(zoom && !isDragging), [isDragging])
     return (
         <Box ref={innerRef} sx={{ height: '100%' }} >{card.length > 0 ?
             <Box>
