@@ -20,10 +20,8 @@ class GameContainer extends Container {
     state = {
         deck: null,
         hand: [],
-        battlefield: {
-            '0': [],
-            '1': []
-        }
+        battlefield0: [],
+        battlefield1: [],
 
     }
 
@@ -53,10 +51,11 @@ class GameContainer extends Container {
     }
 
     pickACard() {
-        let card = this.state.deck.cards.splice(0, 1)[0]
+        let cards = [...this.state.deck.cards]
+        let card = {...cards.splice(0, 1)[0]}
         card.uid = uniqid()
         const hand = [...this.state.hand, card]
-        this.setState({ hand })
+        this.setState({ hand, deck: {...this.state.deck, cards} })
     }
 
     unpickACard(card) {
@@ -64,14 +63,39 @@ class GameContainer extends Container {
         this.setState({ hand })
     }
 
+
+
     swap(source, destination) {
         /**
          * Swap two cards
          */
         let state = { ...this.state }
-        let temp = state[source.droppableId][source.index]
+        let card = state[source.droppableId][source.index]
         state[source.droppableId].splice(source.index, 1)
-        state[destination.droppableId].splice(destination.index, 0, temp)
+        state[destination.droppableId].splice(destination.index, 0, card)
+
+        const addPlayFields = (card) => {
+            card.isPlayed = true
+            card.isTapped = false
+        }
+
+        const removePlayField = (card) => {
+            card.isPlayed = false
+            card.isTapped = false
+        }
+        // we need to update each card fields depending if they are in game or not
+        if (destination.droppableId === 'battlefield0' || destination.droppableId === 'battlefield1') {
+            if (card.length) card.map(addPlayFields)
+            else {
+                addPlayFields(card)
+            }
+        }
+        else if (destination.droppableId === 'hand') {
+            if (card.length) card.map(removePlayField)
+            else {
+                removePlayField(card)
+            }
+        }
         this.setState(state)
     }
 
@@ -89,6 +113,8 @@ class GameContainer extends Container {
         if (combineIdx < 0) return
         const left = cards[combineIdx]
         const right = cards[index]
+        // remove old reference
+        delete this.state[draggableId]
         let group = []
         // 4 situations
         // booth are single cards
@@ -109,6 +135,8 @@ class GameContainer extends Container {
         }
         // add an unique id
         if (!group.uid) group.uid = uniqid()
+        // loop on the group and add the parent field
+        group.map(card => card.parent = group)
 
         cards[combineIdx] = group
         cards.splice(index, 1)
@@ -121,25 +149,23 @@ class GameContainer extends Container {
         this.setState(state)
     }
 
-    decombine(combineIdx, destinationInd, key) {
-        /**
-         * Remove a card from a combined group
-         */
+    play(card) {
+        let cards = this.state.hand
+        const { parent } = card
+        if (parent) cards = parent
+        const playedIdx = cards.findIndex(handCard => handCard.uid === card.uid)
+        card.isPlayed = true
+        card.isTapped = false
 
-    }
+        cards.splice(playedIdx, 1)
 
-    play(card, where = '0') {
-        const playedCard = { ...card, ...{ isPlayed: true, isTapped: false } }
-        let battlefield0 = [...this.state.battlefield0, playedCard]
-        battlefield0.map((el, i) => el.idx = i)
-        this.setState({ battlefield0 })
+        let battlefield0 = [...this.state.battlefield0, card]
+        let hand = [...this.state.hand]
+        this.setState({ battlefield0, hand })
     }
 
     tap(card) {
         card.isTapped = !card.isTapped
-        let battlefield = [...this.state.battlefield]
-        battlefield[card.idx] = card
-        this.setState({})
     }
 
 }

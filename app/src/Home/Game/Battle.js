@@ -17,7 +17,7 @@ const HandActions = ({ onPlay }) => (
     </Flex>
 )
 
-const InBattleFieldDeckActions = ({ onTap }) => (
+const BattleFieldDeckActions = ({ onTap }) => (
     <Flex sx={{ justifyContent: 'flex-end' }}>
         <Button onClick={onTap}>Tap</Button>
     </Flex>
@@ -51,6 +51,11 @@ export default function Battle({ room, game, deck }) {
         }
     }
 
+    const onPlay = (card) => {
+        game.play(card)
+        setShowCardModal(false)
+    }
+
     return (
         <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
             <DragDropContext onDragEnd={onDragEnd}>
@@ -60,7 +65,7 @@ export default function Battle({ room, game, deck }) {
                         <Card sx={{ flex: 1, flexGrow: 1, display: 'flex' }}>
                             <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
                                 <Box sx={{ flex: 1, alignItems: 'flex-end' }}></Box>
-                                {/* {game.state.deck && <BattleField game={game} selectedCard={card} onCardClick={onCardClick} />} */}
+                                {game.state.deck && <BattleField game={game} selectedCard={card} onCardClick={onCardClick} />}
                             </Flex>
                         </Card>
                         {/* show card on right */}
@@ -72,9 +77,10 @@ export default function Battle({ room, game, deck }) {
                             }}>
                             <Card variant='tiny'>
                                 <MagicCard card={card} />
+                                {card.isPlayed}
                                 {!card.isPlayed ?
                                     <HandActions onPlay={() => game.play(card)} /> :
-                                    <InBattleFieldDeckActions onTap={() => game.tap(card)} />}
+                                    <BattleFieldDeckActions onTap={() => game.tap(card)} />}
                             </Card>
                         </Box>}
                     </Flex>
@@ -97,8 +103,8 @@ export default function Battle({ room, game, deck }) {
                 <Modal active={showCardModal}>
                     <CardPage {...card} onClose={() => setShowCardModal(false)}>
                         {!card.isPlayed ?
-                            <HandActions onPlay={() => game.play(card)} /> :
-                            <InBattleFieldDeckActions onTap={() => game.tap(card)} />}
+                            <HandActions onPlay={() => onPlay(card)} /> :
+                            <BattleFieldDeckActions onTap={() => game.tap(card)} />}
                     </CardPage>
                 </Modal>
             </Box>

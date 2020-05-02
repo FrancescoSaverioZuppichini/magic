@@ -17,17 +17,17 @@ export default function InGameDeck({ game, onCardClick }) {
     const [cards, setCards] = useState(false)
 
     return (
-        <Flex sx={{ width: '100%' }}>
-            <OrganizableMagicCards cards={game.state.battlefield0} droppableId='battlefield0'>
-                {card => <BattleFieldMagicCard
-                    card={card}
-                    onCardClick={onCardClick} />}
-            </OrganizableMagicCards>
+        <Flex sx={{ width: '100%', flexDirection: 'column' }}>
             <OrganizableMagicCards cards={game.state.battlefield1} droppableId='battlefield1'>
                 {card => <BattleFieldMagicCard
                     card={card}
                     onCardClick={onCardClick} />}
             </OrganizableMagicCards> 
+            <OrganizableMagicCards cards={game.state.battlefield0} droppableId='battlefield0'>
+                {card => <BattleFieldMagicCard
+                    card={card}
+                    onCardClick={onCardClick} />}
+            </OrganizableMagicCards>
         </Flex >
     )
 }

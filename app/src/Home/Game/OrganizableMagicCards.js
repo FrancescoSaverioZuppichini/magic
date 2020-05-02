@@ -9,7 +9,7 @@ const OrganizableMagicCards = ({ cards, children, droppableId }) => {
         <Droppable droppableId={droppableId} direction="horizontal" isCombineEnabled={true}>
             {(provided) => (
                 <Flex
-                    sx={{ flexDirection: 'row', overflowX: 'auto', flexGrow: 1 }}
+                    sx={{ flexDirection: 'row', overflowX: 'auto', flexGrow: 1, minHeight: '200px' }}
                     {...provided.droppableProps}
                     ref={provided.innerRef}>
                     {cards.map((card, i) => (

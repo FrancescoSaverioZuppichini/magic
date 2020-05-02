@@ -36,7 +36,6 @@ export default function Hand({ game, onCardClick, selectedCard }) {
                         </Flex>
                     </Flex>
                 </Card>}
-
         </Box>
     )
 }
