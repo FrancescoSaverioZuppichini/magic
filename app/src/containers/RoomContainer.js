@@ -5,12 +5,12 @@ import io from 'socket.io-client'
 class RoomContainer extends Container {
     PHASES = {
         PRE : 'PRE',
-        GAME: 'GAME',
+        BATTLE: 'BATTLE',
         END : 'END'
     }
     state = {
         count: 0,
-        phase: this.PHASES.GAME
+        phase: this.PHASES.BATTLE
     }
 
     constructor() {

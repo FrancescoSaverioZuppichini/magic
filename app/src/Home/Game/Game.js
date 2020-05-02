@@ -6,7 +6,7 @@ import loader from '../../containers/LoaderContainer'
 import queries from '../../queries'
 import { useQuery } from '@apollo/react-hooks'
 import PreGame from './PreGame'
-import InGame from './InGame'
+import Battle from './Battle'
 import GameContainer from '../../containers/GameContainer'
 
 const JoinAutomatically = ({ room, name, userId, roomId }) => {
@@ -18,7 +18,7 @@ const JoinAutomatically = ({ room, name, userId, roomId }) => {
 const Phases = ({ phase, room, game, me }) => {
     let children = <PreGame room={room} me={me} />
 
-    if (phase === room.PHASES.GAME) children = <InGame room={room} game={game} deck={me.decks[0]} />
+    if (phase === room.PHASES.BATTLE) children = <Battle room={room} game={game} deck={me.decks[0]} />
 
     return children
 
@@ -39,7 +39,6 @@ export default function Game({ id }) {
     return (
         <Provider>
             <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
-
                 <div>Room</div>
                 {roomData && meData &&
                     <Subscribe to={[roomContainer, GameContainer]}>

@@ -1,9 +1,8 @@
 import React from 'react'
 
-export default function InGameMagicCard({ scryfallId, onClick, selected }) {
+export default function GameMagicCard({ scryfallId, onClick, selected }) {
 
     const selectedStyle = {
-
             borderColor: '#6A66F2',
             borderWidth: '4px',
             borderStyle: 'solid',

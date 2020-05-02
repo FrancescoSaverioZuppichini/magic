@@ -3,15 +3,14 @@ import React, { useEffect, useState, Children } from 'react'
 import { Card, Text, Flex, Box, IconButton, Button, Input } from 'theme-ui'
 import loader from '../../containers/LoaderContainer'
 import { Provider, Subscribe } from 'unstated'
-import InGameDeck from './InGameDeck'
+import Hand from './Hand'
 import Modal from '../Modal.js'
 import { MagicCard, ZoomMagiCardAction, CardPage } from '../MagicCards/MagicCard'
 import BattleField from './BattleField'
 import { DragDropContext } from "react-beautiful-dnd"
-import InteractableMagicCads from './InteractableMagicCards'
 import CombinedMagicCard from './CombinedMagicCard.js'
 
-const InGameDeckActions = ({ onPlay }) => (
+const HandActions = ({ onPlay }) => (
     <Flex sx={{ justifyContent: 'space-between' }}>
         <Button variant='warning'>Discard</Button>
         <Button onClick={onPlay}>Play</Button>
@@ -25,8 +24,9 @@ const InBattleFieldDeckActions = ({ onTap }) => (
 )
 
 
-export default function InGame({ room, game, deck }) {
+export default function Battle({ room, game, deck }) {
     const [card, setCard] = useState({})
+
     const [showCardModal, setShowCardModal] = useState(false)
 
     useEffect(() => {
@@ -42,14 +42,12 @@ export default function InGame({ room, game, deck }) {
 
     const onDragEnd = ({ source, destination, combine }) => {
         if (destination) {
-            if (source.droppableId === destination.droppableId) {
-                game.swap(source.index, destination.index, destination.droppableId)
-            }
+                game.swap(source, destination)
         }
         else if (combine) {
-            console.log(combine, source, destination)
             // const 
-            game.combine(Number(combine.draggableId), source.index, source.droppableId)
+            console.log(combine, source, destination, 'asdsaddsasda')
+            game.combine(combine, source)
         }
     }
 
@@ -62,7 +60,7 @@ export default function InGame({ room, game, deck }) {
                         <Card sx={{ flex: 1, flexGrow: 1, display: 'flex' }}>
                             <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
                                 <Box sx={{ flex: 1, alignItems: 'flex-end' }}></Box>
-                                {game.state.deck && <BattleField game={game} selectedCard={card} onCardClick={onCardClick} />}
+                                {/* {game.state.deck && <BattleField game={game} selectedCard={card} onCardClick={onCardClick} />} */}
                             </Flex>
                         </Card>
                         {/* show card on right */}
@@ -75,14 +73,14 @@ export default function InGame({ room, game, deck }) {
                             <Card variant='tiny'>
                                 <MagicCard card={card} />
                                 {!card.isPlayed ?
-                                    <InGameDeckActions onPlay={() => game.play(card)} /> :
+                                    <HandActions onPlay={() => game.play(card)} /> :
                                     <InBattleFieldDeckActions onTap={() => game.tap(card)} />}
                             </Card>
                         </Box>}
                     </Flex>
                     <Box py={2} />
                     <Box>
-                        {game.state.deck && <InGameDeck
+                        {game.state.deck && <Hand
                             game={game}
                             selectedCard={card}
                             onCardClick={onCardClick}
@@ -99,7 +97,7 @@ export default function InGame({ room, game, deck }) {
                 <Modal active={showCardModal}>
                     <CardPage {...card} onClose={() => setShowCardModal(false)}>
                         {!card.isPlayed ?
-                            <InGameDeckActions onPlay={() => game.play(card)} /> :
+                            <HandActions onPlay={() => game.play(card)} /> :
                             <InBattleFieldDeckActions onTap={() => game.tap(card)} />}
                     </CardPage>
                 </Modal>
