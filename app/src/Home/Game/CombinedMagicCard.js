@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { Card, Flex, Box, Text } from 'theme-ui'
 import { MagicCardImg } from '../MagicCards/MagicCard'
+import { Droppable, Draggable } from "react-beautiful-dnd";
 
-const MagicCardsFolder = ({ cards, children, onClick }) => (
+const GroupPreviewMagicCards = ({ cards, children, onClick }) => (
+    /**
+     * This compoenent shows a preview of the cards in the group
+     */
     <Flex sx={{ flexDirection: 'row', flexWrap: 'wrap', position: 'relative', height: '100%' }} onClick={onClick}>
         {cards.slice(0, 4).map((card, i) =>
             <Box p={1} key={i} sx={{ width: '50%', opacity: 0.6 }}>
                 <MagicCardImg {...card} key={i} />
-            </Box>)}
+            </Box>
+        )}
         <Flex sx={{
             position: 'absolute', width: '100%', height: '100%',
             justifyContent: 'center', alignItems: 'center'
@@ -18,11 +23,31 @@ const MagicCardsFolder = ({ cards, children, onClick }) => (
     </Flex>
 )
 
-const CombinedMagicCardZoom = ({ cards, children }) => (
+const CombinedMagicCardZoom = ({ cards, children, droppableId }) => (
+    /**
+     * This component shows all the combines cards as a popup
+     */
     <Card sx={{ position: 'absolute', top: '-200px', zIndex: 99 }} variant='tiny'>
-        <Flex >
-            {cards.map((card , i) => <Box p={1} key={i} sx={{ width: '150px' }}>{children(card)}</Box>)}
-        </Flex>
+        <Droppable droppableId={droppableId} direction="horizontal" isCombineEnabled={true}>
+            {(provided) => (
+                <Flex
+                    {...provided.droppableProps}
+                    ref={provided.innerRef} >
+                    {cards.map((card, i) =>
+                        <Draggable draggableId={card.uid} index={i} key={card.uid} >
+                            {(provider, shapshot) => (
+
+                                <Box p={1} key={i} sx={{ width: '150px' }}
+                                    {...provider.draggableProps}
+                                    {...provider.dragHandleProps}
+                                    ref={provider.innerRef}
+                                >{children(card)}</Box>
+                            )}
+                        </Draggable>)}
+                    {provided.placeholder}
+                </Flex>
+            )}
+        </Droppable>
     </Card>
 )
 
@@ -30,13 +55,14 @@ const CombinedMagicCard = ({ card, children, innerRef, isDragging }) => {
     const [zoom, setZooom] = useState(false)
     const onClick = () => setZooom(!zoom)
     useEffect(() => setZooom(zoom && !isDragging), [isDragging])
+
     return (
-        <Box ref={innerRef} sx={{ height: '100%' }} >{card.length > 0 ?
+        <Box ref={innerRef} sx={{ height: '100%' }} >{card.length > 1 ?
             <Box>
-                <MagicCardsFolder cards={card} children={children} onClick={onClick} />
-                {zoom && <CombinedMagicCardZoom cards={card} children={children} />}
+                <GroupPreviewMagicCards cards={card} children={children} onClick={onClick} />
+                {zoom && <CombinedMagicCardZoom cards={card} children={children} droppableId={card.uid} />}
             </Box>
-            : children(card)
+            : children(card.length === 1 ? card[0] : card)
         }
         </Box>
     )

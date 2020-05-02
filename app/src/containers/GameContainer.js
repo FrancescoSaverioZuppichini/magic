@@ -1,5 +1,6 @@
 import { Container } from 'unstated'
 import io from 'socket.io-client'
+import uniqid from 'uniqid'
 
 /**
  * Shuffles array in place. ES6 version
@@ -13,14 +14,17 @@ function shuffle(a) {
     }
     return a;
 }
-
+// https://egghead.io/lessons/react-create-and-style-a-list-of-data-with-react
 class GameContainer extends Container {
 
     state = {
+        deck: null,
         hand: [],
-        battlefield: [],
-        graveyard: [],
-        deck: undefined
+        battlefield: {
+            '0': [],
+            '1': []
+        }
+
     }
 
     originalDeck
@@ -39,23 +43,18 @@ class GameContainer extends Container {
         const deepDeck = { cards: [...deck.cards], name: deck.name }
         this.shuffleDeck(deepDeck)
 
-        // for(let i = 0; i < deepDeck.cards.length; i++){
-        //     console.log(i)
-        //     deepDeck.cards[i].idx = i
-        // }
-        // console.log(deepDeck)
-        let hand = [...deepDeck.cards.splice(0, 5)]
-        let diocane = []
-        for(let idx = 0; idx < hand.length; idx++){
-            hand[idx].idx = idx
-            diocane.push({ ... hand[idx], idx})
+        let hand = []
+        for (let card of deepDeck.cards.splice(0, 5)) {
+            card.uid = uniqid()
+            hand.push({ ...card })
         }
-        console.log(diocane)
-        this.setState({ deck: deepDeck, hand: diocane, battlefield: [...deck.cards] })
+
+        this.setState({ deck: deepDeck, hand })
     }
 
     pickACard() {
-        const card = this.state.deck.cards.splice(0, 1)[0]
+        let card = this.state.deck.cards.splice(0, 1)[0]
+        card.uid = uniqid()
         const hand = [...this.state.hand, card]
         this.setState({ hand })
     }
@@ -65,50 +64,75 @@ class GameContainer extends Container {
         this.setState({ hand })
     }
 
-    swap(i, j, key) {
+    swap(source, destination) {
         /**
          * Swap two cards
          */
-        let cards = [...this.state[key]]
-        let temp = cards[i]
-        cards.splice(i, 1)
-        cards.splice(j, 0, temp)
-        let state = {}
-        state[key] = cards
+        let state = { ...this.state }
+        let temp = state[source.droppableId][source.index]
+        state[source.droppableId].splice(source.index, 1)
+        state[destination.droppableId].splice(destination.index, 0, temp)
         this.setState(state)
     }
 
-    combine(i, j, key) {
+    combine(combine, source) {
         /**
-         * Combine two cards. There are three possible situation
-         * 1) booth inputs are cards
-         * 2) one is a card the other is an array
-         * 3) booth are arrays @NotImplemented
+         * Combine cards and groups.
          */
-        const cards = [...this.state[key]]
-        if(cards[j].length) return
-        if (cards[i].length > 0) cards[i] = [...cards[i], cards[j]]
-        else {
-            cards[i] = [cards[i], cards[j]]
+        const { draggableId } = combine
+        const { index, droppableId } = source
+        // a function to remove single list
+        const _normalize = (cards) => cards.map(card => card.length === 1 ? card[0] : card)
+        let cards = [...this.state[droppableId]]
+        const combineIdx = cards.findIndex(card => card.uid === draggableId)
+        // card was not found!
+        if (combineIdx < 0) return
+        const left = cards[combineIdx]
+        const right = cards[index]
+        let group = []
+        // 4 situations
+        // booth are single cards
+        if (left.length && right.length) {
+            group = [...left, ...right]
         }
-        cards.splice(j, 1)
+        // left is an array and right a single card
+        else if (left.length && !right.length) {
+            group = [...left, right]
+        }
+        // left is single card and left is an array
+        else if (!left.length && right.length) {
+            group = [left, ...right]
+        }
+        // booth are array
+        else if (!left.length && !right.length) {
+            group = [left, right]
+        }
+        // add an unique id
+        if (!group.uid) group.uid = uniqid()
+
+        cards[combineIdx] = group
+        cards.splice(index, 1)
         let state = {}
-        state[key] = cards
+        cards = _normalize(cards)
+        state[droppableId] = cards
+        // add a reference to the group to the state
+        // so we can reference it later using only the `droppableId` (aka the uid)
+        state[group.uid] = group
         this.setState(state)
     }
 
-    decombine(combineIdx, destinationInd, key){
+    decombine(combineIdx, destinationInd, key) {
         /**
          * Remove a card from a combined group
          */
 
     }
 
-    play(card) {
+    play(card, where = '0') {
         const playedCard = { ...card, ...{ isPlayed: true, isTapped: false } }
-        let battlefield = [...this.state.battlefield, playedCard]
-        battlefield.map((el, i) => el.idx = i)
-        this.setState({ battlefield })
+        let battlefield0 = [...this.state.battlefield0, playedCard]
+        battlefield0.map((el, i) => el.idx = i)
+        this.setState({ battlefield0 })
     }
 
     tap(card) {
