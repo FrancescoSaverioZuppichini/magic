@@ -30,6 +30,7 @@ const typeDefs = gql`
     cards: [Card]
     owner: User
     createdAt: String
+    default: Boolean
 
 	}
 
