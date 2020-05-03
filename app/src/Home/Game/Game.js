@@ -1,35 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import { Card, Text, Flex, Box, IconButton, Button, Input } from 'theme-ui'
-import { Provider, Subscribe } from 'unstated'
+import { Provider, Subscribe } from 'unstated';
 import RoomContainer from '../../containers/RoomContainer'
 import loader from '../../containers/LoaderContainer'
 import queries from '../../queries'
 import { useQuery } from '@apollo/react-hooks'
 import PreGame from './PreGame'
-import Battle from './Battle/Battle'
-import GameOwnerActions from './GameOwnerActions'
+import Battle from './Battle'
+import GameContainer from '../../containers/GameContainer'
 
-const JoinAutomatically = ({ room, data, userId }) => {
-    room.joinRoom(data.name, userId, data.id)
+const JoinAutomatically = ({ room, name, userId, roomId }) => {
+    room.joinRoom(name, userId, roomId)
     return ''
 }
 
-const Phases = ({ phase, room, me }) => {
-    let children;
-    switch (phase) {
-        case room.PHASES.PRE:
-            children = <PreGame room={room} me={me} />
-            break
 
-        case room.PHASES.BATTLE:
-            children = <Battle room={room} deck={me.decks[0]} />
-            break
-    }
+const Phases = ({ phase, room, game, me }) => {
+    let children = <PreGame room={room} me={me} />
+
+    if (phase === room.PHASES.BATTLE) children = <Battle room={room} game={game} deck={me.decks[0]} />
 
     return children
-}
 
-const roomContainer = new RoomContainer()
+}
 
 export default function Game({ id }) {
     const roomRes = useQuery(queries.GET_ROOM, { variables: { id } })
@@ -38,31 +31,31 @@ export default function Game({ id }) {
     const roomData = roomRes.data
     const meData = meRes.data
 
+    const roomContainer = new RoomContainer()
+
     useEffect(() => roomContainer.deselectDeck(), [])
     loader.hide()
 
     return (
         <Provider>
             <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
-                {roomData && <Text sx={{ fontSize: 2, fontWeight: 'thin' }}>{`Room ${roomData.room.name}`}</Text>}
-                <Box py={1}></Box>
+                <div>Room</div>
                 {roomData && meData &&
-                    <Subscribe to={[roomContainer]}>
-                        {(room) => (
+                    <Subscribe to={[roomContainer, GameContainer]}>
+                        {(room, game) => (
                             <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
-                                {meData.me.id === roomData.room.owner.id && <GameOwnerActions
-                                    room={room}
-                                    data={roomData.room}
-                                />}
-                                <JoinAutomatically room={room} data={roomData.room} userId={meData.me.id} />
+                                <div>{roomData.room.name} </div>
+                                <JoinAutomatically room={room} name={roomData.room.id} userId={meData.me.id} roomId={id} />
                                 <Phases phase={room.state.phase}
                                     room={room}
+                                    game={game}
                                     me={meData.me} />
                             </Flex>)
                         }
                     </Subscribe>
                 }
             </Flex>
+
         </Provider>
     )
 }

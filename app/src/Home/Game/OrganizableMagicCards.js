@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Flex, Box } from 'theme-ui'
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import OrganizableMagicCard from './OrganizableMagicCard'
+import CombinedMagicCard from './CombinedMagicCard'
 
 const OrganizableMagicCards = ({ cards, children, droppableId }) => {
     const [isDragDisabled, setIsDragDisable] = useState(false)
@@ -22,13 +22,13 @@ const OrganizableMagicCards = ({ cards, children, droppableId }) => {
                                     sx={{ minWidth: '150px', width: '150px' }}
                                     px={1}
                                     >
-                                    <OrganizableMagicCard
+                                    <CombinedMagicCard
                                         setIsDragDisable={setIsDragDisable}
                                         i={i}
                                         {...shapshot}
                                         card={card}>
                                         {children}
-                                    </OrganizableMagicCard>
+                                    </CombinedMagicCard>
                                 </Box>
                             )}
                         </Draggable>)

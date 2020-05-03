@@ -88,9 +88,6 @@ const queries = {
             room(id: $id) {
                 id
                 name
-                owner {
-                    id
-                }
                 users {
                     username
                 }
@@ -100,6 +97,7 @@ const queries = {
             } 
         }
     `
+
 
 }
 

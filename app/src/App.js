@@ -38,7 +38,8 @@ const myOnErrorLink = onError(({ graphQLErrors, networkError }) => {
 const myHttpLink = new HttpLink({
   uri: '/graphql',
 })
-
+// https://www.apollographql.com/docs/link/composition/
+const link = ApolloLink.from([myOnErrorLink, myHttpLink])
 
 const client = new ApolloClient({
   link: myOnErrorLink.concat(myHttpLink),

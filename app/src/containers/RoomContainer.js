@@ -53,19 +53,13 @@ class RoomContainer extends Container {
         this.socket.emit('selectDeck', {})
     }
 
-    emitAction(action) {
-        const roomId = this.roomId
-        this.socket.emit('action', { roomId, action })
+    emitAction(room, action) {
+        this.socket.emit('action', { room, action })
     }
 
     decrement() {
         this.setState({ count: this.state.count - 1 });
     }
-
-    deleteRoom(room) {
-        console.log(`[TODO] delete room ${room.id}`)
-    }
-
 }
 
 export default RoomContainer

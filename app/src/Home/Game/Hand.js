@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { Card, Text, Flex, Box, Button } from 'theme-ui'
-import GameMagicCard from './SelectableMagicCard'
+import GameMagicCard from './GameMagicCard'
 import OrganizableMagicCards from './OrganizableMagicCards'
 
 
 // https://egghead.io/lessons/react-reorder-a-list-with-react-beautiful-dnd
 export default function Hand({ game, onCardClick, selectedCard }) {
     const [isHiding, setIsHiding] = useState(false)
+
     return (
         <Box sx={{ position: 'relative' }}>
             {isHiding ?

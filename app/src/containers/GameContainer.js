@@ -15,14 +15,13 @@ function shuffle(a) {
     return a;
 }
 // https://egghead.io/lessons/react-create-and-style-a-list-of-data-with-react
-class GameCardsContainer extends Container {
+class GameContainer extends Container {
 
     state = {
         deck: null,
         hand: [],
         battlefield0: [],
         battlefield1: [],
-        graveyard: []
 
     }
 
@@ -30,7 +29,7 @@ class GameCardsContainer extends Container {
 
     shuffleDeck({ cards }) {
         // console.log(this.state.deck.cards)
-        shuffle(cards)
+        // shuffle(cards)
 
         // console.log(this.state.deck.cards)
         // const deck = {...this.state.deck, cards: [shuffledCards]}
@@ -63,6 +62,8 @@ class GameCardsContainer extends Container {
         const hand = this.state.hand.filter(c => c.id !== card.id)
         this.setState({ hand })
     }
+
+
 
     swap(source, destination) {
         /**
@@ -169,4 +170,4 @@ class GameCardsContainer extends Container {
 
 }
 
-export default GameCardsContainer
+export default GameContainer

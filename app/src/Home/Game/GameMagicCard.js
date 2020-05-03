@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function SelectableMagicCard({ scryfallId, onClick, selected }) {
+export default function GameMagicCard({ scryfallId, onClick, selected }) {
 
     const selectedStyle = {
             borderColor: '#6A66F2',

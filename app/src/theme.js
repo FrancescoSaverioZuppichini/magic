@@ -17,9 +17,6 @@ const theme = {
     heading: "'Roboto', sans-serif",
     monospace: 'Menlo, monospace',
   },
-  breakpoints: [
-    '40em', '56em', '64em', '100em',
-  ],
   fontWeights: {
     thin: 200,
     body: 400,
