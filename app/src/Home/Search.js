@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Flex, Box, Text, Button } from 'theme-ui'
 import SearchBar from './SearchBar'
+import DecksSearchBar from './Decks/DecksSearchBar'
+
 import { MagicCard, AddToDeckMagiCardAction, ZoomMagiCardAction, AddToDeckMagiCardsAction } from './MagicCards/MagicCard'
 import { SelectableMagigCards } from './MagicCards/SelectableMagicCards'
-
-import MagicCards from './MagicCards/MagicCards.js'
 import { useHistory } from "react-router-dom";
 
 const SearchPage = ({ }) => {
     const history = useHistory()
+    const [searchType, setSearchType] = useState('CARDS')
 
     return (
         <Flex p={[2, 3, 4]} sx={{
@@ -19,7 +20,18 @@ const SearchPage = ({ }) => {
                 <Button onClick={history.goBack}>Close</Button>
             </Flex>
             <Box py={2}></Box>
-            <SearchBar onSearchEnd={history.goBack}>
+            <Flex>
+                <Button
+                    onClick={() => setSearchType('CARDS')}
+                    variant={searchType === 'CARDS' ? 'primary' : 'outline'}>Cards</Button>
+                <Box px={1}></Box>
+                <Button
+                    onClick={() => setSearchType('DECKS')}
+                    variant={searchType === 'DECKS' ? 'primary' : 'outline'}>Decks</Button>
+            </Flex>
+            <Box py={1}></Box>
+
+            {searchType === 'CARDS' && <SearchBar onSearchEnd={history.goBack}>
                 {({ cards, onLoadMore }) => (<Box>
                     {cards && <Box pt={3}>
                         <SelectableMagigCards cards={cards.cards} hasFilters={false}
@@ -54,7 +66,14 @@ const SearchPage = ({ }) => {
                     </Box>}
                 </Box>
                 )}
-            </SearchBar>
+            </SearchBar>}
+            {searchType === 'DECKS' && <DecksSearchBar>
+                {({ decks }) => <Box>
+                    {decks && decks.decks.map(deck => <Box key={deck.id}><Text>
+                        {deck.name}
+                    </Text></Box>)}
+                </Box>}
+            </DecksSearchBar>}
         </Flex>
     )
 }

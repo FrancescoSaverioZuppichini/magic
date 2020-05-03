@@ -6,7 +6,7 @@ import { Flex, Text, Box, Button, IconButton } from 'theme-ui'
 import Modal from '../Modal'
 import Deck from './Deck'
 import DeckPreview from './DeckPreview'
-import DecksSearchBar from './DecksSearchBar'
+import MyDecksSearchBar from './MyDecksSearchBar'
 
 export default function Decks() {
     /**
@@ -21,7 +21,7 @@ export default function Decks() {
             {data.me.decks.length <= 0 &&
                 <Text pt={2} sx={{ fontSize: 2, fontWeight: 'thin' }}>No decks! Create one</Text>}
             <Box py={2} p />
-            <DecksSearchBar sx={{ maxWidth: '250px' }} decks={data.me.decks}>
+            <MyDecksSearchBar sx={{ maxWidth: '250px' }} decks={data.me.decks}>
                 {decks =>
                     <Flex sx={{ flexDirection: ['column', 'row'], flexWrap: 'wrap' }}>
                         {decks.map(deck => <Box key={deck.id} pr={2} py={2}>
@@ -35,7 +35,7 @@ export default function Decks() {
                         </Flex>
                     </Flex>
                 }
-            </DecksSearchBar>
+            </MyDecksSearchBar>
             {/* edit a deck */}
             <Route path='/home/decks/edit/:deckId'>
                 {({ match }) => match ? <Modal active={true}>

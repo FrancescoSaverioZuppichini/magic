@@ -4,6 +4,7 @@ from pathlib import Path
 import pprint
 import pypeln.thread as th
 from tqdm import tqdm
+from bson.objectid import ObjectId
 
 DATA_DIR = Path('./AllDeckFiles')
 
@@ -19,14 +20,14 @@ print(f'Importing {len(files)} decks')
 
 
 def convert_deck_cards(deck):
-    converted_deck = {'name': deck['name'], 'cards': []}
+    converted_deck = {'name': deck['name'], 'cards': [], 'type' : deck['type'], 'releaseDate' : deck['releaseDate']}
     for card in deck['mainBoard']:
         stored_card = cards.find_one({'scryfallId': card['scryfallId']})
         if stored_card is None:
             continue
         else:
             [stored_card['_id']]
-            converted_deck['cards'] +=  [stored_card['_id']] * card['count']
+            converted_deck['cards'] +=  [ObjectId(stored_card['_id'])] * card['count']
         
     converted_deck['default'] = True
     return converted_deck

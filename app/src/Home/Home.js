@@ -9,7 +9,7 @@ import loader from '../containers/LoaderContainer'
 
 import Modal from './Modal'
 
-import NewDeck from './NewDeck'
+import NewDeck from './Decks/NewDeck'
 import DeckPreview from './Decks/DeckPreview'
 import Decks from './Decks/Decks.js'
 

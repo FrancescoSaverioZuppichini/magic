@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
 import { Card, Text, Flex, Box, IconButton, Button, Input } from 'theme-ui'
-import SearchBar from './SearchBar'
-import Modal from './Modal'
-import { MagicCard, MagicCardImg, CardPage, ZoomMagiCardAction } from './MagicCards/MagicCard'
-import DeckPreview from './Decks/DeckPreview'
-import MagicCards from './MagicCards/MagicCards.js'
-import queries from '../queries/index.js'
-import mutations from '../mutations/index.js'
-import Stages from './Stages'
-import InputWithErrors from '../InputWithErrors'
+import SearchBar from '../SearchBar'
+import { MagicCard, MagicCardImg, CardPage, ZoomMagiCardAction } from '../MagicCards/MagicCard'
+import DeckPreview from './DeckPreview'
+import MagicCards from '../MagicCards/MagicCards.js'
+import queries from '../../queries/index.js'
+import mutations from '../../mutations/index.js'
+import Stages from '../Stages'
+import InputWithErrors from '../../InputWithErrors'
 
 const RemovableFromDeckAction = ({ onRemove }) => (
     /**
