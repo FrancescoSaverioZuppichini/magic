@@ -142,6 +142,10 @@ export default function NewDeck({ onClose }) {
     }
 
     const addCardToDeck = (card) => {
+<<<<<<< HEAD
+=======
+        console.log(card)
+>>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
         let newDeck = { ...deck, cards: [...deck.cards, card] }
         setDeck(newDeck)
     }
@@ -150,6 +154,10 @@ export default function NewDeck({ onClose }) {
         if (deck.name !== '') goNext()
     }
 
+<<<<<<< HEAD
+=======
+    console.log(magicCards)
+>>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
 
     return (
         <Box sx={{ width: '100%' }}>

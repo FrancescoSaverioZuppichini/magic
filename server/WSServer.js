@@ -69,9 +69,15 @@ class WSServer {
                 }
             })
 
+<<<<<<< HEAD
             socket.on('action', ({ roomId, action }) => {
                 console.log(action, roomId)
                 this.io.to(roomId).emit('action', { action, from : { id: socket.userId }})
+=======
+            socket.on('action', ({ room, action }) => {
+                console.log(action, room)
+                this.io.to(room).emit('action', action)
+>>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
             })
 
             socket.on('disconnect', () => {

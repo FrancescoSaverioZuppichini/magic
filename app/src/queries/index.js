@@ -15,7 +15,10 @@ const queries = {
                     name
                     cards {
                         id
+<<<<<<< HEAD
                         scryfallId
+=======
+>>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
                     }
                 }
             }
@@ -88,9 +91,12 @@ const queries = {
             room(id: $id) {
                 id
                 name
+<<<<<<< HEAD
                 owner {
                     id
                 }
+=======
+>>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
                 users {
                     username
                 }
@@ -101,6 +107,10 @@ const queries = {
         }
     `
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
 }
 
 export default queries

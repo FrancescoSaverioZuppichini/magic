@@ -13,7 +13,10 @@
     "apollo-server": "^2.1.0",
     "apollo-server-express": "^2.11.0",
     "bcrypt": "^4.0.1",
+<<<<<<< HEAD
     "connect-history-api-fallback": "^1.6.0",
+=======
+>>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
     "express": "^4.15.2",
     "express-graphql": "^0.6.12",
     "express-jwt": "^5.3.1",

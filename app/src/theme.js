@@ -17,9 +17,12 @@ const theme = {
     heading: "'Roboto', sans-serif",
     monospace: 'Menlo, monospace',
   },
+<<<<<<< HEAD
   breakpoints: [
     '40em', '56em', '64em', '100em',
   ],
+=======
+>>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
   fontWeights: {
     thin: 200,
     body: 400,
@@ -80,6 +83,7 @@ const theme = {
       borderRadius: '8px'
     }
   },
+<<<<<<< HEAD
   img: {
     selected: {
       borderColor: 'primary',
@@ -88,6 +92,8 @@ const theme = {
       borderRadius: '4px'
     }
   },
+=======
+>>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
   text: {
     error: {
       color: 'red'
