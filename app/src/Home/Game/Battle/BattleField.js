@@ -1,20 +1,18 @@
 import React, { useState } from 'react'
 import { Card, Text, Flex, Box, IconButton, Button, Input } from 'theme-ui'
-import { MagicCardImg, ZoomMagiCardAction, CardPage } from '../MagicCards/MagicCard'
-import Modal from '../Modal.js'
+import { MagicCardImg, ZoomMagiCardAction, CardPage } from '../../MagicCards/MagicCard'
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import OrganizableMagicCards from './OrganizableMagicCards'
 
 const BattleFieldMagicCard = ({ provider, card, onCardClick, selectedCard }) => (
     <Flex
         p={1}
-        sx={{ minWidth: '100px', transform: card.isTapped ? 'rotate(90deg)' : 'rotate(0deg)', justifyContent: 'center' }}>
+        sx={{ width: '150', transform: card.isTapped ? 'rotate(90deg) scale(0.75)' : 'rotate(0deg)'}}>
         <MagicCardImg {...card} onClick={() => onCardClick(card)} />
     </Flex>
 )
 // https://egghead.io/lessons/react-reorder-a-list-with-react-beautiful-dnd
-export default function InGameDeck({ game, onCardClick }) {
-    const [cards, setCards] = useState(false)
+export default function Battlefield({ game, onCardClick }) {
 
     return (
         <Flex sx={{ width: '100%', flexDirection: 'column' }}>

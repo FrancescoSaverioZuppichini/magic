@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Card, Flex, Box, Text } from 'theme-ui'
-import { MagicCardImg } from '../MagicCards/MagicCard'
+import { MagicCardImg } from '../../MagicCards/MagicCard'
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import Tooltip from 'rc-tooltip'
 
 const GroupPreviewMagicCards = ({ cards, children, onClick }) => (
     /**
