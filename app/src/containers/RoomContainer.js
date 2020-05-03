@@ -5,20 +5,12 @@ import io from 'socket.io-client'
 class RoomContainer extends Container {
     PHASES = {
         PRE : 'PRE',
-<<<<<<< HEAD
         BATTLE: 'BATTLE',
-=======
-        GAME: 'GAME',
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
         END : 'END'
     }
     state = {
         count: 0,
-<<<<<<< HEAD
         phase: this.PHASES.BATTLE
-=======
-        phase: this.PHASES.PRE
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
     }
 
     constructor() {
@@ -61,27 +53,19 @@ class RoomContainer extends Container {
         this.socket.emit('selectDeck', {})
     }
 
-<<<<<<< HEAD
     emitAction(action) {
         const roomId = this.roomId
         this.socket.emit('action', { roomId, action })
-=======
-    emitAction(room, action) {
-        this.socket.emit('action', { room, action })
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
     }
 
     decrement() {
         this.setState({ count: this.state.count - 1 });
     }
-<<<<<<< HEAD
 
     deleteRoom(room) {
         console.log(`[TODO] delete room ${room.id}`)
     }
 
-=======
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
 }
 
 export default RoomContainer

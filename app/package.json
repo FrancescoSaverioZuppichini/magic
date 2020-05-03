@@ -14,29 +14,20 @@
     "apollo-link": "^1.2.14",
     "apollo-link-error": "^1.1.13",
     "apollo-link-http": "^1.5.17",
-<<<<<<< HEAD
     "connect-history-api-fallback": "^1.6.0",
-=======
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.3",
     "momentjs": "^2.0.0",
     "query-string": "^6.12.0",
     "react": "^16.13.1",
-<<<<<<< HEAD
     "react-beautiful-dnd": "^13.0.0",
-=======
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "react-transition-group": "^4.3.0",
     "socket.io-client": "^2.3.0",
     "theme-ui": "^0.3.1",
-<<<<<<< HEAD
     "uniqid": "^5.2.0",
-=======
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
     "unstated": "^2.1.1"
   },
   "scripts": {

@@ -54,11 +54,7 @@ const MagicCardHeader = ({ name, manaCost }) => (
 )
 
 const MagicCardImg = ({ scryfallId, onClick }) => (
-<<<<<<< HEAD
     <img width='100%' height='auto' src={`/cards/${scryfallId}.jpg`} onClick={onClick} />
-=======
-    <img width='100%' src={`/cards/${scryfallId}.jpg`} onClick={onClick} />
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
 
 )
 
@@ -274,11 +270,7 @@ const MagicCardActions = ({ children }) => {
 
 
 const MagicCard = (props) => (
-<<<<<<< HEAD
     <Card variant={props.variant || 'tiny'}>
-=======
-    <Card variant='tiny'>
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
         {/* <MagicCardHeader {...props} />
         <Box py={1} /> */}
         <MagicCardImg {...props.card} onClick={props.onClick} />

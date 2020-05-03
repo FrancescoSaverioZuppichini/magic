@@ -32,11 +32,6 @@ function Home() {
     // const socket = io('http://localhost');
     const client = useApolloClient()
     const { error, loading, data } = useQuery(queries.GET_ME)
-<<<<<<< HEAD
-=======
-    let { path, url } = useRouteMatch()
-
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
 
     if (loading) loader.show()
     if (data || error) loader.hide()
@@ -53,31 +48,15 @@ function Home() {
         client.writeData({ data: { action: null } })
     }
 
-<<<<<<< HEAD
     // if   error here we have to redirect to login!
     return (
         <Provider>
             <Flex sx={{flexDirection: 'column', height: '100%'}}>
-=======
-    const onJoinClick = () => {
-        history.push("/home/rooms/join/123")
-    }
-
-    if (data) console.log(data)
-    // if   error here we have to redirect to login!
-    return (
-        <Provider>
-            <Box>
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
                 <Subscribe to={[loader]}>
                     {({ state }) => state.show && <Loader />}
                 </Subscribe>
                 {data && <NavBar user={data.me} />}
-<<<<<<< HEAD
                 {data && <Card variant='container' sx={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
-=======
-                {data && <Card variant='container'>
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
                     <Route path='/home/search' component={Search}></Route>
                     <Route path='/home/decks' component={Decks}></Route>
                     <Route path='/home/rooms' component={Rooms}></Route>
@@ -139,11 +118,7 @@ function Home() {
                     </Route>
                 </Card>}
 
-<<<<<<< HEAD
             </Flex>
-=======
-            </Box>
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
         </Provider>
 
     )

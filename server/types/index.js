@@ -34,11 +34,7 @@ const typeDefs = gql`
 	}
 
 	type Card {
-<<<<<<< HEAD
     id: ID
-=======
-    id: ID!
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
     name: String!,
     artist: String,
     colorIndicator:  [String],
@@ -71,12 +67,8 @@ const typeDefs = gql`
 
 	type Room {
     id: ID!
-<<<<<<< HEAD
     name: String!
     owner: User
-=======
-    name: String!,
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
     users: [User]
     readyUsers: [User]
     decks: [Deck]
@@ -94,10 +86,6 @@ const typeDefs = gql`
     id: ID
     name: String!
     cards: [ID!]
-<<<<<<< HEAD
-=======
-  
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
   }
 
   input CardFilter {

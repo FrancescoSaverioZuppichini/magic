@@ -25,11 +25,7 @@ const cards = async (ctx, { filter, cursor }) => {
 	const cards = await Card.find(cardFilter).skip(skip).limit(limit)
 	const hasMore = cards.length >= limit || cards.length === 0
 	cursor.skip += limit
-<<<<<<< HEAD
 	console.log(cards)
-=======
-
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
 	return { cards, hasMore, cursor }
 }
 
@@ -71,11 +67,7 @@ const resolvers = {
 		card(ctx, { id }) {
 			return Card.findById(id)
 		},
-<<<<<<< HEAD
 		room: (ctx, { id }) => Room.findById(id).populate('users').populate('decks').populate('owner')
-=======
-		room: (ctx, { id }) => Room.findById(id).populate('users').populate('decks')
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
 	},
 	Mutation: {
 		async newUser(obj, { input }) {
@@ -127,11 +119,7 @@ const resolvers = {
 		async newRoom(obj, { room }, { user }) {
 			// TODO should check if the room alrays exist for a single user
 			// add the master to the room creation
-<<<<<<< HEAD
 			let roomWithOwner = { ...room, ...{ users: [user.id], active: true, owner: user } }
-=======
-			let roomWithOwner = { ...room, ...{ users: [user.id], active: true } }
->>>>>>> c5bea406fed5d371065eba64def74ff14308c9a7
 			const newRoom = new Room(roomWithOwner)
 			const savedRoom = await newRoom.save()
 
