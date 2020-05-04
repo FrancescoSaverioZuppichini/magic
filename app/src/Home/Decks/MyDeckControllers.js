@@ -8,7 +8,7 @@ import mutations from '../../mutations/index'
 import queries from '../../queries/index.js'
 import { useMutation } from '@apollo/react-hooks'
 
-export default function DeckControllers({ id, name }) {
+export default function MyDeckControllers({ id, name }) {
     /**
      * Buttons for decks. They supports delete and edit
      */

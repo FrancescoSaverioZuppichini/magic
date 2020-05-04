@@ -63,15 +63,18 @@ const queries = {
                 id
                 name
                 createdAt
+                owner {
+                    id
+                }
                 cards {
-                    # name
+                    name
                     id
                     scryfallId
-                    # colors
-                    # convertedManaCost
-                    # manaCost
+                    colors
+                    convertedManaCost
+                    manaCost
                     # artist
-                    # types
+                    types
                     # subtypes
                     # text
                     # colorIndicator

@@ -4,9 +4,10 @@ import queries from '../../queries'
 import { Route, useHistory } from "react-router-dom";
 import { Flex, Text, Box, Button, IconButton } from 'theme-ui'
 import Modal from '../Modal'
-import Deck from './Deck'
+import DeckPage from './DeckPage'
 import DeckPreview from './DeckPreview'
 import MyDecksSearchBar from './MyDecksSearchBar'
+import MyDeckControllers from './MyDeckControllers'
 
 export default function Decks() {
     /**
@@ -25,9 +26,11 @@ export default function Decks() {
                 {decks =>
                     <Flex sx={{ flexDirection: ['column', 'row'], flexWrap: 'wrap' }}>
                         {decks.map(deck => <Box key={deck.id} pr={2} py={2}>
-                            <DeckPreview key={deck.id} {...deck}>}</DeckPreview>
+                            <DeckPreview key={deck.id} deck={deck} controllers={
+                                deck => <MyDeckControllers {...deck} />
+                            }>}</DeckPreview>
                         </Box>)}
-                        <Flex sx={{ flex: 1, alignItems: 'center'}}>
+                        <Flex sx={{ flex: 1, alignItems: 'center' }}>
                             <Button
                                 onClick={() => history.push('/home/decks/newDeck')}>
                                 Add
@@ -49,7 +52,7 @@ export default function Decks() {
             {/* open a specific deck */}
             <Route path='/home/decks/show/:deckId'>
                 {({ match }) => match ? <Modal active={true} variant='none'>
-                    <Deck id={match.params.deckId} />
+                    <DeckPage id={match.params.deckId} me={data.me} onClose={() => history.goBack()}/>
                 </Modal> : ''
                 }
             </Route>

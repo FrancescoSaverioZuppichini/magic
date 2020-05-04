@@ -66,7 +66,7 @@ const resolvers = {
 			return `Psssh ${user.email}`
 		},
 		cards,
-		deck: (ctx, { id }) => Deck.findById(id).populate('cards'),
+		deck: (ctx, { id }) => Deck.findById(id).populate('cards').populate('owner'),
 		decks,
 		async cardsInDeck(ctx, { filter, cursor, deckID }) {
 			let deck = (await Deck.findById(deckID))

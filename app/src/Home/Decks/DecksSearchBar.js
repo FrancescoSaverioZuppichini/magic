@@ -2,13 +2,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import { Input, IconButton, Box, Button, Flex, Card, Text } from 'theme-ui'
 import { useLazyQuery, useApolloClient } from '@apollo/react-hooks';
 import queries from '../../queries/index'
-import { useHistory, useLocation } from 'react-router-dom'
-import queryString from 'query-string'
 import loader from '../../containers/LoaderContainer'
-
-
-
-
 
 function DecksSearchBar({ children, onChange, onSearchEnd, inputVariant = 'searchbar', isClearable=true }) {
     /**
