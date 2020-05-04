@@ -47,13 +47,14 @@ export default function MagicCards({ cards, children, hasFilters = true, width =
                         <IconButton onClick={() => setCardVisMode('TABLE')}><Image src='/view_list-black-18dp.svg' width='48px' height='48px'></Image></IconButton>
                     </Box>
                 </Flex>
-                {showFilters && <Box pb={2} ><MagicCardsFilters onChange={setFilterAndEnsureAll} /> </Box>}
+                {showFilters && <Box pb={2}><MagicCardsFilters onChange={setFilterAndEnsureAll} /> </Box>}
             </Flex>
             {!hasFilters && <Box p={1} />}
             {/* cards */}
             {filteredCards.length > 0 && (<Flex p={2} sx={{
                 flexDirection: 'row',
                 flexWrap: 'wrap',
+                justifyContent: 'center',
                 backgroundColor: 'background',
                 borderRadius: '16px',
             }}>

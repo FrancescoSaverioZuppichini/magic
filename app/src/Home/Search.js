@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Flex, Box, Text, Button, IconButton } from 'theme-ui'
 import SearchBar from './SearchBar'
 import DecksSearchBar from './Decks/DecksSearchBar'
 
 import { MagicCard, AddToDeckMagiCardAction, ZoomMagiCardAction, AddToDeckMagiCardsAction } from './MagicCards/MagicCard'
 import { SelectableMagigCards } from './MagicCards/SelectableMagicCards'
-import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom"
 import DeckPreview from './Decks/DeckPreview'
 import Modal from './Modal'
 import DeckPage from './Decks/DeckPage'
+import queryString from 'query-string'
+import CloneDeckAction from './Decks/CloneDeckAction'
 
 const ZooomDeckAction = ({ deck }) => {
     const [zoom, setZoom] = useState(false)
@@ -24,12 +26,18 @@ const ZooomDeckAction = ({ deck }) => {
     )
 }
 
-const SearchPage = ({ }) => {
+const SearchPage = ({ location }) => {
     const history = useHistory()
     const [searchType, setSearchType] = useState('CARDS')
+
     const setSearchTypeAndUrl = (type) => {
         setSearchType(type)
     }
+
+    const { type } = queryString.parse(location.search)
+    useEffect(() => type ? setSearchType(type) : '', [type])
+
+
 
     return (
         <Flex p={[2, 3, 4]} sx={{
@@ -88,11 +96,24 @@ const SearchPage = ({ }) => {
                 )}
             </SearchBar>}
             {searchType === 'DECKS' && <DecksSearchBar>
-                {({ decks }) => <Flex sx={{ flexDirection: 'row', flexWrap: 'wrap', bg: 'background' }}>
+                {({ decks }) => <Flex
+                    sx={{
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        justifyContent: 'center',
+                        bg: 'background'
+                    }}>
                     {decks && decks.decks.map(deck => <Box key={deck.id} p={2}>
-                        <DeckPreview deck={deck} linkable={false} controllers={
-                            deck => <ZooomDeckAction deck={deck} />
-                        } />
+                        <DeckPreview
+                            deck={deck}
+                            linkable={false} controllers={
+                                deck => <Flex
+                                    sx={{ justifyContent: 'space-between' }}
+                                >
+                                    <CloneDeckAction deck={deck} />
+                                    <ZooomDeckAction deck={deck} />
+                                </Flex>
+                            } />
                     </Box>)}
                 </Flex>}
             </DecksSearchBar>}

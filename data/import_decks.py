@@ -5,6 +5,7 @@ import pprint
 import pypeln.thread as th
 from tqdm import tqdm
 from bson.objectid import ObjectId
+from datetime import datetime
 
 DATA_DIR = Path('./AllDeckFiles')
 
@@ -20,7 +21,7 @@ print(f'Importing {len(files)} decks')
 
 
 def convert_deck_cards(deck):
-    converted_deck = {'name': deck['name'], 'cards': [], 'type' : deck['type'], 'releaseDate' : deck['releaseDate']}
+    converted_deck = {'name': deck['name'], 'cards': [], 'type' : deck['type'], 'releaseDate' : datetime.strptime(deck['releaseDate'], '%Y-%m-%d')}
     for card in deck['mainBoard']:
         stored_card = cards.find_one({'scryfallId': card['scryfallId']})
         if stored_card is None:

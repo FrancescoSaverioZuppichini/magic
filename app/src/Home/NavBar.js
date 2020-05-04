@@ -22,7 +22,7 @@ function NavBar({ user }) {
                 <Box px={3} />
                 <Box variant='spacer' />
                 <Box sx={{ flexGrow: 1 }}>
-                    <Input variant='searchbar' placeholder='Search...' onClick={() => history.push('/home/search')}>
+                    <Input variant='searchbar' placeholder='Search...' onClick={() => history.push('/home/search?type=CARDS', )}>
                     </Input>
                 </Box>
                 <Box px={3} />

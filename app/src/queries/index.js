@@ -13,6 +13,8 @@ const queries = {
                 decks {
                     id
                     name
+                    createdAt
+                    
                     cards {
                         id
                         scryfallId

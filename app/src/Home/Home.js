@@ -105,7 +105,7 @@ function Home() {
                                 {data.me.rooms.reverse().slice(0, 3).map(room => <Box key={room.id} p={2}>
                                     <RoomPreview key={room.id} {...room}>}</RoomPreview></Box>)}
                                 <Button onClick={() => history.push("/home/rooms/newRoom")}>Add</Button>
-                            </Flex>=
+                            </Flex>
                             {/* <Box py={2} />
                             <Text sx={{ fontSize: 2, fontWeight: 'thin' }}>Have an invite?</Text>
                             <Box py={2} />
