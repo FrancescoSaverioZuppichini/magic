@@ -4,16 +4,17 @@ import moment from 'moment'
 import { Link } from "react-router-dom"
 import RoomControllers from './RoomControllers.js'
 
-export default function RoomPreview( {name, id, createdAt, controllers=true }) {
+export default function RoomPreview({ name, id, createdAt, controllers = true }) {
     /**
      * Room preview allowing on click to show the full room card.
      */
     return (
-        <Card >
+        <Card sx={{ minWidth: '250px' }}>
             <Link to={`/home/rooms/show/${id}`}><Text sx={{ fontSize: 2 }}>{name}</Text></Link>
-            <Text sx={{fontSize: 0}}>{moment(createdAt).format('MMM Do YY')}</Text>
-            <Box p={2}/>
-            {controllers && <RoomControllers id={id} name={name}/>}
+            <Box p={1} />
+            <Text sx={{ fontSize: 0 }}>{moment(createdAt).format('MMM Do YY')}</Text>
+            <Box p={2} />
+            {controllers && <RoomControllers id={id} name={name} />}
         </Card>
     )
 }

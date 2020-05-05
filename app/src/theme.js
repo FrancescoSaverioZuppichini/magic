@@ -138,7 +138,6 @@ const theme = {
     },
     inputTiny: {
       borderColor: 'primary',
-      backgroundColor: 'white',
       borderRadius: '28px',
       borderWidth: '2px',
       outline: 'none',

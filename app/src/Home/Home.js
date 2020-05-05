@@ -51,12 +51,12 @@ function Home() {
     // if   error here we have to redirect to login!
     return (
         <Provider>
-            <Flex sx={{flexDirection: 'column', height: '100%'}}>
+            <Flex sx={{ flexDirection: 'column', height: '100%' }}>
                 <Subscribe to={[loader]}>
                     {({ state }) => state.show && <Loader />}
                 </Subscribe>
                 {data && <NavBar user={data.me} />}
-                {data && <Card variant='container' sx={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
+                {data && <Card variant='container' sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                     <Route path='/home/search' component={Search}></Route>
                     <Route path='/home/decks' component={Decks}></Route>
                     <Route path='/home/rooms' component={Rooms}></Route>
@@ -101,6 +101,7 @@ function Home() {
                             <Link to='/home/rooms'><Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Your Rooms</Text></Link>
                             <Box p={1} />
                             <Text>Latest created</Text>
+                            <Box py={2}></Box>
                             <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
                                 {data.me.rooms.reverse().slice(0, 3).map(room => <Box key={room.id} p={2}>
                                     <RoomPreview key={room.id} {...room}>}</RoomPreview></Box>)}
