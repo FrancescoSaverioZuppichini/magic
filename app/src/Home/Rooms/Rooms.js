@@ -24,7 +24,6 @@ export default function Rooms() {
                 <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
                     {data.me.rooms.map(room => <Box key={room.id} pr={2} py={2}>
                         <RoomPreview key={room.id} {...room}>}</RoomPreview></Box>)}
-                    <Box px={2} />
                     <Button
                         onClick={() => history.push('/home/rooms/newRoom')}>
                         Add
