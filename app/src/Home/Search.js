@@ -1,14 +1,43 @@
-import React from 'react'
-import { Flex, Box, Text, Button } from 'theme-ui'
+import React, { useState, useEffect } from 'react'
+import { Flex, Box, Text, Button, IconButton } from 'theme-ui'
 import SearchBar from './SearchBar'
+import DecksSearchBar from './Decks/DecksSearchBar'
+
 import { MagicCard, AddToDeckMagiCardAction, ZoomMagiCardAction, AddToDeckMagiCardsAction } from './MagicCards/MagicCard'
 import { SelectableMagigCards } from './MagicCards/SelectableMagicCards'
+import { useHistory } from "react-router-dom"
+import DeckPreview from './Decks/DeckPreview'
+import Modal from './Modal'
+import DeckPage from './Decks/DeckPage'
+import queryString from 'query-string'
+import CloneDeckAction from './Decks/CloneDeckAction'
 
-import MagicCards from './MagicCards/MagicCards.js'
-import { useHistory } from "react-router-dom";
+const ZooomDeckAction = ({ deck }) => {
+    const [zoom, setZoom] = useState(false)
+    return (
+        <Box>
+            <IconButton onClick={() => setZoom(true)} sx={{ width: '38px' }}>
+                <img width='38px' src='/zoom_in-white-18dp.svg'></img>
+            </IconButton>
+            {zoom && <Modal active={zoom} variant='vCentering'>
+                <DeckPage id={deck.id} onClose={() => setZoom(false)} />
+            </Modal>}
+        </Box>
+    )
+}
 
-const SearchPage = ({ }) => {
+const SearchPage = ({ location }) => {
     const history = useHistory()
+    const [searchType, setSearchType] = useState('CARDS')
+
+    const setSearchTypeAndUrl = (type) => {
+        setSearchType(type)
+    }
+
+    const { type } = queryString.parse(location.search)
+    useEffect(() => type ? setSearchType(type) : '', [type])
+
+
 
     return (
         <Flex p={[2, 3, 4]} sx={{
@@ -19,7 +48,18 @@ const SearchPage = ({ }) => {
                 <Button onClick={history.goBack}>Close</Button>
             </Flex>
             <Box py={2}></Box>
-            <SearchBar onSearchEnd={history.goBack}>
+            <Flex>
+                <Button
+                    onClick={() => setSearchTypeAndUrl('CARDS')}
+                    variant={searchType === 'CARDS' ? 'primary' : 'outline'}>Cards</Button>
+                <Box px={1}></Box>
+                <Button
+                    onClick={() => setSearchTypeAndUrl('DECKS')}
+                    variant={searchType === 'DECKS' ? 'primary' : 'outline'}>Decks</Button>
+            </Flex>
+            <Box py={1}></Box>
+
+            {searchType === 'CARDS' && <SearchBar onSearchEnd={history.goBack}>
                 {({ cards, onLoadMore }) => (<Box>
                     {cards && <Box pt={3}>
                         <SelectableMagigCards cards={cards.cards} hasFilters={false}
@@ -54,7 +94,29 @@ const SearchPage = ({ }) => {
                     </Box>}
                 </Box>
                 )}
-            </SearchBar>
+            </SearchBar>}
+            {searchType === 'DECKS' && <DecksSearchBar>
+                {({ decks }) => <Flex
+                    sx={{
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        justifyContent: 'center',
+                        bg: 'background'
+                    }}>
+                    {decks && decks.decks.map(deck => <Box key={deck.id} p={2}>
+                        <DeckPreview
+                            deck={deck}
+                            linkable={false} controllers={
+                                deck => <Flex
+                                    sx={{ justifyContent: 'space-between' }}
+                                >
+                                    <CloneDeckAction deck={deck} />
+                                    <ZooomDeckAction deck={deck} />
+                                </Flex>
+                            } />
+                    </Box>)}
+                </Flex>}
+            </DecksSearchBar>}
         </Flex>
     )
 }

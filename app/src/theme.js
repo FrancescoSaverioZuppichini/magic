@@ -206,7 +206,6 @@ const theme = {
       }
 
     },
-
     warning: {
       borderRadius: '20px',
       backgroundColor: 'warning',

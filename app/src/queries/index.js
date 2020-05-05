@@ -13,6 +13,8 @@ const queries = {
                 decks {
                     id
                     name
+                    createdAt
+                    
                     cards {
                         id
                         scryfallId
@@ -34,20 +36,20 @@ const queries = {
         query cards($filter: CardFilter!, $cursor: CursorInput!){
             cards(filter: $filter, cursor: $cursor) @connection(key: "cards"){
                 cards {
-                    name
+                    # name
                     id
                     scryfallId
-                    colors
-                    convertedManaCost
-                    manaCost
-                    artist
-                    types
-                    subtypes
-                    text
-                    power
-                    colorIndicator
-                    toughness
-                    life
+                    # colors
+                    # convertedManaCost
+                    # manaCost
+                    # artist
+                    # types
+                    # subtypes
+                    # text
+                    # power
+                    # colorIndicator
+                    # toughness
+                    # life
                 },
                 hasMore
                 cursor {
@@ -63,6 +65,9 @@ const queries = {
                 id
                 name
                 createdAt
+                owner {
+                    id
+                }
                 cards {
                     name
                     id
@@ -70,18 +75,36 @@ const queries = {
                     colors
                     convertedManaCost
                     manaCost
-                    artist
+                    # artist
                     types
-                    subtypes
-                    text
-                    colorIndicator
-                    toughness
-                    life
+                    # subtypes
+                    # text
+                    # colorIndicator
+                    # toughness
+                    # life
                 }
             }
         }
 
     `,
+
+    GET_DECKS: gql`
+    query decks($filter: DeckFilter!, $cursor: CursorInput!){  
+        decks(filter: $filter, cursor: $cursor){
+            decks{
+                id
+                name
+                createdAt
+            },
+            hasMore
+            cursor {
+                limit
+                skip
+            }
+        }
+}
+
+`,
 
     GET_ROOM: gql`
         query room($id: ID!) {

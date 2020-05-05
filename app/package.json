@@ -17,6 +17,7 @@
     "connect-history-api-fallback": "^1.6.0",
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.3",
+    "moment": "^2.25.3",
     "momentjs": "^2.0.0",
     "query-string": "^6.12.0",
     "react": "^16.13.1",

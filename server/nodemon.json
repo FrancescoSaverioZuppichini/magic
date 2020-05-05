@@ -1,0 +1,15 @@
+{
+    "ext": "js",
+    "ignore": [
+      "\\.git",
+      "node_modules/*",
+      "public/cards/",
+      "npm-debug.log",
+      "node_modules/.*.*/node_modules"
+    ],
+    "verbose": true,
+    "watch": [
+      "app/shared/",
+      "config/"
+    ]
+  }

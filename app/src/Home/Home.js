@@ -9,7 +9,7 @@ import loader from '../containers/LoaderContainer'
 
 import Modal from './Modal'
 
-import NewDeck from './NewDeck'
+import NewDeck from './Decks/NewDeck'
 import DeckPreview from './Decks/DeckPreview'
 import Decks from './Decks/Decks.js'
 
@@ -88,7 +88,7 @@ function Home() {
                             <Box py={2}></Box>
                             <Flex sx={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
                                 {data.me.decks.reverse().slice(0, 3).map(deck => <Box key={deck.id} p={2}>
-                                    <DeckPreview key={deck.id} {...deck}>}</DeckPreview></Box>)}
+                                    <DeckPreview key={deck.id} deck={deck}>}</DeckPreview></Box>)}
                                 <Button onClick={onNewDeckClick}>Add</Button>
                             </Flex>
 
@@ -106,7 +106,6 @@ function Home() {
                                     <RoomPreview key={room.id} {...room}>}</RoomPreview></Box>)}
                                 <Button onClick={() => history.push("/home/rooms/newRoom")}>Add</Button>
                             </Flex>
-
                             {/* <Box py={2} />
                             <Text sx={{ fontSize: 2, fontWeight: 'thin' }}>Have an invite?</Text>
                             <Box py={2} />

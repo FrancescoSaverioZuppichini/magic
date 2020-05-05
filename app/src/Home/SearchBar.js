@@ -7,12 +7,15 @@ import queryString from 'query-string'
 import { MagicCardsFilters } from './MagicCards/MagicCardsFilterControllers'
 import loader from '../containers/LoaderContainer'
 
-function SearchBar({ children, onChange, onSearchEnd, inputVariant = 'searchbar', isClearable=true }) {
+
+
+
+
+function MagicCardsSearchBar({ children, onChange, onSearchEnd, inputVariant = 'searchbar', isClearable=true }) {
     /**
      * This component allows to search for cards and return them as a render props + a function to fetch more
      */
     const input = useRef(null)
-    const [showFull, setShowFull] = useState(false)
     const [filter, setFilter] = useState({})
     const [hideCards, setHideCards] = useState(true)
     const [filterHasChanged, setFilterHasChanged] = useState(true)
@@ -132,4 +135,4 @@ function SearchBar({ children, onChange, onSearchEnd, inputVariant = 'searchbar'
     )
 }
 
-export default SearchBar
+export default MagicCardsSearchBar

@@ -25,8 +25,19 @@ const cards = async (ctx, { filter, cursor }) => {
 	const cards = await Card.find(cardFilter).skip(skip).limit(limit)
 	const hasMore = cards.length >= limit || cards.length === 0
 	cursor.skip += limit
-	console.log(cards)
 	return { cards, hasMore, cursor }
+}
+
+const decks = async( ctx, { filter, cursor }) => {
+	let { skip, limit } = cursor
+	let deckFilder = {}
+
+	if (filter.name) deckFilder.name = { '$regex': filter.name, '$options': 'i' }
+
+	const decks = await Deck.find(deckFilder).skip(skip).limit(limit)
+	const hasMore = decks.length >= limit || decks.length === 0
+	cursor.skip += limit
+	return { decks, hasMore, cursor }
 }
 
 const resolvers = {
@@ -55,10 +66,8 @@ const resolvers = {
 			return `Psssh ${user.email}`
 		},
 		cards,
-		deck: (ctx, { id }) => Deck.findById(id).populate('cards'),
-		decks(ctx, { }) {
-			return Deck.find().populate('owner').populate('cards')
-		},
+		deck: (ctx, { id }) => Deck.findById(id).populate('cards').populate('owner'),
+		decks,
 		async cardsInDeck(ctx, { filter, cursor, deckID }) {
 			let deck = (await Deck.findById(deckID))
 			filter.ids = deck.cards

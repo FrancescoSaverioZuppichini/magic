@@ -12,6 +12,7 @@ const GraphQLserver = require('./GraphQLserver')
 const WSServer = require('./WSServer')
 process.env.SALT_ROUNDS = 10
 
+
 mongoose
 	.connect(MONGO_URI)
 	.then(() => console.log(`🚀 Mongodb connected at ${MONGO_URI}`))

@@ -9,7 +9,7 @@ const typeDefs = gql`
 		secret: String @isAuthenticated
 		hello: String
     deck(id: ID!): Deck @isAuthenticated
-    decks: [Deck]
+    decks(filter: DeckFilter, cursor: CursorInput!): DeckConnection
     card(id: ID!): Card 
     cards(filter: CardFilter, cursor: CursorInput!): CardConnection
     cardsInDeck(filter: CardFilter, cursor: CursorInput!, deck: ID!): CardConnection
@@ -30,6 +30,7 @@ const typeDefs = gql`
     cards: [Card]
     owner: User
     createdAt: String
+    default: Boolean
 
 	}
 
@@ -56,6 +57,12 @@ const typeDefs = gql`
 
   type CardConnection {
     cards: [Card]!
+    hasMore: Boolean!
+    cursor: Cursor
+  }
+
+  type DeckConnection {
+    decks: [Deck]!
     hasMore: Boolean!
     cursor: Cursor
   }
@@ -89,6 +96,15 @@ const typeDefs = gql`
   }
 
   input CardFilter {
+    name: String
+    type: String
+    colors: [String]
+    convertedManaCost: String
+    toughness: Int
+    power: Int
+  }
+
+  input DeckFilter {
     name: String
     type: String
     colors: [String]

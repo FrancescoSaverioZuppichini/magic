@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
-import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
-import { Card, Text, Flex, Box, IconButton, Button, Input } from 'theme-ui'
-import SearchBar from './SearchBar'
-import Modal from './Modal'
-import { MagicCard, MagicCardImg, CardPage, ZoomMagiCardAction } from './MagicCards/MagicCard'
-import DeckPreview from './Decks/DeckPreview'
-import MagicCards from './MagicCards/MagicCards.js'
-import queries from '../queries/index.js'
-import mutations from '../mutations/index.js'
-import Stages from './Stages'
-import InputWithErrors from '../InputWithErrors'
+import { useQuery, useMutation } from '@apollo/react-hooks'
+import { Card, Text, Flex, Box, IconButton, Button } from 'theme-ui'
+import SearchBar from '../SearchBar'
+import { MagicCard, MagicCardImg, ZoomMagiCardAction } from '../MagicCards/MagicCard'
+import DeckPreview from './DeckPreview'
+import MagicCards from '../MagicCards/MagicCards.js'
+import queries from '../../queries/index.js'
+import mutations from '../../mutations/index.js'
+import Stages from '../Stages'
+import InputWithErrors from '../../InputWithErrors'
+import { Link } from "react-router-dom";
 
 const RemovableFromDeckAction = ({ onRemove }) => (
     /**
@@ -102,13 +102,8 @@ const AddAndRemoveMagicCard = (props) => (
     </MagicCard>
 )
 
-
-
 export default function NewDeck({ onClose }) {
-    const client = useApolloClient()
-    const [magicCards, setMagicCards] = useState([])
     const [deck, setDeck] = useState({ name: '', cards: [] })
-    const { error, data } = useQuery(queries.GET_ACTION, { client })
 
 
     const [newDeck, { newDeckError }] = useMutation(mutations.NEW_DECK, {
@@ -153,7 +148,7 @@ export default function NewDeck({ onClose }) {
 
     return (
         <Box sx={{ width: '100%' }}>
-            <Stages initialStage={1}>
+            <Stages initialStage={0}>
                 {({ onNext }) => (
                     <Box variant="vCentering">
                         <Card p={2} sx={{ width: ['100%', '100%', '50%', '450px'] }}>
@@ -166,6 +161,9 @@ export default function NewDeck({ onClose }) {
                                     onChange={(el) => setDeck(Object.assign(deck, { name: el.target.value }))}
                                 />
                             </Box>
+                            <Box py={2}></Box>
+                            <Text><Link to={'/home/search?type=DECKS'}>or pickup a default one</Link></Text>
+                            <Box py={2}></Box>
                             <Flex pt={4}>
                                 <Button onClick={onClose}>Close</Button>
                                 <Box variant="spacer" />
@@ -241,7 +239,7 @@ export default function NewDeck({ onClose }) {
                             <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Preview</Text>
                             <Box p={3} />
                             <Card sx={{ width: '100%', bg: 'background' }}>
-                                <DeckPreview {...deck} controllers={false} linkable={false} />
+                                <DeckPreview deck={deck} controllers={false} linkable={false} />
                             </Card>
                             <Flex pt={4}>
                                 <Button onClick={onBack}>Back</Button>
