@@ -74,6 +74,12 @@ class WSServer {
                 this.io.to(roomId).emit('action', { action, from : { id: socket.userId }})
             })
 
+            socket.on('showCard', ({ roomId, card }) => {
+                console.log('showCard')
+                this.io.to(roomId).emit('showCard', { card, from : { id: socket.userId }})
+            })
+
+
             socket.on('disconnect', () => {
                 this.io.emit('user disconnected')
             })

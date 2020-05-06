@@ -39,9 +39,16 @@ class RoomContainer extends Container {
             this.setState({ phase: this.PHASES.GAME})
         })
 
+        this.socket.on('showCard', ({ card, from}) => {
+            console.log(card, from)
+        }
+        
+        )
+
         this.socket.on('error', ({ msg }) => {
             console.log(`Error ${msg}`);
         })
+        
     }
 
     joinRoom(name, userId, roomId) {
@@ -64,12 +71,17 @@ class RoomContainer extends Container {
         this.socket.emit('action', { roomId, action })
     }
 
+    showCard(card) {
+        const roomId = this.roomId
+        this.socket.emit('showCard', { roomId, card })
+    }
+
     decrement() {
         this.setState({ count: this.state.count - 1 });
     }
 
     deleteRoom(room) {
-        console.log(`[TODO] delete room ${room.id}`)
+        console.warn(`[TODO] delete room ${room.id}`)
     }
 
 }

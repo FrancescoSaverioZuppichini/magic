@@ -10,10 +10,13 @@ import BattleField from './BattleField'
 import { DragDropContext } from "react-beautiful-dnd"
 import GameCardsContainer from '../../../containers/GameCardsContainer'
 
-const HandActions = ({ onPlay }) => (
-    <Flex sx={{ justifyContent: 'space-between' }}>
+const HandActions = ({ onPlay, onShow }) => (
+    <Flex>
         <Button variant='warning'>Discard</Button>
+        <Box sx={{ flexGrow: 1 }} />
         <Button onClick={onPlay}>Play</Button>
+        <Box px={1} />
+        <Button onClick={onShow}>show</Button>
     </Flex>
 )
 
@@ -75,6 +78,10 @@ export default function Battle({ deck, room }) {
         sendUpdates()
     }
 
+    const onShow = (card) => {
+        room.showCard(card)
+    }
+
     return (
         <Subscribe to={[game]}>
             {game =>
@@ -101,7 +108,9 @@ export default function Battle({ deck, room }) {
                                         <MagicCard card={card} />
                                         {card.isPlayed}
                                         {!card.isPlayed ?
-                                            <HandActions onPlay={() => onPlay(card)} /> :
+                                            <HandActions
+                                                onPlay={() => onPlay(card)}
+                                                onShow={() => onShow(card)} /> :
                                             <BattleFieldDeckActions onTap={() => onTap(card)} />}
                                     </Card>
                                 </Box>}
@@ -125,7 +134,9 @@ export default function Battle({ deck, room }) {
                         <Modal active={showCardModal}>
                             <CardPage {...card} onClose={() => setShowCardModal(false)}>
                                 {!card.isPlayed ?
-                                    <HandActions onPlay={() => onPlay(card)} /> :
+                                    <HandActions
+                                        onPlay={() => onPlay(card)}
+                                        onShow={() => onShow(card)} /> :
                                     <BattleFieldDeckActions onTap={() => onTap(card)} />}
                             </CardPage>
                         </Modal>
