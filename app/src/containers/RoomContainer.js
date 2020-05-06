@@ -8,9 +8,11 @@ class RoomContainer extends Container {
         BATTLE: 'BATTLE',
         END : 'END'
     }
+
     state = {
         count: 0,
-        phase: this.PHASES.BATTLE
+        phase: this.PHASES.BATTLE,
+        players: {}
     }
 
     constructor() {
@@ -20,8 +22,11 @@ class RoomContainer extends Container {
             console.log('Connect to ws')
         })
 
-        this.socket.on('action', (action) => {
+        this.socket.on('action', ({ action, from }) => {
             console.log('Incoming message:', action);
+            let players = {...this.state.players}
+            players[from] = action
+            this.setState({ players })
         })
 
         this.socket.on('join', (id) => {

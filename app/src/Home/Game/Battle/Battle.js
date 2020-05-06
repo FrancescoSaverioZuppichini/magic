@@ -25,7 +25,7 @@ const BattleFieldDeckActions = ({ onTap }) => (
 
 const AutomaticallySendUpdates = ({ game, room }) => {
     console.log('[UPDATING]')
-    const action = { battlefield0 : game.state.battlefield0, battlefield1: game.state.battlefield1, }
+    const action = { battlefield0: game.state.battlefield0, battlefield1: game.state.battlefield1, }
     room.emitAction(action)
     return ''
 }
@@ -46,6 +46,11 @@ export default function Battle({ deck, room }) {
         setShowCardModal(true)
     }
 
+    const sendUpdates = () => {
+        const action = { battlefield0: game.state.battlefield0, battlefield1: game.state.battlefield1, }
+        room.emitAction(action)
+    }
+
     const onDragEnd = ({ source, destination, combine }) => {
         if (destination) {
             game.swap(source, destination)
@@ -53,18 +58,28 @@ export default function Battle({ deck, room }) {
         else if (combine) {
             game.combine(combine, source)
         }
+
+        sendUpdates()
+
     }
 
     const onPlay = (card) => {
         game.play(card)
         setShowCardModal(false)
+        sendUpdates()
+    }
+
+
+    const onTap = (card) => {
+        game.tap(card)
+        sendUpdates()
     }
 
     return (
         <Subscribe to={[game]}>
             {game =>
                 <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
-                    <AutomaticallySendUpdates room={room} game={game}/>
+                    {/* <AutomaticallySendUpdates room={room} game={game}/> */}
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
                             {/* Battlefield */}
@@ -86,8 +101,8 @@ export default function Battle({ deck, room }) {
                                         <MagicCard card={card} />
                                         {card.isPlayed}
                                         {!card.isPlayed ?
-                                            <HandActions onPlay={() => game.play(card)} /> :
-                                            <BattleFieldDeckActions onTap={() => game.tap(card)} />}
+                                            <HandActions onPlay={() => onPlay(card)} /> :
+                                            <BattleFieldDeckActions onTap={() => onTap(card)} />}
                                     </Card>
                                 </Box>}
                             </Flex>
@@ -111,7 +126,7 @@ export default function Battle({ deck, room }) {
                             <CardPage {...card} onClose={() => setShowCardModal(false)}>
                                 {!card.isPlayed ?
                                     <HandActions onPlay={() => onPlay(card)} /> :
-                                    <BattleFieldDeckActions onTap={() => game.tap(card)} />}
+                                    <BattleFieldDeckActions onTap={() => onTap(card)} />}
                             </CardPage>
                         </Modal>
                     </Box>
