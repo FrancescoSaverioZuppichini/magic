@@ -135,8 +135,7 @@ class GameCardsContainer extends Container {
         // add an unique id
         if (!group.uid) group.uid = uniqid()
         // loop on the group and add the parent field
-        group.map(card => card.parent = group)
-
+        group.map(card => card.parent = group.uid)
         cards[combineIdx] = group
         cards.splice(index, 1)
         let state = {}
@@ -151,7 +150,7 @@ class GameCardsContainer extends Container {
     play(card) {
         let cards = this.state.hand
         const { parent } = card
-        if (parent) cards = parent
+        if (parent) cards = cards[cards.findIndex(card => card.uid == parent)]
         const playedIdx = cards.findIndex(handCard => handCard.uid === card.uid)
         card.isPlayed = true
         card.isTapped = false

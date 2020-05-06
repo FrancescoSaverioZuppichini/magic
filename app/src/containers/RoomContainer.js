@@ -55,6 +55,7 @@ class RoomContainer extends Container {
 
     emitAction(action) {
         const roomId = this.roomId
+        console.log(action)
         this.socket.emit('action', { roomId, action })
     }
 
