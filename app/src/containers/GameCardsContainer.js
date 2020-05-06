@@ -75,7 +75,7 @@ class GameCardsContainer extends Container {
 
         const addPlayFields = (card) => {
             card.isPlayed = true
-            card.isTapped = false
+            card.isTapped = card.isTapped || false
         }
 
         const removePlayField = (card) => {
