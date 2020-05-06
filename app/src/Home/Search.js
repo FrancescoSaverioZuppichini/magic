@@ -110,7 +110,7 @@ const SearchPage = ({ location }) => {
                                 deck => <Flex
                                     sx={{ justifyContent: 'space-between' }}
                                 >
-                                    <CloneDeckAction deck={deck} />
+                                    {/* <CloneDeckAction deck={deck} /> */}
                                     <ZooomDeckAction deck={deck} />
                                 </Flex>
                             } />

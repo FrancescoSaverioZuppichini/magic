@@ -25,7 +25,7 @@ const BattleFieldDeckActions = ({ onTap }) => (
 
 const AutomaticallySendUpdates = ({ game, room }) => {
     console.log('[UPDATING]')
-    const action = { battlefield0 : game.state.battlefield0, battlefield1: game.state.battlefield1 }
+    const action = { battlefield0 : game.state.battlefield0, battlefield1: game.state.battlefield1, }
     room.emitAction(action)
     return ''
 }
