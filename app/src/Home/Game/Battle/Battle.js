@@ -28,23 +28,15 @@ const BattleFieldDeckActions = ({ onTap, onShow }) => (
     </Flex>
 )
 
-const AutomaticallySendUpdates = ({ game, room }) => {
-    console.log('[UPDATING]')
-    const action = { battlefield0: game.state.battlefield0, battlefield1: game.state.battlefield1, }
-    room.emitAction(action)
-    return ''
-}
-
 const ShowCardFromUsers = ({ card, from }) => {
     const [showCardFromUserModal, setShowCardFromUserModal] = useState(true)
     useEffect(() => setShowCardFromUserModal(true), [card])
 
-    return (<Modal active={showCardFromUserModal}>
-        <CardPage {...card}
-            onClose={() => setShowCardFromUserModal(false)}
-        >
-        </CardPage>
-    </Modal>)
+    return (
+        <Modal active={showCardFromUserModal}>
+            <CardPage {...card}
+                onClose={() => setShowCardFromUserModal(false)} />
+        </Modal>)
 }
 
 
@@ -111,10 +103,7 @@ export default function Battle({ deck, room }) {
                             {/* Battlefield */}
                             <Flex sx={{ flexDirection: 'row', flex: 1 }}>
                                 <Card sx={{ flex: 1, flexGrow: 1, display: 'flex' }}>
-                                    <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
-                                        <Box sx={{ flex: 1, alignItems: 'flex-end' }}></Box>
-                                        {game.state.deck && <BattleField game={game} selectedCard={card} onCardClick={onCardClick} />}
-                                    </Flex>
+                                        {game.state.deck && <BattleField game={game} room={room} selectedCard={card} onCardClick={onCardClick} />}
                                 </Card>
                                 {/* show card on right */}
                                 {card && <Box

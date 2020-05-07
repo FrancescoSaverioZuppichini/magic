@@ -26,11 +26,12 @@ class RoomContainer extends Container {
         this.socket.on('action', ({ action, from }) => {
             console.log('Incoming message:', action)
             console.log(from)
-            if (from.id !== this.userId) {
+            // if (from.id !== this.userId) {
                 let players = { ...this.state.players }
-                players[from] = action
+                players[from.id] = action
                 this.setState({ players })
-            }
+                console.log(this.state.players)
+            // }
         })
 
         this.socket.on('join', (id) => {
@@ -44,9 +45,8 @@ class RoomContainer extends Container {
         })
 
         this.socket.on('showCard', ({ card, from }) => {
-            if (from.id !== this.userId) this.setState({ cardToShow  : card })
-        }
-        )
+            if (from.id !== this.userId) this.setState({ cardToShow: card })
+        })
 
         this.socket.on('error', ({ msg }) => {
             console.log(`Error ${msg}`);
