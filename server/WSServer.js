@@ -29,16 +29,11 @@ class WSServer {
                         room.users.push(userId)
                         await room.save()
                     }
-
                     // join and notify all the users inside!
                     logger.info(`User ${socket.userId} connect to room ${roomId}`)
                     socket.join(roomId)
-                    socket.to(roomId).emit('join', userId)
-                    
+                    socket.to(roomId).emit('join', userId)       
                 }
-
-                console.log(room.readyUsers)
-
 
             })
             

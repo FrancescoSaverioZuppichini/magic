@@ -8,33 +8,42 @@ const OrganizableMagicCards = ({ cards, children, droppableId }) => {
     return (
         <Droppable droppableId={droppableId} direction="horizontal" isCombineEnabled={true}>
             {(provided) => (
-                <Flex
-                    sx={{ flexDirection: 'row', overflowX: 'auto', flexGrow: 1, minHeight: '200px' }}
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}>
-                    {cards.map((card, i) => (
-                        <Draggable draggableId={card.uid} index={i} key={card.uid} isDragDisabled={isDragDisabled} >
-                            {(provider, shapshot) => (
-                                <Box
-                                    {...provider.draggableProps}
-                                    {...provider.dragHandleProps}
-                                    ref={provider.innerRef}
-                                    sx={{ minWidth: '150px', width: '150px' }}
-                                    px={1}
+                <Box sx={{
+                    position: 'relative'
+                }}>
+                    <Flex
+                        sx={{
+                            flexDirection: 'row',
+                            overflowX: 'auto',
+                            flexGrow: 1, minHeight: '200px'
+                        }}
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}>
+                        {cards.map((card, i) => (
+                            <Draggable draggableId={card.uid} index={i} key={card.uid} isDragDisabled={isDragDisabled} >
+                                {(provider, shapshot) => (
+                                    <Box
+                                        {...provider.draggableProps}
+                                        {...provider.dragHandleProps}
+                                        ref={provider.innerRef}
+                                        sx={{ minWidth: '150px', width: '150px' }}
+                                        px={1}
                                     >
-                                    <OrganizableMagicCard
-                                        setIsDragDisable={setIsDragDisable}
-                                        i={i}
-                                        {...shapshot}
-                                        card={card}>
-                                        {children}
-                                    </OrganizableMagicCard>
-                                </Box>
-                            )}
-                        </Draggable>)
-                    )}
-                    {provided.placeholder}
-                </Flex>
+                                        <OrganizableMagicCard
+                                            setIsDragDisable={setIsDragDisable}
+                                            i={i}
+                                            {...shapshot}
+                                            card={card}>
+                                            {children}
+                                        </OrganizableMagicCard>
+                                    </Box>
+                                )}
+                            </Draggable>)
+                        )}
+                        {provided.placeholder}
+
+                    </Flex>
+                </Box>
             )}
         </Droppable>
     )

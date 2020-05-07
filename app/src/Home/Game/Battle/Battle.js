@@ -14,14 +14,16 @@ const HandActions = ({ onPlay, onShow }) => (
     <Flex>
         <Button variant='warning'>Discard</Button>
         <Box sx={{ flexGrow: 1 }} />
-        <Button onClick={onPlay}>Play</Button>
+        <Button onClick={onShow}>Show</Button>
         <Box px={1} />
-        <Button onClick={onShow}>show</Button>
+        <Button onClick={onPlay}>Play</Button>
     </Flex>
 )
 
-const BattleFieldDeckActions = ({ onTap }) => (
+const BattleFieldDeckActions = ({ onTap, onShow }) => (
     <Flex sx={{ justifyContent: 'flex-end' }}>
+        <Button onClick={onShow}>Show</Button>
+        <Box px={1} />
         <Button onClick={onTap}>Tap</Button>
     </Flex>
 )
@@ -33,11 +35,25 @@ const AutomaticallySendUpdates = ({ game, room }) => {
     return ''
 }
 
+const ShowCardFromUsers = ({ card, from }) => {
+    const [showCardFromUserModal, setShowCardFromUserModal] = useState(true)
+    useEffect(() => setShowCardFromUserModal(true), [card])
+
+    return (<Modal active={showCardFromUserModal}>
+        <CardPage {...card}
+            onClose={() => setShowCardFromUserModal(false)}
+        >
+        </CardPage>
+    </Modal>)
+}
+
+
 const game = new GameCardsContainer()
 
 export default function Battle({ deck, room }) {
     const [card, setCard] = useState({})
     const [showCardModal, setShowCardModal] = useState(false)
+
     useEffect(() => {
         loader.hide()
         game.setDeck(deck)
@@ -75,17 +91,20 @@ export default function Battle({ deck, room }) {
 
     const onTap = (card) => {
         game.tap(card)
+        setShowCardModal(false)
         sendUpdates()
     }
 
     const onShow = (card) => {
         room.showCard(card)
+        setShowCardModal(false)
     }
 
     return (
         <Subscribe to={[game]}>
             {game =>
                 <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
+                    {room.state.cardToShow && <ShowCardFromUsers {...room.state.cardToShow} />}
                     {/* <AutomaticallySendUpdates room={room} game={game}/> */}
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
@@ -111,7 +130,9 @@ export default function Battle({ deck, room }) {
                                             <HandActions
                                                 onPlay={() => onPlay(card)}
                                                 onShow={() => onShow(card)} /> :
-                                            <BattleFieldDeckActions onTap={() => onTap(card)} />}
+                                            <BattleFieldDeckActions
+                                                onTap={() => onTap(card)}
+                                                onShow={() => onShow(card)} />}
                                     </Card>
                                 </Box>}
                             </Flex>
@@ -137,7 +158,9 @@ export default function Battle({ deck, room }) {
                                     <HandActions
                                         onPlay={() => onPlay(card)}
                                         onShow={() => onShow(card)} /> :
-                                    <BattleFieldDeckActions onTap={() => onTap(card)} />}
+                                    <BattleFieldDeckActions
+                                        onTap={() => onTap(card)}
+                                        onShow={() => onShow(card)} />}
                             </CardPage>
                         </Modal>
                     </Box>
