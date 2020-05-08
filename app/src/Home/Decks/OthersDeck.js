@@ -6,7 +6,6 @@ import MagicCards from '../MagicCards/MagicCards'
 import CloneDeckAction from './CloneDeckAction'
 
 export default function OthersDeck({ deck, onClose }) {
-    console.log(deck)
     return (
         <Deck deck={deck} onClose={onClose}
             controllers={

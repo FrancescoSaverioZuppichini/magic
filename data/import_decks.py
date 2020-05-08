@@ -6,7 +6,7 @@ import pypeln.thread as th
 from tqdm import tqdm
 from bson.objectid import ObjectId
 from datetime import datetime
-
+from collections import defaultdict
 DATA_DIR = Path('./AllDeckFiles')
 
 mongo = MongoClient()
@@ -25,9 +25,11 @@ def convert_deck_cards(deck):
         converted_deck = {'name': deck['name'],
                         'cards': [], 'type': deck['type'],
                         'releaseDate': datetime.strptime(deck['releaseDate'], '%Y-%m-%d')}
-
+        # we also need to compute the deck stats
+        colors = []
         for card in deck['mainBoard']:
             stored_card = cards.find_one({'scryfallId': card['scryfallId']})
+            colors += stored_card['colors']
             if stored_card is None:
                 continue
             else:
@@ -36,8 +38,19 @@ def convert_deck_cards(deck):
                     ObjectId(stored_card['_id'])] * card['count']
 
         converted_deck['default'] = True
+        # create the colors field
+        freq = defaultdict(int)
+
+        for color in colors:
+            freq[color] += 1
+
+        deck_stats = [{'count': v, 'color' : k} for k,v in freq.items()]
+        deck_stats = sorted(deck_stats, key=lambda a : -a['count'])
+        converted_deck['colors'] = deck_stats
         return converted_deck
-    except TypeError:
+
+    except TypeError as e:
+        print(e)
         return None
 
 

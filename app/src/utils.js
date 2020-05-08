@@ -25,11 +25,19 @@ const filterMagicCards = (cards, filter) => {
 // 'Tribal', 'Vanguard']
 const frequency = (array) => {
     let freq = {}
-
+    let freqArray = []
     for (let el of array) {
         freq[el] = freq[el] ? freq[el] + 1 :1
     }
 
-    return freq
+    for(let key of Object.keys(freq)) {
+        const val = freq[key]
+        freqArray.push({ key, val})
+
+    }
+
+    freqArray.sort(( a,b ) => a.val > b.val ? -1 : 1 )    
+    
+    return freqArray
 }
-export { ACTIONS, COLORS, TYPES, filterMagicCards }
+export { ACTIONS, COLORS, TYPES, filterMagicCards, frequency }

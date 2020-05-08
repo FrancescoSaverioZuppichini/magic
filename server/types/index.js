@@ -24,6 +24,11 @@ const typeDefs = gql`
     rooms: [Room]
 	}
 
+  type DeckColor{
+    count: Int
+    color: String
+  }
+
 	type Deck {
     id: ID!
     name: String!
@@ -31,6 +36,7 @@ const typeDefs = gql`
     owner: User
     createdAt: String
     default: Boolean
+    colors: [DeckColor]
 
 	}
 
