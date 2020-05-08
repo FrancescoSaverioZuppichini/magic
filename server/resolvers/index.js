@@ -1,5 +1,6 @@
 const { User, Card, Deck, Room } = require('../models/index.js')
 const CURSOR_BOUNDS = { limit: 200 }
+const { getDeckColors } = require('../utils')
 
 const cards = async (ctx, { filter, cursor }) => {
 	let { skip, limit } = cursor
@@ -94,6 +95,9 @@ const resolvers = {
 		async newDeck(obj, { deck }, { user }) {
 			deck = { ...deck, owner: user.id }
 			let newDeck
+			const colors = await getDeckColors(deck)
+			deck.colors = colors
+			// // compute colors
 			if (deck.id) {
 				newDeck = await Deck.findByIdAndUpdate(deck.id, deck, {
 					new: true

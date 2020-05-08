@@ -13,10 +13,15 @@ const queries = {
                 decks {
                     id
                     name
+                    colors {
+                        count 
+                        color
+                    }
                     createdAt
                     
                     cards {
                         id
+                        colors
                         scryfallId
                     }
                 }
@@ -39,7 +44,10 @@ const queries = {
                     # name
                     id
                     scryfallId
-                    # colors
+                    colors {
+                        count 
+                        color
+                    } 
                     # convertedManaCost
                     # manaCost
                     # artist
@@ -65,6 +73,10 @@ const queries = {
                 id
                 name
                 createdAt
+                colors {
+                        count 
+                        color
+                    }
                 owner {
                     id
                 }
@@ -95,11 +107,19 @@ const queries = {
                 id
                 name
                 createdAt
+                colors {
+                        count 
+                        color
+                    }
+                cards {
+                    colors
+                }
             },
             hasMore
             cursor {
                 limit
                 skip
+               
             }
         }
 }
