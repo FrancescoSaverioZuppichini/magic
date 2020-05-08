@@ -8,6 +8,29 @@ const COLORS = ['B', 'G', 'R', 'U', 'W']
 const TYPES = ['Creature', 'Artifact', 'Enchantment',
     'Instant', 'Land', 'Sorcery', 'Planeswalker']
 
+const DECK_TYPES = ['Advanced Deck',
+'Advanced Pack',
+'Archenemy Deck',
+'Basic Deck',
+'Brawl Deck',
+'Challenger Deck',
+'Clash Pack',
+'Commander Deck',
+'Duel Deck',
+'Duel Of The Planeswalkers Deck',
+'Event Deck',
+'Game Night Deck',
+'Guild Kit',
+'Halfdeck',
+'Intro Pack',
+'MTGO Theme Deck',
+'Planechase Deck',
+'Planeswalker Deck',
+'Premium Deck',
+'Spellslinger Starter Kit',
+'Starter Deck',
+'Theme Deck',
+'Welcome Deck']
 
 const filterMagicCards = (cards, filter) => {
     let filteredCards = [...cards]
@@ -40,4 +63,4 @@ const frequency = (array) => {
     
     return freqArray
 }
-export { ACTIONS, COLORS, TYPES, filterMagicCards, frequency }
+export { ACTIONS, COLORS, TYPES, DECK_TYPES, filterMagicCards, frequency }

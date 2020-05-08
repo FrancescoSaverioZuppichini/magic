@@ -68,6 +68,7 @@ function MagicCardsSearchBar({ children, onChange, onSearchEnd, inputVariant = '
     }
 
     const setFilterAndEnsureAll = (val) => {
+        // TODO move to utils
         let newFilter = {}
         if (Object.values(val)[0] !== undefined) newFilter = { ...filter, ...val }
         else {

@@ -103,6 +103,7 @@ const queries = {
                 id
                 name
                 createdAt
+                type
                 colors {
                         count 
                         color

@@ -36,6 +36,7 @@ const typeDefs = gql`
     owner: User
     createdAt: String
     default: Boolean
+    type: String
     colors: [DeckColor]
 
 	}

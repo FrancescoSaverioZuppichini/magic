@@ -34,7 +34,10 @@ const decks = async( ctx, { filter, cursor }) => {
 	let deckFilder = {}
 
 	if (filter.name) deckFilder.name = { '$regex': filter.name, '$options': 'i' }
-
+	// each deck have ONE type
+	if (filter.type) deckFilder.type = filter.type
+	if (filter.colors) deckFilder['colors.color'] = { '$in': filter.colors }
+	console.log(deckFilder)
 	const decks = await Deck.find(deckFilder).skip(skip).limit(limit)
 	const hasMore = decks.length >= limit || decks.length === 0
 	cursor.skip += limit
