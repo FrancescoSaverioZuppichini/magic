@@ -3,6 +3,7 @@ import { Input, IconButton, Box, Button, Flex, Card, Text } from 'theme-ui'
 import { useLazyQuery, useApolloClient } from '@apollo/react-hooks';
 import queries from '../../queries/index'
 import loader from '../../containers/LoaderContainer'
+import { DeckFilters } from './DeckFilterControllers'
 
 function DecksSearchBar({ children, onChange, onSearchEnd, inputVariant = 'searchbar', isClearable=true }) {
     /**
@@ -107,7 +108,7 @@ function DecksSearchBar({ children, onChange, onSearchEnd, inputVariant = 'searc
                 </Flex>
                 <Box p={2}></Box>
                 <Box sx={{ flex: 1 }}>
-                    {/* <MagicCardsFilters onChange={setFilterAndEnsureAll} /> */}
+                    <DeckFilters onChange={setFilterAndEnsureAll}/>
                 </Box>
                 <Box py={1}></Box>
 

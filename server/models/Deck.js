@@ -7,6 +7,7 @@ const DeckSchema = mongoose.Schema(
 		owner: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
 		default: Boolean,
 		colors: Array,
+		type: String,
 	},
 	{
 		timestamps: true

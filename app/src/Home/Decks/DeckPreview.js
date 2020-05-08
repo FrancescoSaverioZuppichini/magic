@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 import DeckStats from './DeckStats'
 
 function DeckPreview({ deck, controllers, linkable=true, width='300px' }) {
-    const { id, name, cards, createdAt, colors = [] } = deck
+    const { id, name, cards, createdAt, colors = [], type } = deck
     /**
      * Deck preview allowing on click to display the full deck.
      */
@@ -14,6 +14,7 @@ function DeckPreview({ deck, controllers, linkable=true, width='300px' }) {
             {linkable && <Link to={`/home/decks/show/${id}`}><Text sx={{ fontSize: 2 }}>{name}</Text></Link>}
             {!linkable && <Text sx={{ fontSize: 2 }}>{name}</Text>}
             <Text sx={{ fontSize: 0 }}>{moment(Number(createdAt)).format('MMM Do YY')}</Text>
+            {type && <Text py={1}>{type}</Text>}
             <Box py={1}/>
             <DeckStats colors={colors} />
             <Box p={2}></Box>
