@@ -29,10 +29,11 @@ class WSServer {
                         room.users.push(userId)
                         await room.save()
                     }
-                    // // remove ready
-                    // const idx = room.readyUsers.indexOf(userId)
-                    // if(idx > -1) room.readyUsers.splice(idx, 1)
-                    // await room.save()                  
+                    // remove ready
+                    const idx = room.readyUsers.indexOf(userId)
+                    console.log(idx)
+                    if(idx > -1) room.readyUsers.splice(idx, 1)
+                    await room.save()                  
                     console.log('room-aft', room)
                     // join and notify all the users inside!
                     logger.info(`User ${socket.userId} connect to room ${roomId}`)
