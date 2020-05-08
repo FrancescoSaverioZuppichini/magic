@@ -13,7 +13,7 @@ const BattleFieldMagicCard = ({ provider, card, onCardClick, selectedCard }) => 
     </Flex>
 )
 
-const EnemyMagicCards = ({ cards }) => (
+const EnemyMagicCards = ({ cards, onCardClick }) => (
     <Box sx={{ position: 'relative' }}>
         <Flex
             sx={{
@@ -22,11 +22,11 @@ const EnemyMagicCards = ({ cards }) => (
                 minHeight: '200px'
             }}>
             {cards.map(card =>
-                <Box sx={{ minWidth: '150px', width: '150px' }}>
-                    <OrganizedMagicCard key={card.uid}
+                <Box sx={{ minWidth: '150px', width: '150px' }} key={card.uid}>
+                    <OrganizedMagicCard
                         card={card}>
                         {card => <Box sx={{ minWidth: '150px', width: '150px' }}
-                            px={1}> <BattleFieldMagicCard card={card} /></Box>}
+                            px={1}> <BattleFieldMagicCard card={card} onCardClick={onCardClick}/></Box>}
                     </OrganizedMagicCard>
                 </Box>
             )}
@@ -42,8 +42,8 @@ export default function Battlefield({ game, room, onCardClick }) {
     return (
         <Flex sx={{ width: '100%', flexDirection: 'column', justifyContent: 'space-between' }}>
             <Box>
-                {enemy && <EnemyMagicCards cards={enemy.battlefield0} />}
-                {enemy && <EnemyMagicCards cards={enemy.battlefield1} />}
+                {enemy && <EnemyMagicCards cards={enemy.battlefield0} onCardClick={onCardClick}/>}
+                {enemy && <EnemyMagicCards cards={enemy.battlefield1} onCardClick={onCardClick}/>}
             </Box>
             <Box>
                 <OrganizableMagicCards cards={game.state.battlefield1} droppableId='battlefield1'>

@@ -31,7 +31,6 @@ const BattleFieldDeckActions = ({ onTap, onShow }) => (
 const ShowCardFromUsers = ({ card, from }) => {
     const [showCardFromUserModal, setShowCardFromUserModal] = useState(true)
     useEffect(() => setShowCardFromUserModal(true), [card])
-
     return (
         <Modal active={showCardFromUserModal}>
             <CardPage {...card}
@@ -83,6 +82,7 @@ export default function Battle({ deck, room }) {
 
     const onTap = (card) => {
         game.tap(card)
+        console.log('asdds')
         setShowCardModal(false)
         sendUpdates()
     }
@@ -96,7 +96,7 @@ export default function Battle({ deck, room }) {
         <Subscribe to={[game]}>
             {game =>
                 <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
-                    {room.state.cardToShow && <ShowCardFromUsers {...room.state.cardToShow} />}
+                    {room.state.cardToShow && <ShowCardFromUsers card = {room.state.cardToShow} />}
                     {/* <AutomaticallySendUpdates room={room} game={game}/> */}
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>

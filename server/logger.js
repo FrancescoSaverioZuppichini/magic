@@ -8,11 +8,8 @@ const levels = {
 }
 
 const logger = pino({
-  prettyPrint: {
-    colorize: true
-  },
-
-  level: levels[process.env.NODE_ENV || 'development']
+  prettyPrint: true,
+  // level: levels[process.env.NODE_ENV || 'development']
 })
 
 module.exports = logger

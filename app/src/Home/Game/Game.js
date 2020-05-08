@@ -22,7 +22,7 @@ const Phases = ({ phase, room, me }) => {
             break
 
         case room.PHASES.BATTLE:
-            children = <Battle room={room} deck={me.decks[0]} />
+            children = <Battle room={room} deck={room.state.deck} />
             break
     }
 

@@ -11,9 +11,10 @@ class RoomContainer extends Container {
 
     state = {
         count: 0,
-        phase: this.PHASES.BATTLE,
+        phase: this.PHASES.PRE,
         players: {},
-        cardToShow: null
+        cardToShow: null,
+        deck: null
     }
 
     constructor() {
@@ -26,12 +27,11 @@ class RoomContainer extends Container {
         this.socket.on('action', ({ action, from }) => {
             console.log('Incoming message:', action)
             console.log(from)
-            // if (from.id !== this.userId) {
+            if (from.id !== this.userId) {
                 let players = { ...this.state.players }
                 players[from.id] = action
                 this.setState({ players })
-                console.log(this.state.players)
-            // }
+            }
         })
 
         this.socket.on('join', (id) => {
@@ -41,7 +41,7 @@ class RoomContainer extends Container {
 
         this.socket.on('start', () => {
             console.log('start')
-            this.setState({ phase: this.PHASES.GAME })
+            this.setState({ phase: this.PHASES.BATTLE })
         })
 
         this.socket.on('showCard', ({ card, from }) => {
@@ -60,12 +60,15 @@ class RoomContainer extends Container {
         this.socket.emit('room', { name, userId, roomId });
     }
 
-    selectDeck({ id }) {
-        this.socket.emit('selectDeck', { id })
+    selectDeck(deck) {
+        this.socket.emit('selectDeck', { id : deck.id })
+        this.setState({ deck })
     }
 
     deselectDeck() {
         this.socket.emit('selectDeck', {})
+        this.setState({ deck: null })
+
     }
 
     emitAction(action) {
