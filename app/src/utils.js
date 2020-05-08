@@ -8,6 +8,7 @@ const COLORS = ['B', 'G', 'R', 'U', 'W']
 const TYPES = ['Creature', 'Artifact', 'Enchantment',
     'Instant', 'Land', 'Sorcery', 'Planeswalker']
 
+const DECK_TYPES = ['Test', 'Woo']
 
 const filterMagicCards = (cards, filter) => {
     let filteredCards = [...cards]
