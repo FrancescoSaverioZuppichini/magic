@@ -17,13 +17,17 @@ export default function Hand({ game, onCardClick, selectedCard }) {
                 :
                 // hand
                 <Card>
-                    <Flex sx={{ flexDirection: ['column', 'column', 'column'] }}>
+                    <Flex sx={{ flexDirection: ['column', 'column', 'column']}}>
                         <OrganizableMagicCards cards={game.state.hand} droppableId='hand'>
                             {card => (
                                 <GameMagicCard {...card} onClick={() => onCardClick(card)}
                                     selected={selectedCard.uid === card.uid} />)}
                         </OrganizableMagicCards>
-                        <Flex sx={{ flexDirection: ['row', 'row', 'row'], justifyContent: 'space-between', alignItems: 'center', flex: 1 }}>
+                        <Flex sx={{
+                            flexDirection: ['row', 'row', 'row'],
+                            justifyContent: 'space-between',
+                            alignItems: 'center', flex: 1
+                        }}>
                             <Box>
                                 <Text>{game.state.deck.cards.length} in deck </Text>
                             </Box>

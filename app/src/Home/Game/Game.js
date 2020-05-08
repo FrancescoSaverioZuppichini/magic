@@ -9,10 +9,11 @@ import PreGame from './PreGame'
 import Battle from './Battle/Battle'
 import GameOwnerActions from './GameOwnerActions'
 
-const JoinAutomatically = ({ room, data, userId }) => {
+const JoinAutomatically = React.memo(({ room, data, userId }) => {
+    console.log('wee')
     room.joinRoom(data.name, userId, data.id)
     return ''
-}
+})
 
 const Phases = ({ phase, room, me }) => {
     let children;
@@ -22,7 +23,7 @@ const Phases = ({ phase, room, me }) => {
             break
 
         case room.PHASES.BATTLE:
-            children = <Battle room={room} deck={me.decks[0]} />
+            children = <Battle room={room} deck={room.state.deck} />
             break
     }
 
@@ -37,7 +38,7 @@ export default function Game({ id }) {
 
     const roomData = roomRes.data
     const meData = meRes.data
-
+    // useEffect(() => roomContainer.joinRoom(roomData.room.name, meData.me.id, roomData.room.id), [roomRes])
     useEffect(() => roomContainer.deselectDeck(), [])
     loader.hide()
 

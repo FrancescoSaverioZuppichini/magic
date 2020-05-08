@@ -8,9 +8,9 @@ import Stages from '../Stages.js'
 import DeckRow from '../Decks/DeckRow'
 
 export default function PreGame ({ me, room }) {
-    const [deckSelected, setDeckSelected] = useState({})
+    const [deckSelected, setDeckSelected] = useState(me.decks[0])
     const history = useHistory()
-    const onGo = () => room.selectDeck({ id: deckSelected.id })
+    const onGo = () => room.selectDeck(deckSelected)
 
     return (
         <Modal active={true} position={'fixed'} variant='vCentering'>

@@ -1,3 +1,6 @@
+server/build/
+server/public/
+
 # Logs
 logs
 *.log

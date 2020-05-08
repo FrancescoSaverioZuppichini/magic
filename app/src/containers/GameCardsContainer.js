@@ -164,6 +164,8 @@ class GameCardsContainer extends Container {
 
     tap(card) {
         card.isTapped = !card.isTapped
+        // force state to update
+        this.setState({})
     }
 
 }

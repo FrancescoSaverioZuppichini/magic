@@ -5,7 +5,6 @@ const logger = require('./logger')
 const expressLogger = require('express-pino-logger')({ logger })
 const { AuthenticationError } = require('apollo-server-express')
 const PORT = process.env.PORT || 4000
-const NODE_ENV = process.env.NODE_ENV || 'development'
 const TOKEN_SECRET = process.env.TOKEN_SECRET || 'pazzofurioso'
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost/magic'
 const GraphQLserver = require('./GraphQLserver')

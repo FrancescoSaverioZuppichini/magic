@@ -18,7 +18,7 @@ class WSServer {
                 socket.userId = userId
                 socket.roomId = roomId
                 const room = await Room.findById(roomId)
-                logger.debug(room.users, room.name)
+
                 if (!room) socket.emit('error', { mgs: 'Invalid or expired invite' })
                 const isRoomFull = room.users.length > MAX_PLAYERS
                 if (isRoomFull) socket.to(roomId).emit('error', { mgs: 'Room is full' })
@@ -29,27 +29,28 @@ class WSServer {
                         room.users.push(userId)
                         await room.save()
                     }
-
+                    // remove ready
+                    const idx = room.readyUsers.indexOf(userId)
+                    console.log(idx)
+                    if(idx > -1) room.readyUsers.splice(idx, 1)
+                    await room.save()                  
+                    console.log('room-aft', room)
                     // join and notify all the users inside!
                     logger.info(`User ${socket.userId} connect to room ${roomId}`)
                     socket.join(roomId)
-                    socket.to(roomId).emit('join', userId)
-                    
+                    socket.to(roomId).emit('join', userId)       
                 }
-
-                console.log(room.readyUsers)
-
 
             })
             
             socket.on('selectDeck', async({ id }) => {
                 const { userId, roomId } = socket
-
+                console.log('selectDeck')
                 const deselectedDeck = id === undefined
                 
                 const room = await Room.findById(roomId)
-                
                 if (deselectedDeck) {
+                    console.log('deselectedDeck')
                     const idx = room.readyUsers.indexOf(userId)
                     room.readyUsers.splice(idx, 1)
                     await room.save()
@@ -67,12 +68,20 @@ class WSServer {
                         socket.to(roomId).emit('start')
                     }
                 }
+                console.log('rooom',room)
+
             })
 
             socket.on('action', ({ roomId, action }) => {
                 console.log(action, roomId)
                 this.io.to(roomId).emit('action', { action, from : { id: socket.userId }})
             })
+
+            socket.on('showCard', ({ roomId, card }) => {
+                console.log('showCard')
+                this.io.to(roomId).emit('showCard', { card, from : { id: socket.userId }})
+            })
+
 
             socket.on('disconnect', () => {
                 this.io.emit('user disconnected')
