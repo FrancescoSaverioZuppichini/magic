@@ -26,7 +26,6 @@ class RoomContainer extends Container {
 
         this.socket.on('action', ({ action, from }) => {
             console.log('Incoming message:', action)
-            console.log(from)
             if (from.id !== this.userId) {
                 let players = { ...this.state.players }
                 players[from.id] = action

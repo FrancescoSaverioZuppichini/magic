@@ -7,15 +7,18 @@ import queries from '../../queries/index.js'
 export default function CloneDeckAction({ deck, onDone }) {
     const [newDeck, { newDeckError }] = useMutation(mutations.NEW_DECK, {
         onCompleted({ newDeck }) {
+            
+            console.log(newDeck)
             onDone && onDone()
         },
         update(cache, { data: { newDeck } }) {
+            console.log(newDeck)
             let { me } = cache.readQuery({ query: queries.GET_ME })
             me.decks.push(newDeck)
             cache.writeQuery({
                 query: queries.GET_ME,
                 data: me,
-            });
+            })
         }
     })
 

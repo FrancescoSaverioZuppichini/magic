@@ -44,10 +44,6 @@ const queries = {
                     # name
                     id
                     scryfallId
-                    colors {
-                        count 
-                        color
-                    } 
                     # convertedManaCost
                     # manaCost
                     # artist

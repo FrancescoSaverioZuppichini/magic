@@ -23,6 +23,10 @@ const mutations = {
             newDeck(deck: $deck){
                 id
                 name
+                colors {
+                    count
+                    color
+                }
                 cards {
                     id
                 }   

@@ -11,7 +11,6 @@ export default function RoomControllers({ id, name, onCompleted }) {
      * Buttons for room. They supports delete
      */
     const [showConfirmationModal, setShowConfirmationModal] = useState(false)
-    console.log(id)
     const [deleteRoom, { deleteRoomError }] = useMutation(mutations.DELETE_ROOM, {
         onCompleted({ deleteRoom }) {
             console.log(onCompleted)
