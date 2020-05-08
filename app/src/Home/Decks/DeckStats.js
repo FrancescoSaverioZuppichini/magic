@@ -3,7 +3,7 @@ import { Flex, Box } from 'theme-ui'
 
 export default function DeckStats({ colors }) {
     const URL = 'https://img.scryfall.com/symbology'
-    console.log(colors)
+
     return (
         <Flex sx={{ flexDirection: 'row' }}>
             {colors.map(({ count, color }) => <Box pr={1} key={color}>
