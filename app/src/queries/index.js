@@ -48,7 +48,6 @@ const queries = {
                     # manaCost
                     # artist
                     # types
-                    # subtypes
                     # text
                     # power
                     # colorIndicator

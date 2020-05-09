@@ -10,6 +10,17 @@ import BattleField from './BattleField'
 import { DragDropContext } from "react-beautiful-dnd"
 import GameCardsContainer from '../../../containers/GameCardsContainer'
 
+
+const AutomaticallySaveToLocalStorage = ({ game, room }) => {
+    if(game.state.deck !== null) window.localStorage.setItem(room.roomId, JSON.stringify(game.state))
+    return ''
+}
+
+const RetrieveLastGameState = React.memo(({ game, room }) => {
+    const lastState = JSON.parse(window.localStorage.getItem(room.roomId))
+    game.setState(lastState)
+})
+
 const HandActions = ({ onPlay, onShow }) => (
     <Flex>
         <Button variant='warning'>Discard</Button>
@@ -44,10 +55,12 @@ const game = new GameCardsContainer()
 export default function Battle({ deck, room }) {
     const [card, setCard] = useState({})
     const [showCardModal, setShowCardModal] = useState(false)
+    const lastState = JSON.parse(window.localStorage.getItem(room.roomId))
 
     useEffect(() => {
         loader.hide()
-        game.setDeck(deck)
+        // if a deck is provided, use it!
+        if(deck) game.setDeck(deck)
     }, [])
 
 
@@ -96,6 +109,8 @@ export default function Battle({ deck, room }) {
         <Subscribe to={[game]}>
             {game =>
                 <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
+                    <RetrieveLastGameState room={room} game={game}/>
+                    <AutomaticallySaveToLocalStorage room={room} game={game}/>
                     {room.state.cardToShow && <ShowCardFromUsers card = {room.state.cardToShow} />}
                     {/* <AutomaticallySendUpdates room={room} game={game}/> */}
                     <DragDropContext onDragEnd={onDragEnd}>

@@ -39,7 +39,12 @@ export default function Game({ id }) {
     const roomData = roomRes.data
     const meData = meRes.data
     // useEffect(() => roomContainer.joinRoom(roomData.room.name, meData.me.id, roomData.room.id), [roomRes])
-    useEffect(() => roomContainer.deselectDeck(), [])
+    useEffect(() => {
+        // check if we have a previusly saved state
+        const lastGameState = window.localStorage.getItem(id)
+        if(lastGameState) roomContainer.start()
+        else { roomContainer.deselectDeck() }
+    }, [])
     loader.hide()
 
     return (

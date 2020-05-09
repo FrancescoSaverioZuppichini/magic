@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Flex, Box, Text, Select, Button, IconButton, Image } from 'theme-ui'
-import { COLORS, TYPES } from '../../utils.js'
+import { Flex, Box, Text, Select, Button, IconButton, Image, Input } from 'theme-ui'
+import { COLORS, TYPES, SUBTYPES } from '../../utils.js'
 import { filterMagicCards } from '../../utils'
 
 const MagicCardsFilters = ({ onChange }) =>
@@ -10,6 +10,13 @@ const MagicCardsFilters = ({ onChange }) =>
             <Select onChange={(el) => onChange({ type: el.target.value !== 'All' ? el.target.value : undefined } )}> defaultValue='All'>
                      <option>All</option>
                 {TYPES.map(t => <option key={t}>{t}</option>)}
+            </Select>
+        </Box>
+        <Box pr={2}>
+        <Text py={1} sx={{ color: 'text' }}>Subtype</Text>
+            <Select onChange={(el) => onChange({ subtype: el.target.value !== 'All' ? el.target.value : undefined } )}> defaultValue='All'>
+                     <option>All</option>
+                {SUBTYPES.map(t => <option key={t}>{t}</option>)}
             </Select>
         </Box>
         <Box pr={2}>

@@ -105,6 +105,7 @@ const typeDefs = gql`
   input CardFilter {
     name: String
     type: String
+    subtype: String,
     colors: [String]
     convertedManaCost: String
     toughness: Int

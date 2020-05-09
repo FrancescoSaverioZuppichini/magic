@@ -23,7 +23,6 @@ class GameCardsContainer extends Container {
         battlefield0: [],
         battlefield1: [],
         graveyard: []
-
     }
 
     originalDeck
