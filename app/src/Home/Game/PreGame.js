@@ -7,11 +7,10 @@ import Modal from '../Modal.js'
 import Stages from '../Stages.js'
 import DeckRow from '../Decks/DeckRow'
 
-export default function PreGame ({ me, room }) {
+export default function PreGame({ me, room, roomId }) {
     const [deckSelected, setDeckSelected] = useState(me.decks[0])
     const history = useHistory()
     const onGo = () => room.selectDeck(deckSelected)
-
     return (
         <Modal active={true} position={'fixed'} variant='vCentering'>
             <Stages>
@@ -32,7 +31,7 @@ export default function PreGame ({ me, room }) {
                                 }
                             </DecksSearchBar>
                             <Flex pt={4} sx={{ justifyContent: 'space-between' }}>
-                            <Button onClick={() => {
+                                <Button onClick={() => {
                                     loader.hide()
                                     history.goBack()
                                 }}>Exit</Button>
@@ -51,8 +50,8 @@ export default function PreGame ({ me, room }) {
                             <Text sx={{ fontSize: 2 }}>Waiting for the other player...</Text>
                             <Flex pt={4} sx={{ justifyContent: 'flex-start' }}>
                                 <Button onClick={() => {
-                                    room.deselectDeck()
-                                    onBack()
+                                    room.action(room.PHASES.BATTLE, { roomId, userId: me.id })     
+                                    onBack()                             
                                     loader.hide()
                                 }}>Edit</Button>
                             </Flex>

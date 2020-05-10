@@ -6,8 +6,10 @@ class RoomContainer extends Container {
     PHASES = {
         PRE: 'PRE',
         BATTLE: 'BATTLE',
+        UPDATE: 'UPDATE',
         END: 'END'
     }
+    
 
     state = {
         count: 0,
@@ -38,9 +40,18 @@ class RoomContainer extends Container {
             if (id === this.userId) console.log('You joined the same room twice!')
         })
 
-        this.socket.on('start', () => {
+        this.socket.on(this.PHASES.BATTLE, () => {
             console.log('start')
             this.start()
+        })
+
+        this.socket.on(this.PHASES.UPDATE, ({ update, from }) => {
+            console.log(`[UPDATE] from ${from}`)
+            if (from.id !== this.userId) {
+                let players = { ...this.state.players }
+                players[from.id] = update
+                this.setState({ players })
+            }
         })
 
         this.socket.on('showCard', ({ card, from }) => {
@@ -51,6 +62,19 @@ class RoomContainer extends Container {
             console.log(`Error ${msg}`);
         })
 
+    }
+
+    action(type, data){
+        this.socket.emit('action', { type, data})
+    }
+
+    sendUpdate(update){
+        this.action(this.PHASES.UPDATE, { update })
+    }
+
+    selectDeck(deck){
+        this.action(this.PHASES.BATTLE, { roomId: this.roomId, userId: this.userId })
+        this.setState({deck})
     }
 
     start() {
@@ -64,29 +88,9 @@ class RoomContainer extends Container {
         this.socket.emit('room', { name, userId, roomId });
     }
 
-    selectDeck(deck) {
-        this.socket.emit('selectDeck', { id : deck.id })
-        this.setState({ deck })
-    }
-
-    deselectDeck() {
-        this.socket.emit('selectDeck', {})
-        this.setState({ deck: null })
-
-    }
-
-    emitAction(action) {
-        const roomId = this.roomId
-        this.socket.emit('action', { roomId, action })
-    }
-
     showCard(card) {
         const roomId = this.roomId
         this.socket.emit('showCard', { roomId, card })
-    }
-
-    decrement() {
-        this.setState({ count: this.state.count - 1 });
     }
 
     deleteRoom(room) {

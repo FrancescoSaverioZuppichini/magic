@@ -12,13 +12,18 @@ import GameCardsContainer from '../../../containers/GameCardsContainer'
 
 
 const AutomaticallySaveToLocalStorage = ({ game, room }) => {
-    if(game.state.deck !== null) window.localStorage.setItem(room.roomId, JSON.stringify(game.state))
+    if (game.state.deck !== null) window.localStorage.setItem(room.roomId, JSON.stringify(game.state))
     return ''
 }
 
 const RetrieveLastGameState = React.memo(({ game, room }) => {
     const lastState = JSON.parse(window.localStorage.getItem(room.roomId))
-    game.setState(lastState)
+    console.log(lastState)
+    if (lastState) {
+        game.setState(lastState)
+        const update = { battlefield0: lastState.battlefield0, battlefield1: lastState.battlefield1, }
+        room.sendUpdate(update)
+    }
 })
 
 const HandActions = ({ onPlay, onShow }) => (
@@ -55,14 +60,12 @@ const game = new GameCardsContainer()
 export default function Battle({ deck, room }) {
     const [card, setCard] = useState({})
     const [showCardModal, setShowCardModal] = useState(false)
-    const lastState = JSON.parse(window.localStorage.getItem(room.roomId))
 
     useEffect(() => {
         loader.hide()
         // if a deck is provided, use it!
-        if(deck) game.setDeck(deck)
+        if (deck) game.setDeck(deck)
     }, [])
-
 
     const onCardClick = (card) => {
         setCard(card)
@@ -70,8 +73,8 @@ export default function Battle({ deck, room }) {
     }
 
     const sendUpdates = () => {
-        const action = { battlefield0: game.state.battlefield0, battlefield1: game.state.battlefield1, }
-        room.emitAction(action)
+        const update = { battlefield0: game.state.battlefield0, battlefield1: game.state.battlefield1, }
+        room.sendUpdate(update)
     }
 
     const onDragEnd = ({ source, destination, combine }) => {
@@ -83,7 +86,6 @@ export default function Battle({ deck, room }) {
         }
 
         sendUpdates()
-
     }
 
     const onPlay = (card) => {
@@ -95,7 +97,6 @@ export default function Battle({ deck, room }) {
 
     const onTap = (card) => {
         game.tap(card)
-        console.log('asdds')
         setShowCardModal(false)
         sendUpdates()
     }
@@ -109,16 +110,16 @@ export default function Battle({ deck, room }) {
         <Subscribe to={[game]}>
             {game =>
                 <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
-                    <RetrieveLastGameState room={room} game={game}/>
-                    <AutomaticallySaveToLocalStorage room={room} game={game}/>
-                    {room.state.cardToShow && <ShowCardFromUsers card = {room.state.cardToShow} />}
+                    <RetrieveLastGameState room={room} game={game} />
+                    <AutomaticallySaveToLocalStorage room={room} game={game} />
+                    {room.state.cardToShow && <ShowCardFromUsers card={room.state.cardToShow} />}
                     {/* <AutomaticallySendUpdates room={room} game={game}/> */}
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Flex sx={{ flexDirection: 'column', flexGrow: 1 }}>
                             {/* Battlefield */}
                             <Flex sx={{ flexDirection: 'row', flex: 1 }}>
                                 <Card sx={{ flex: 1, flexGrow: 1, display: 'flex' }}>
-                                        {game.state.deck && <BattleField game={game} room={room} selectedCard={card} onCardClick={onCardClick} />}
+                                    {game.state.deck && <BattleField game={game} room={room} selectedCard={card} onCardClick={onCardClick} />}
                                 </Card>
                                 {/* show card on right */}
                                 {card && <Box
