@@ -6,6 +6,7 @@ import { Card, Text, Flex, Box, IconButton, Button } from 'theme-ui'
 import { Route, Link, Redirect, useRouteMatch, useLocation, useHistory } from "react-router-dom"
 import { Provider, Subscribe } from 'unstated';
 import loader from '../containers/LoaderContainer'
+import snackbar from '../containers/SnackbarContainer'
 
 import Modal from './Modal'
 
@@ -19,6 +20,8 @@ import NewRoom from './Rooms/NewRoom'
 import JoinRoom from './Rooms/JoinRoom'
 
 import Game from './Game/Game'
+
+import Snackbar from './Snackbar'
 import Loader from '../Loader.js'
 
 import Search from './Search.js'
@@ -54,6 +57,9 @@ function Home() {
             <Flex sx={{ flexDirection: 'column', height: '100%' }}>
                 <Subscribe to={[loader]}>
                     {({ state }) => state.show && <Loader />}
+                </Subscribe>
+                <Subscribe to={[snackbar]}>
+                    {({ state }) => state.show && <Snackbar title={state.title} text={state.text} />}
                 </Subscribe>
                 {data && <NavBar user={data.me} />}
                 {data && <Card variant='container' sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
