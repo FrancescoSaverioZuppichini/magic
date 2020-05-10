@@ -44,12 +44,13 @@ const OrganizedMagicCard = ({ card, children, innerRef, isDragging }) => {
     useEffect(() => setZooom(zoom && !isDragging), [isDragging])
 
     return (
-        <Box ref={innerRef} sx={{ height: '100%' }} >{card.length > 1 ?
+        <Box ref={innerRef} sx={{ height: '100%' }} >{card.cards ? (
+            card.cards.length > 1 ?
             <Box>
-                <GroupPreviewMagicCard cards={card} children={children} onClick={onClick} />
-                {zoom && <OrganizedMagicCardZoom cards={card} children={children} droppableId={card.uid} />}
-            </Box>
-            : children(card.length === 1 ? card[0] : card)
+                <GroupPreviewMagicCard cards={card.cards} children={children} onClick={onClick} />
+                {zoom && <OrganizedMagicCardZoom cards={card.cards} children={children} droppableId={card.uid} />}
+            </Box> : children(card.cards[0]))
+            : children(card)
         }
         </Box>
     )

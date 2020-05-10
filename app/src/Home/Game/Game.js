@@ -15,11 +15,11 @@ const JoinAutomatically = React.memo(({ room, data, userId }) => {
     return ''
 })
 
-const Phases = ({ phase, room, me }) => {
+const Phases = ({ phase, room, me, roomId }) => {
     let children;
     switch (phase) {
         case room.PHASES.PRE:
-            children = <PreGame room={room} me={me} />
+            children = <PreGame room={room} me={me} roomId={roomId} />
             break
 
         case room.PHASES.BATTLE:
@@ -40,10 +40,10 @@ export default function Game({ id }) {
     const meData = meRes.data
 
     useEffect(() => {
-        // check if we have a previusly saved state
+        // check if we have a previously saved state
         const lastGameState = window.localStorage.getItem(id)
-        if(lastGameState && lastGameState.deck !== null) roomContainer.start()
-        else { roomContainer.deselectDeck() }
+        if(lastGameState && lastGameState.deck !== null) roomContainer.action(roomContainer.PHASES.BATTLE, { roomId: id, userId: meData.me.id})
+        else { roomContainer.action(roomContainer.PHASES.PRE, { roomId: id, userId: meData.me.id}) }
     }, [])
     loader.hide()
 
@@ -63,6 +63,7 @@ export default function Game({ id }) {
                                 <JoinAutomatically room={room} data={roomData.room} userId={meData.me.id} />
                                 <Phases phase={room.state.phase}
                                     room={room}
+                                    roomId={id}
                                     me={meData.me} />
                             </Flex>)
                         }

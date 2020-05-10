@@ -63,15 +63,26 @@ class GameCardsContainer extends Container {
         this.setState({ hand })
     }
 
+    // remove pending groups with only one card 
+    _normalize = (c) => {
+        if(c.cards){
+            if(c.cards.length <= 1){
+                c = {...c.cards[0]}
+            }
+        }
+        return c
+    }
+
     swap(source, destination) {
         /**
          * Swap two cards
          */
         let state = { ...this.state }
         let card = state[source.droppableId][source.index]
+
         state[source.droppableId].splice(source.index, 1)
         state[destination.droppableId].splice(destination.index, 0, card)
-
+        
         const addPlayFields = (card) => {
             card.isPlayed = true
             card.isTapped = card.isTapped || false
@@ -83,17 +94,20 @@ class GameCardsContainer extends Container {
         }
         // we need to update each card fields depending if they are in game or not
         if (destination.droppableId === 'battlefield0' || destination.droppableId === 'battlefield1') {
-            if (card.length) card.map(addPlayFields)
+            if (card.cards) card.cards.map(addPlayFields)
             else {
                 addPlayFields(card)
             }
         }
         else if (destination.droppableId === 'hand') {
-            if (card.length) card.map(removePlayField)
+            if (card.cards) card.cards.map(removePlayField)
             else {
                 removePlayField(card)
             }
         }
+
+        state[destination.droppableId] = state[destination.droppableId].map(c => this._normalize(c))
+
         this.setState(state)
     }
 
@@ -104,7 +118,7 @@ class GameCardsContainer extends Container {
         const { draggableId } = combine
         const { index, droppableId } = source
         // a function to remove single list
-        const _normalize = (cards) => cards.map(card => card.length === 1 ? card[0] : card)
+        // const _normalize = (cards) => cards.map(card => card.length === 1 ? card[0] : card)
         let cards = [...this.state[droppableId]]
         const combineIdx = cards.findIndex(card => card.uid === draggableId)
         // card was not found!
@@ -113,43 +127,43 @@ class GameCardsContainer extends Container {
         const right = cards[index]
         // remove old reference
         delete this.state[draggableId]
-        let group = []
+        let groupedCards = []
         // 4 situations
         // booth are single cards
-        if (left.length && right.length) {
-            group = [...left, ...right]
+        if (left.cards && right.cards) {
+            groupedCards = [...left.cards, ...right.cards]
         }
         // left is an array and right a single card
-        else if (left.length && !right.length) {
-            group = [...left, right]
+        else if (left.cards && !right.cards) {
+            groupedCards = [...left.cards, right]
         }
         // left is single card and left is an array
-        else if (!left.length && right.length) {
-            group = [left, ...right]
+        else if (!left.cards && right.cards) {
+            groupedCards = [left, ...right.cards]
         }
         // booth are array
-        else if (!left.length && !right.length) {
-            group = [left, right]
+        else if (!left.cards && !right.cards) {
+            groupedCards = [left, right]
         }
         // add an unique id
-        if (!group.uid) group.uid = uniqid()
+        const group = {  cards : groupedCards, uid : uniqid()}
         // loop on the group and add the parent field
-        group.map(card => card.parent = group.uid)
+        group.cards.map(card => card.parent = group.uid)
         cards[combineIdx] = group
         cards.splice(index, 1)
         let state = {}
-        cards = _normalize(cards)
+        // cards = _normalize(cards)
         state[droppableId] = cards
         // add a reference to the group to the state
         // so we can reference it later using only the `droppableId` (aka the uid)
-        state[group.uid] = group
+        state[group.uid] = group.cards
         this.setState(state)
     }
 
     play(card) {
         let cards = this.state.hand
         const { parent } = card
-        if (parent) cards = cards[cards.findIndex(card => card.uid == parent)]
+        if (parent) cards = cards[cards.findIndex(card => card.uid == parent)].cards
         const playedIdx = cards.findIndex(handCard => handCard.uid === card.uid)
         card.isPlayed = true
         card.isTapped = false
@@ -158,6 +172,7 @@ class GameCardsContainer extends Container {
 
         let battlefield0 = [...this.state.battlefield0, card]
         let hand = [...this.state.hand]
+        
         this.setState({ battlefield0, hand })
     }
 
