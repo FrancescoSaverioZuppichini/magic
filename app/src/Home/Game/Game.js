@@ -40,7 +40,7 @@ export default function Game({ id }) {
     const meData = meRes.data
 
     useEffect(() => {
-        // check if we have a previusly saved state
+        // check if we have a previously saved state
         const lastGameState = window.localStorage.getItem(id)
         if(lastGameState && lastGameState.deck !== null) roomContainer.action(roomContainer.PHASES.BATTLE, { roomId: id, userId: meData.me.id})
         else { roomContainer.action(roomContainer.PHASES.PRE, { roomId: id, userId: meData.me.id}) }
