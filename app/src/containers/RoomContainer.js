@@ -54,6 +54,7 @@ class RoomContainer extends Container {
     }
 
     start() {
+        this.socket.emit('selectDeck', { id : null })
         this.setState({ phase: this.PHASES.BATTLE })
     }
 
