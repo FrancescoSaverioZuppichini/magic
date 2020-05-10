@@ -39,9 +39,7 @@ class WSServer {
                         onPre(data)
                         break
                     case (TYPES.BATTLE):
-                        // add user to room
                         onBattle(data)
-                        // if users.lenght === MAX_USERS, send back 
                         break
                     case (TYPES.UPDATE):
                         onUpdate(data)

@@ -10,20 +10,23 @@ import BattleField from './BattleField'
 import { DragDropContext } from "react-beautiful-dnd"
 import GameCardsContainer from '../../../containers/GameCardsContainer'
 
-
 const AutomaticallySaveToLocalStorage = ({ game, room }) => {
+    loader.show()
     if (game.state.deck !== null) window.localStorage.setItem(room.roomId, JSON.stringify(game.state))
+    loader.hide()
     return ''
 }
 
 const RetrieveLastGameState = React.memo(({ game, room }) => {
     const lastState = JSON.parse(window.localStorage.getItem(room.roomId))
-    console.log(lastState)
+    loader.show()
     if (lastState) {
         game.setState(lastState)
         const update = { battlefield0: lastState.battlefield0, battlefield1: lastState.battlefield1, }
         room.sendUpdate(update)
     }
+    loader.hide()
+
 })
 
 const HandActions = ({ onPlay, onShow }) => (
@@ -122,7 +125,7 @@ export default function Battle({ deck, room }) {
                                     {game.state.deck && <BattleField game={game} room={room} selectedCard={card} onCardClick={onCardClick} />}
                                 </Card>
                                 {/* show card on right */}
-                                {card && <Box
+                                {card.id && <Box
                                     pl={2}
                                     sx={{
                                         visibility: ['hidden', 'hidden', 'hidden', 'hidden', 'visible'],

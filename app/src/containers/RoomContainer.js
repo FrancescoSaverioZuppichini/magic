@@ -1,6 +1,6 @@
 import { Container } from 'unstated'
 import io from 'socket.io-client'
-
+import snackbar from './SnackbarContainer'
 
 class RoomContainer extends Container {
     PHASES = {
@@ -9,7 +9,7 @@ class RoomContainer extends Container {
         UPDATE: 'UPDATE',
         END: 'END'
     }
-    
+
 
     state = {
         count: 0,
@@ -24,6 +24,7 @@ class RoomContainer extends Container {
         this.socket = io.connect()
         this.socket.on('connect', () => {
             console.log('Connect to ws')
+            snackbar.open('', 'Connected')
         })
 
         this.socket.on('action', ({ action, from }) => {
@@ -38,6 +39,10 @@ class RoomContainer extends Container {
         this.socket.on('join', (id) => {
             console.log(`User ${id} joined!`);
             if (id === this.userId) console.log('You joined the same room twice!')
+            else {
+                snackbar.open('', `User ${id} joined!`)
+
+            }
         })
 
         this.socket.on(this.PHASES.BATTLE, () => {
@@ -56,6 +61,7 @@ class RoomContainer extends Container {
 
         this.socket.on('showCard', ({ card, from }) => {
             if (from.id !== this.userId) this.setState({ cardToShow: card })
+
         })
 
         this.socket.on('error', ({ msg }) => {
@@ -64,21 +70,21 @@ class RoomContainer extends Container {
 
     }
 
-    action(type, data){
-        this.socket.emit('action', { type, data})
+    action(type, data) {
+        this.socket.emit('action', { type, data })
     }
 
-    sendUpdate(update){
+    sendUpdate(update) {
         this.action(this.PHASES.UPDATE, { update })
     }
 
-    selectDeck(deck){
+    selectDeck(deck) {
         this.action(this.PHASES.BATTLE, { roomId: this.roomId, userId: this.userId })
-        this.setState({deck})
+        this.setState({ deck })
     }
 
     start() {
-        this.socket.emit('selectDeck', { id : null })
+        this.socket.emit('selectDeck', { id: null })
         this.setState({ phase: this.PHASES.BATTLE })
     }
 
@@ -91,6 +97,7 @@ class RoomContainer extends Container {
     showCard(card) {
         const roomId = this.roomId
         this.socket.emit('showCard', { roomId, card })
+        snackbar.open('', 'Showed')
     }
 
     deleteRoom(room) {
