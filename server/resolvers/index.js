@@ -7,8 +7,10 @@ const cards = async (ctx, { filter, cursor }) => {
 	if (limit > CURSOR_BOUNDS.limit) throw new Error(`Limit cannot be greater than ${CURSOR_BOUNDS.limit}`)
 
 	let cardFilter = {}
-
+	console.log(filter)
 	if (filter.type) cardFilter.types = { '$in': [filter.type] }
+	if (filter.subtype) cardFilter.subtypes = { '$in': [filter.subtype] }
+
 	if (filter.name) cardFilter.name = { '$regex': filter.name, '$options': 'i' }
 	if (filter.colors) cardFilter.colors = { '$all': filter.colors }
 	if (filter.convertedManaCost) {

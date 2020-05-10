@@ -17,7 +17,7 @@ class RoomContainer extends Container {
         deck: null
     }
 
-    constructor() {
+    constructor(roomId) {
         super()
         this.socket = io.connect()
         this.socket.on('connect', () => {
@@ -40,7 +40,7 @@ class RoomContainer extends Container {
 
         this.socket.on('start', () => {
             console.log('start')
-            this.setState({ phase: this.PHASES.BATTLE })
+            this.start()
         })
 
         this.socket.on('showCard', ({ card, from }) => {
@@ -51,6 +51,11 @@ class RoomContainer extends Container {
             console.log(`Error ${msg}`);
         })
 
+    }
+
+    start() {
+        this.socket.emit('selectDeck', { id : null })
+        this.setState({ phase: this.PHASES.BATTLE })
     }
 
     joinRoom(name, userId, roomId) {
