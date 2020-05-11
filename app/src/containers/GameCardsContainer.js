@@ -67,6 +67,7 @@ class GameCardsContainer extends Container {
     _normalize = (c) => {
         if(c.cards){
             if(c.cards.length <= 1){
+                delete this.state[c.uid]
                 c = {...c.cards[0]}
             }
         }
@@ -78,11 +79,25 @@ class GameCardsContainer extends Container {
          * Swap two cards
          */
         let state = { ...this.state }
-        let card = state[source.droppableId][source.index]
 
-        state[source.droppableId].splice(source.index, 1)
+        let cards = state[source.droppableId]
+        // check if it is a group
+        if(cards.cards) {
+            // find the cards directly inside the parent, this will 
+            // fix the loading error where loaded objects have different references
+            const { uid, droppableId } = cards
+            let parentCards = state[droppableId]
+            let idx = parentCards.findIndex(c => c.uid === uid)
+            cards = parentCards[idx].cards
+        }
+
+        let card = cards[source.index]
+        cards.splice(source.index, 1)
         state[destination.droppableId].splice(destination.index, 0, card)
-        
+
+        if(card.cards) {
+            state[card.uid].droppableId = destination.droppableId
+        }
         const addPlayFields = (card) => {
             card.isPlayed = true
             card.isTapped = card.isTapped || false
@@ -105,9 +120,7 @@ class GameCardsContainer extends Container {
                 removePlayField(card)
             }
         }
-
-        state[destination.droppableId] = state[destination.droppableId].map(c => this._normalize(c))
-
+       
         this.setState(state)
     }
 
@@ -125,8 +138,11 @@ class GameCardsContainer extends Container {
         if (combineIdx < 0) return
         const left = cards[combineIdx]
         const right = cards[index]
-        // remove old reference
-        delete this.state[draggableId]
+                // // remove old reference
+        // delete this.state[draggableId]
+        if(left.cards) delete this.state[left.uid]
+        if(right.cards) delete this.state[right.uid]
+
         let groupedCards = []
         // 4 situations
         // booth are single cards
@@ -145,18 +161,19 @@ class GameCardsContainer extends Container {
         else if (!left.cards && !right.cards) {
             groupedCards = [left, right]
         }
+        let state = {...this.state}
+
         // add an unique id
-        const group = {  cards : groupedCards, uid : uniqid()}
+        const group = {  cards : groupedCards, uid : uniqid(), droppableId}
         // loop on the group and add the parent field
-        group.cards.map(card => card.parent = group.uid)
+        group.cards.forEach(card => card.parent = group.uid)
         cards[combineIdx] = group
         cards.splice(index, 1)
-        let state = {}
         // cards = _normalize(cards)
         state[droppableId] = cards
         // add a reference to the group to the state
         // so we can reference it later using only the `droppableId` (aka the uid)
-        state[group.uid] = group.cards
+        state[group.uid] = group
         this.setState(state)
     }
 

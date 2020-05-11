@@ -34,7 +34,6 @@ const OrganizableMagicCard = ({ card, children, innerRef, isDragging }) => {
     const [zoom, setZooom] = useState(false)
     const onClick = () => setZooom(!zoom)
     useEffect(() => setZooom(zoom && !isDragging), [isDragging])
-
     return (
         <Box ref={innerRef} sx={{ height: '100%' }} >{card.cards ? (
             card.cards.length > 1 ?
