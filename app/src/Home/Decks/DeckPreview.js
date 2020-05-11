@@ -11,7 +11,7 @@ function DeckPreview({ deck, controllers, linkable=true, width='300px' }) {
      */
     return (
         <Card sx={{ width }} >
-            {linkable && <Link to={`/home/decks/show/${id}`}><Text sx={{ fontSize: 2 }}>{name}</Text></Link>}
+            {linkable && <Text sx={{ fontSize: 2 }}><Link to={`/home/decks/show/${id}`}>{name}</Link></Text>}
             {!linkable && <Text sx={{ fontSize: 2 }}>{name}</Text>}
             <Text sx={{ fontSize: 0 }}>{moment(Number(createdAt)).format('MMM Do YY')}</Text>
             {type && <Text py={1}>{type}</Text>}
