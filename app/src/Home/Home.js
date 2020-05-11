@@ -88,7 +88,7 @@ function Home() {
 
                     <Route path='/home/preview'>
                         <Box>
-                            <Link to='/home/decks'><Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Your Decks</Text></Link>
+                        <Text sx={{ fontSize: 4, fontWeight: 'thin' }}><Link to='/home/decks'>Your Decks</Link></Text>
                             <Box p={1} />
                             <Text>Latest created</Text>
                             <Box py={2}></Box>
@@ -104,7 +104,7 @@ function Home() {
                         </Box>
                         <Box py={3} />
                         <Box>
-                            <Link to='/home/rooms'><Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Your Rooms</Text></Link>
+                        <Text sx={{ fontSize: 4, fontWeight: 'thin' }}><Link to='/home/rooms'>Your Rooms</Link></Text>
                             <Box p={1} />
                             <Text>Latest created</Text>
                             <Box py={2}></Box>

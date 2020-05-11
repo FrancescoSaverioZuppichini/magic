@@ -10,11 +10,11 @@ export default function RoomPreview({ name, id, createdAt, controllers = true })
      */
     return (
         <Card sx={{ minWidth: '250px' }}>
-            <Link to={`/home/rooms/show/${id}`}><Text sx={{ fontSize: 2 }}>{name}</Text></Link>
+            <Text sx={{ fontSize: 2 }}><Link to={`/home/rooms/show/${id}`}>{name}</Link></Text>
             <Box p={1} />
             <Text sx={{ fontSize: 0 }}>{moment(createdAt).format('MMM Do YY')}</Text>
             <Box p={2} />
-            {controllers && <RoomControllers id={id} name={name} />}
+            {/* {controllers && <RoomControllers id={id} name={name} />} */}
         </Card>
     )
 }
