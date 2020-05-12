@@ -85,6 +85,7 @@ export default function Battle({ deck, room }) {
     const onDragEnd = ({ source, destination, combine }) => {
         if (destination) {
             game.swap(source, destination)
+            console.log(source, destination)
         }
         else if (combine) {
             game.combine(combine, source)
