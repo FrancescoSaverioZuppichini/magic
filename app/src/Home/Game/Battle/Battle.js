@@ -14,13 +14,11 @@ const AutomaticallySaveToLocalStorage = ({ game, room }) => {
     loader.show()
     if (game.state.deck !== null) window.localStorage.setItem(room.roomId, JSON.stringify(game.state))
     loader.hide()
-    console.log('saved', game.state)
     return ''
 }
 
 const RetrieveLastGameState = React.memo(({ game, room }) => {
     const lastState = JSON.parse(window.localStorage.getItem(room.roomId))
-    console.log('loaded', lastState)
     loader.show()
     if (lastState) {
         game.setState(lastState)

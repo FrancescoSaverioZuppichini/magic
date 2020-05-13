@@ -5,7 +5,7 @@ import DecksSearchBar from './Decks/DecksSearchBar'
 
 import { MagicCard, AddToDeckMagiCardAction, ZoomMagiCardAction, AddToDeckMagiCardsAction } from './MagicCards/MagicCard'
 import { SelectableMagigCards } from './MagicCards/SelectableMagicCards'
-import { useHistory } from "react-router-dom"
+import { Route, useHistory, useLocation } from "react-router-dom"
 import DeckPreview from './Decks/DeckPreview'
 import Modal from './Modal'
 import DeckPage from './Decks/DeckPage'
@@ -26,16 +26,37 @@ const ZooomDeckAction = ({ deck }) => {
     )
 }
 
+const DeckPreviewWithZoom = ({ deck }) => {
+    const [zoom, setZoom] = useState(false)
+    return (
+        <Box>
+            <DeckPreview
+                deck={deck}
+                linkable={false}
+                onClick={() => setZoom(true)}
+            />
+            {zoom && <Modal active={zoom} variant='vCentering'>
+                <DeckPage id={deck.id} onClose={() => setZoom(false)} />
+            </Modal>}
+        </Box>
+    )
+}
+
 const SearchPage = ({ location }) => {
     const history = useHistory()
+    console.log(location)
     const [searchType, setSearchType] = useState('CARDS')
 
     const setSearchTypeAndUrl = (type) => {
         setSearchType(type)
+        history.push(location.pathname + `?type=${type}`)
     }
-
     const { type } = queryString.parse(location.search)
-    useEffect(() => type ? setSearchType(type) : '', [type])
+
+    useEffect(() => {
+        if (type) setSearchType(type)
+
+    }, [type])
 
 
 
@@ -58,7 +79,6 @@ const SearchPage = ({ location }) => {
                     variant={searchType === 'DECKS' ? 'primary' : 'outline'}>Decks</Button>
             </Flex>
             <Box py={1}></Box>
-
             {searchType === 'CARDS' && <SearchBar onSearchEnd={history.goBack}>
                 {({ cards, onLoadMore }) => (<Box>
                     {cards && <Box pt={3}>
@@ -104,16 +124,7 @@ const SearchPage = ({ location }) => {
                         bg: 'background'
                     }}>
                     {decks && decks.decks.map(deck => <Box key={deck.id} p={2}>
-                        <DeckPreview
-                            deck={deck}
-                            linkable={false} controllers={
-                                deck => <Flex
-                                    sx={{ justifyContent: 'space-between' }}
-                                >
-                                    {/* <CloneDeckAction deck={deck} /> */}
-                                    <ZooomDeckAction deck={deck} />
-                                </Flex>
-                            } />
+                        <DeckPreviewWithZoom deck={deck} />
                     </Box>)}
                 </Flex>}
             </DecksSearchBar>}

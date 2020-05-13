@@ -1,7 +1,7 @@
 import { Container } from 'unstated'
 import io from 'socket.io-client'
 import uniqid from 'uniqid'
-
+import snackbar from './SnackbarContainer'
 /**
  * Shuffles array in place. ES6 version
  * from https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
@@ -27,10 +27,10 @@ class GameCardsContainer extends Container {
 
     originalDeck
 
-    shuffleDeck({ cards }) {
+    shuffle() {
         // console.log(this.state.deck.cards)
-        shuffle(cards)
-
+        shuffle(this.state.deck.cards)
+        snackbar.open('', 'Shuffled!')
         // console.log(this.state.deck.cards)
         // const deck = {...this.state.deck, cards: [shuffledCards]}
     }
@@ -39,7 +39,7 @@ class GameCardsContainer extends Container {
         this.originalDeck = deck
         // deep copy the deck, we are going to change it!
         const deepDeck = { cards: [...deck.cards], name: deck.name }
-        this.shuffleDeck(deepDeck)
+        this.shuffle(deepDeck)
 
         let hand = []
         for (let card of deepDeck.cards.splice(0, 5)) {
