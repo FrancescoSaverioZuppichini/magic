@@ -14,13 +14,11 @@ const AutomaticallySaveToLocalStorage = ({ game, room }) => {
     loader.show()
     if (game.state.deck !== null) window.localStorage.setItem(room.roomId, JSON.stringify(game.state))
     loader.hide()
-    console.log('saved', game.state)
     return ''
 }
 
 const RetrieveLastGameState = React.memo(({ game, room }) => {
     const lastState = JSON.parse(window.localStorage.getItem(room.roomId))
-    console.log('loaded', lastState)
     loader.show()
     if (lastState) {
         game.setState(lastState)
@@ -85,6 +83,7 @@ export default function Battle({ deck, room }) {
     const onDragEnd = ({ source, destination, combine }) => {
         if (destination) {
             game.swap(source, destination)
+            console.log(source, destination)
         }
         else if (combine) {
             game.combine(combine, source)

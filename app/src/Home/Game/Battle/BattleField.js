@@ -38,7 +38,7 @@ export default function Battlefield({ game, room, onCardClick }) {
     // TODO, just use the first player (1 v 1)
     const keys = Object.keys(room.state.players)
     const enemy = room.state.players[keys[0]]
-    console.log('changed',game.state)
+
     return (
         <Flex sx={{ width: '100%', flexDirection: 'column', justifyContent: 'space-between' }}>
             <Box>
