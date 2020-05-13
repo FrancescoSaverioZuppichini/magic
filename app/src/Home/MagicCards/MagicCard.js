@@ -213,6 +213,9 @@ const AddToDeckMagiCardsAction = ({ cards, selectedDecks = [], variant, onDone }
             <Button onClick={onClick} variant={variant || 'action'}>
                 Add
             </Button>
+            {/* <IconButton onClick={onClick} sx={{ width: '38px' }}>
+                <img width='38px' src='/add_circle_outline-24px.svg'></img>
+            </IconButton> */}
             <Modal active={isAdding} position={'fixed'} variant='vCentering'>
                 <Card sx={{ width: ['100%', '100%', '50%', '450px'] }}>
                     <Text sx={{ fontSize: 2 }}>Add to deck</Text>
@@ -250,7 +253,7 @@ const ZoomMagiCardAction = ({ scryfallId, id, name, children }) => {
     return (
         <Box>
             <IconButton onClick={onClick} sx={{ width: '38px' }}>
-                <img width='38px' src='/zoom_in-white-18dp.svg'></img>
+                <img width='38px' src='/zoom_out_map-24px.svg'></img>
             </IconButton>
             <Modal active={isZooming} position={'fixed'} variant='vCentering'>
                 {children ? children(onClose) : <CardPage {... { scryfallId, id, name }} onClose={onClose} />}

@@ -34,9 +34,9 @@ export default function NewRoom({ onClose }) {
     return (
         <Card sx={{ width: ['100%', '100%', '50%', '450px'] }}>
             <Text sx={{ fontSize: 4 }}>New Room</Text>
-            <Box py={3} />
+            <Box py={2} />
             <Text pb={2}>Name</Text>
-            <Input placeholder='name' 
+            <Input variant='inputTiny' placeholder='name' 
             onChange={(el) => setRoom({ name : el.target. value})}></Input>
             <Flex pt={5}>
                 <Button onClick={onClose}>Close</Button>

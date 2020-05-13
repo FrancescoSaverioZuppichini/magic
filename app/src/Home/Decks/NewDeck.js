@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
-import { Card, Text, Flex, Box, IconButton, Button } from 'theme-ui'
+import { Card, Text, Flex, Box, IconButton, Button, Input } from 'theme-ui'
 import SearchBar from '../SearchBar'
 import { MagicCard, MagicCardImg, ZoomMagiCardAction } from '../MagicCards/MagicCard'
 import DeckPreview from './DeckPreview'
@@ -153,11 +153,12 @@ export default function NewDeck({ onClose }) {
                     <Box variant="vCentering">
                         <Card p={2} sx={{ width: ['100%', '100%', '50%', '450px'] }}>
                             <Text sx={{ fontSize: 4 }}>New Deck</Text>
+                            <Box py={1} />
                             <Text sx={{ fontSize: 3, fontWeight: 'thin' }}>Info</Text>
                             <Box py={2} />
                             <Box>
                                 <Text pb={2}>Name</Text>
-                                <InputWithErrors
+                                <Input variant='inputTiny'
                                     onChange={(el) => setDeck(Object.assign(deck, { name: el.target.value }))}
                                 />
                             </Box>

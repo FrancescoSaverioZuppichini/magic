@@ -44,7 +44,6 @@ class WSServer {
                     case (TYPES.UPDATE):
                         onUpdate(data)
                         break
-
                 }
             })
 

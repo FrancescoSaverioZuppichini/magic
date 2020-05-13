@@ -23,7 +23,7 @@ export default function Decks() {
                 <Text py={2} sx={{ fontSize: 2, fontWeight: 'thin' }}>No decks! Create one</Text>
                 :
                 <Box py={2}>
-                    <MyDecksSearchBar sx={{ maxWidth: '250px' }} decks={data.me.decks}>
+                    <MyDecksSearchBar sx={{ maxWidth: '250px', backgroundColor: 'white', borderColor: 'white' }} decks={data.me.decks}>
                         {decks =>
                             <Flex sx={{ flexDirection: ['column', 'row'], flexWrap: 'wrap' }}>
                                 {decks.map(deck => <Box key={deck.id} pr={2} py={2}>
