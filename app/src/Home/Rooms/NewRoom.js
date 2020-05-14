@@ -12,9 +12,7 @@ export default function NewRoom({ onClose }) {
 
     const [newRoom, { newRoomError }] = useMutation(mutations.NEW_ROOM, {
         onCompleted({ newRoom }) {
-            console.log(newRoom)
             onClose()
-
         },
         update(cache, { data: { newRoom } }) {
             let { me } = cache.readQuery({ query: queries.GET_ME })
