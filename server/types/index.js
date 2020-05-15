@@ -14,6 +14,7 @@ const typeDefs = gql`
     cards(filter: CardFilter, cursor: CursorInput!): CardConnection
     cardsInDeck(filter: CardFilter, cursor: CursorInput!, deck: ID!): CardConnection
     room(id: ID!): Room
+    playedRooms: [Room] @isAuthenticated
 	}
 
 	type User {
@@ -90,6 +91,7 @@ const typeDefs = gql`
     createdAt: String
 
 	}
+  
 
 	type Auth {
 		token: String

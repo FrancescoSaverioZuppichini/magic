@@ -7,7 +7,6 @@ const cards = async (ctx, { filter, cursor }) => {
 	if (limit > CURSOR_BOUNDS.limit) throw new Error(`Limit cannot be greater than ${CURSOR_BOUNDS.limit}`)
 
 	let cardFilter = {}
-	console.log(filter)
 	if (filter.type) cardFilter.types = { '$in': [filter.type] }
 	if (filter.subtype) cardFilter.subtypes = { '$in': [filter.subtype] }
 
@@ -39,7 +38,7 @@ const decks = async( ctx, { filter, cursor }) => {
 	// each deck have ONE type
 	if (filter.type) deckFilder.type = filter.type
 	if (filter.colors) deckFilder['colors.color'] = { '$in': filter.colors }
-	console.log(deckFilder)
+
 	const decks = await Deck.find(deckFilder).skip(skip).limit(limit)
 	const hasMore = decks.length >= limit || decks.length === 0
 	cursor.skip += limit
@@ -82,7 +81,11 @@ const resolvers = {
 		card(ctx, { id }) {
 			return Card.findById(id)
 		},
-		room: (ctx, { id }) => Room.findById(id).populate('users').populate('decks').populate('owner')
+		room: (ctx, { id }) => Room.findById(id).populate('users').populate('owner'),
+		playedRooms: (ctx, { }, { user }) => { 
+			const rooms = Room.find({ users: { '$in' : user.id }, owner: { '$ne' : user.id}})
+			return rooms.populate('users').populate('owner')
+		}
 	},
 	Mutation: {
 		async newUser(obj, { input }) {
@@ -108,7 +111,6 @@ const resolvers = {
 					new: true
 				})
 			} else {
-				console.log(deck)
 				newDeck = await (new Deck(deck)).save()
 				user.decks.push(newDeck)
 				await user.save()

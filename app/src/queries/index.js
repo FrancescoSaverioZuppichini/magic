@@ -138,7 +138,21 @@ const queries = {
                 }
             } 
         }
-    `
+    `,
+      GET_PLAYED_ROOM: gql`
+      query playedRooms {
+        playedRooms {
+              id
+              name
+              owner {
+                  id
+              }
+              users {
+                  username
+              }
+          } 
+      }
+  `
 
 }
 
