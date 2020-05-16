@@ -10,7 +10,6 @@ import Battle from './Battle/Battle'
 import GameOwnerActions from './GameOwnerActions'
 
 const JoinAutomatically = React.memo(({ room, data, userId }) => {
-    console.log('wee')
     room.joinRoom(data.name, userId, data.id)
     return ''
 })

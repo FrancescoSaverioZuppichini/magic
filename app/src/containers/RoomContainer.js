@@ -46,7 +46,6 @@ class RoomContainer extends Container {
         })
 
         this.socket.on(this.PHASES.BATTLE, () => {
-            console.log('start')
             this.start()
         })
 
