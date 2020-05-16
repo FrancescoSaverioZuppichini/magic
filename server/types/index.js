@@ -105,7 +105,7 @@ const typeDefs = gql`
 	}
 
   input DeckInput { 
-    id: ID!
+    id: ID
     name: String
     cards: [ID!]
   }

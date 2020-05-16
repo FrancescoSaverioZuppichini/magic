@@ -84,7 +84,7 @@ const queries = {
                     manaCost
                     # artist
                     types
-                    # subtypes
+                    subtypes
                     # text
                     # colorIndicator
                     # toughness
