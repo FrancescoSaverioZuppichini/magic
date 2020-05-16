@@ -13,11 +13,13 @@ import Modal from './Modal'
 import NewDeck from './Decks/NewDeck'
 import DeckPreview from './Decks/DeckPreview'
 import Decks from './Decks/Decks.js'
+import DeckPage from './Decks/DeckPage.js'
 
 import Rooms from './Rooms/Rooms.js'
 import RoomPreview from './Rooms/RoomPreview'
 import NewRoom from './Rooms/NewRoom'
 import JoinRoom from './Rooms/JoinRoom'
+import PlayedRooms from './Rooms/PlayedRooms'
 
 import Game from './Game/Game'
 
@@ -65,13 +67,19 @@ function Home() {
                 {data && <Card variant='container' sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                     <Route path='/home/search' component={Search}></Route>
                     <Route path='/home/decks' component={Decks}></Route>
+                    {/* open a specific deck */}
+                    <Route path='/home/decks/show/:deckId'>
+                        {({ match }) => match ? <Modal active={true} variant='none'>
+                            <DeckPage id={match.params.deckId} me={data.me} onClose={() => history.goBack()} />
+                        </Modal> : ''
+                        }
+                    </Route>
                     <Route path='/home/rooms' component={Rooms}></Route>
                     <Route path='/home/decks/newDeck'>
                         <Modal active={true}>
                             <NewDeck onClose={onNewDeckClose} />
                         </Modal>
                     </Route>
-
                     <Route path='/home/rooms/newRoom'>
                         <Modal active={true}>
                             <NewRoom onClose={onNewDeckClose} />
@@ -88,7 +96,15 @@ function Home() {
 
                     <Route path='/home/preview'>
                         <Box>
-                        <Text sx={{ fontSize: 4, fontWeight: 'thin' }}><Link to='/home/decks'>Your Decks</Link></Text>
+                            <Text sx={{ fontSize: 4, fontWeight: 'thin' }}>Played rooms</Text>
+                            <Box p={1} />
+                            <Text>Latest played</Text>
+                            <Box py={2}></Box>
+                            <PlayedRooms />
+                        </Box>
+                        <Box>
+                            <Box py={3} />
+                            <Text sx={{ fontSize: 4, fontWeight: 'thin' }}><Link to='/home/decks'>Your Decks</Link></Text>
                             <Box p={1} />
                             <Text>Latest created</Text>
                             <Box py={2}></Box>
@@ -104,7 +120,7 @@ function Home() {
                         </Box>
                         <Box py={3} />
                         <Box>
-                        <Text sx={{ fontSize: 4, fontWeight: 'thin' }}><Link to='/home/rooms'>Your Rooms</Link></Text>
+                            <Text sx={{ fontSize: 4, fontWeight: 'thin' }}><Link to='/home/rooms'>Your Rooms</Link></Text>
                             <Box p={1} />
                             <Text>Latest created</Text>
                             <Box py={2}></Box>
@@ -123,7 +139,6 @@ function Home() {
                         </Box>
                     </Route>
                 </Card>}
-
             </Flex>
         </Provider>
 

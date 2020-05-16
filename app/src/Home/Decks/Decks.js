@@ -23,24 +23,29 @@ export default function Decks() {
                 <Text py={2} sx={{ fontSize: 2, fontWeight: 'thin' }}>No decks! Create one</Text>
                 :
                 <Box py={2}>
-                    <MyDecksSearchBar sx={{ maxWidth: '250px', backgroundColor: 'white', borderColor: 'white' }} decks={data.me.decks}>
+                    <MyDecksSearchBar sx={{
+                        maxWidth: '250px',
+                        backgroundColor: 'white',
+                        borderColor: 'white'
+                    }} decks={data.me.decks}>
                         {decks =>
-                            <Flex sx={{ flexDirection: ['column', 'row'], flexWrap: 'wrap' }}>
+                            <Flex sx={{ flexDirection: ['column', 'row'], flexWrap: 'wrap', alignItems: 'center', }}>
                                 {decks.map(deck => <Box key={deck.id} pr={2} py={2}>
                                     <DeckPreview key={deck.id} deck={deck} controllers={
                                         deck => <MyDeckControllers {...deck} />
                                     }>}</DeckPreview>
                                 </Box>)}
+                                <Box>
+                                <Button
+                                    onClick={() => history.push('/home/decks/newDeck')}>
+                                    Add
+                                  </Button>
+                                  </Box>
                             </Flex>
+
                         }
                     </MyDecksSearchBar>
                 </Box>}
-            <Flex sx={{ flex: 1, alignItems: 'center' }}>
-                <Button
-                    onClick={() => history.push('/home/decks/newDeck')}>
-                    Add
-                   </Button>
-            </Flex>
             {/* edit a deck */}
             <Route path='/home/decks/edit/:deckId'>
                 {({ match }) => match ? <Modal active={true}>
@@ -50,13 +55,6 @@ export default function Decks() {
                     </IconButton>
                 </Modal>
                     : ''}
-            </Route>
-            {/* open a specific deck */}
-            <Route path='/home/decks/show/:deckId'>
-                {({ match }) => match ? <Modal active={true} variant='none'>
-                    <DeckPage id={match.params.deckId} me={data.me} onClose={() => history.goBack()} />
-                </Modal> : ''
-                }
             </Route>
         </Box>
     )

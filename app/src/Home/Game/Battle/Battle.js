@@ -66,6 +66,7 @@ export default function Battle({ deck, room }) {
 
     useEffect(() => {
         loader.hide()
+        console.log(deck)
         // if a deck is provided, use it!
         if (deck) game.setDeck(deck)
     }, [])

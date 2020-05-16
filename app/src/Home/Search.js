@@ -44,12 +44,11 @@ const DeckPreviewWithZoom = ({ deck }) => {
 
 const SearchPage = ({ location }) => {
     const history = useHistory()
-    console.log(location)
     const [searchType, setSearchType] = useState('CARDS')
 
     const setSearchTypeAndUrl = (type) => {
         setSearchType(type)
-        history.push(location.pathname + `?type=${type}`)
+        // history.push(location.pathname + `?type=${type}`)
     }
     const { type } = queryString.parse(location.search)
 

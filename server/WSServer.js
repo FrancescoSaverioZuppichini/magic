@@ -16,8 +16,6 @@ class WSServer {
         this.io = socket(httpServer)
     }
 
-
-
     start() {
         this.io.on('connection', (socket) => {
             logger.info('a user connected')
@@ -30,7 +28,6 @@ class WSServer {
                 socket.join(roomId)
                 socket.to(roomId).emit('join', userId)
             })
-
 
             socket.on('action', async ({ type, data }) => {
                 console.log(type, data)
@@ -51,24 +48,20 @@ class WSServer {
                 const room = await Room.findById(roomId)
                 const idx = room.users.indexOf(userId)
                 const userInRoom = idx > -1
-                if(userInRoom) {
+                if (userInRoom) {
                     room.users.splice(idx, 1)
                     await room.save()
                 }
-
-                console.log(room)
-
             }
 
             const onBattle = async ({ roomId, userId }) => {
                 const room = await Room.findById(roomId)
                 const idx = room.users.indexOf(userId)
                 const userInRoom = idx > -1
-                if(!userInRoom) {
+                if (!userInRoom) {
                     room.users.push(userId)
                     await room.save()
                 }
-                console.log(room)
                 const allUsersJoined = room.users.length === MAX_PLAYERS
                 if (allUsersJoined) {
                     logger.info(`emitting start to ${roomId}`)
@@ -77,9 +70,8 @@ class WSServer {
                 }
             }
 
-            const onUpdate = async({ update }) => {
+            const onUpdate = async ({ update }) => {
                 this.io.to(socket.roomId).emit(TYPES.UPDATE, { update, from: { id: socket.userId } })
-
             }
 
             socket.on('action', ({ roomId, action }) => {

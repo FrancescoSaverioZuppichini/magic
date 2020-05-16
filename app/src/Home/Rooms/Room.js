@@ -11,12 +11,12 @@ export default function Room({ id }) {
      */
     const history = useHistory()
     const location = useLocation()
-    const {  data } = useQuery(queries.GET_ROOM, { variables: { id: id } })
+    const { data } = useQuery(queries.GET_ROOM, { variables: { id: id } })
 
     const sharableLink = `/home/game/${id}`
     // join is simply a redirect to /home/game/{id}
     const onJoin = () => window.location = sharableLink
-    
+
     return (
         <Card sx={{ width: ['100%', '100%', '50%', '450px'] }}>
             {data && <Box>
@@ -32,7 +32,7 @@ export default function Room({ id }) {
                 <Box py={1} />
                 <Text>{sharableLink}</Text>
                 <Flex pt={4}>
-                    <RoomControllers {...data.room} onCompleted={history.goBack}/>
+                    <RoomControllers {...data.room} onCompleted={history.goBack} />
                     <Box variant="spacer" />
                     <Button onClick={onJoin}>Join</Button>
                 </Flex>

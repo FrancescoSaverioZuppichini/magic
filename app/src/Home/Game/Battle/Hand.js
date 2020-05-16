@@ -45,7 +45,7 @@ export default function Hand({ game, onCardClick, selectedCard }) {
                                 <Flex pt={1}>
                                     <Button onClick={() => setOpenDeck(true)}>{game.state.deck.cards.length} deck </Button>
                                     <Box px={1} />
-                                    <Button onClick={() => game.shuffleDeck()}>Shuffle</Button>
+                                    <Button onClick={() => game.shuffle()}>Shuffle</Button>
                                     <Box px={1} />
                                     {game.state.deck.cards.length > 0 && <Button onClick={() => game.pickACard()}>Pick</Button>}
                                 </Flex>

@@ -79,6 +79,7 @@ const MagicCardStats = ({ power = '-', toughness = '-' }) => (
     </Box>
 )
 // TODO better to pass card!
+// REVIEW I think it is @deprecated, check if used or used AddToDeckMagiCardsAction
 const AddToDeckMagiCardAction = ({ scryfallId, id, name, variant, selectedDecks = [] }) => {
     /**
      * Button for adding a cards to different decks.
@@ -265,23 +266,42 @@ const ZoomMagiCardAction = ({ scryfallId, id, name, children }) => {
 const MagicCardActions = ({ children }) => {
 
     return (
-        <Box>
+        <Box p={2}
+            sx={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                width: '100%',
+                borderRadius: '8 8 0 0',
+                // visibility: 'hidden',
+                backgroundColor: 'rgba(255,255,255,0.9)',
+                '&:hover': {
+                    visibility: 'visible'
+                }
+            }}>
             {children}
         </Box>
     )
 }
 
 
-const MagicCard = (props) => (
-    <Card variant={props.variant || 'tiny'}>
-        {/* <MagicCardHeader {...props} />
+const MagicCard = (props) => {
+    const [showActions, setShowActions] = useState(false)
+
+    return (
+        <Card variant={props.variant || 'tiny'} sx={{ position: 'relative' }}
+            onMouseEnter={() => setShowActions(true)}
+            onMouseLeave={() => setShowActions(false)}
+        >
+            {/* <MagicCardHeader {...props} />
         <Box py={1} /> */}
-        <MagicCardImg {...props.card} onClick={props.onClick} />
-        {/* <MagicCardText {...props} /> */}
-        <MagicCardActions>
-            {props.actions && props.actions(props.card)}
-        </MagicCardActions>
-    </Card>
-)
+            <MagicCardImg {...props.card} onClick={props.onClick} />
+            {/* <MagicCardText {...props} /> */}
+            {showActions && <MagicCardActions>
+                {props.actions && props.actions(props.card)}
+            </MagicCardActions> }
+        </Card>
+    )
+}
 
 export { MagicCard, MagicCardImg, CardPage, AddToDeckMagiCardAction, ZoomMagiCardAction, AddToDeckMagiCardsAction }

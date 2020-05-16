@@ -39,7 +39,7 @@ class GameCardsContainer extends Container {
         this.originalDeck = deck
         // deep copy the deck, we are going to change it!
         const deepDeck = { cards: [...deck.cards], name: deck.name }
-        this.shuffle(deepDeck)
+        shuffle(deepDeck)
 
         let hand = []
         for (let card of deepDeck.cards.splice(0, 5)) {
