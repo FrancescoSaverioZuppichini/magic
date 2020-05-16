@@ -13,6 +13,7 @@ const typeDefs = gql`
     card(id: ID!): Card 
     cards(filter: CardFilter, cursor: CursorInput!): CardConnection
     cardsInDeck(filter: CardFilter, cursor: CursorInput!, deck: ID!): CardConnection
+    cardsFilters(deck: DeckInput): CardsFilters
     room(id: ID!): Room
     playedRooms: [Room] @isAuthenticated
 	}
@@ -39,9 +40,14 @@ const typeDefs = gql`
     default: Boolean
     type: String
     colors: [DeckColor]
-
 	}
 
+  type CardsFilters {
+    types: [String]
+    subtypes: [String],
+    colors: [String]
+  }
+ 
 	type Card {
     id: ID
     name: String!,
@@ -99,8 +105,8 @@ const typeDefs = gql`
 	}
 
   input DeckInput { 
-    id: ID
-    name: String!
+    id: ID!
+    name: String
     cards: [ID!]
   }
 

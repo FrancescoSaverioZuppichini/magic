@@ -81,6 +81,12 @@ const resolvers = {
 		card(ctx, { id }) {
 			return Card.findById(id)
 		},
+		async cardsFilters(cd, { deck }) {
+			const myDeck = await Deck.findById(deck.id).populate('cards')
+			const types = myDeck.cards.distinct('types')
+			return {types}
+			
+		},
 		room: (ctx, { id }) => Room.findById(id).populate('users').populate('owner'),
 		playedRooms: (ctx, { }, { user }) => { 
 			const rooms = Room.find({ users: { '$in' : user.id }, owner: { '$ne' : user.id}})
