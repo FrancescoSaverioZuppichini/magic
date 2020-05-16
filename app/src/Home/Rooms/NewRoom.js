@@ -36,7 +36,7 @@ export default function NewRoom({ onClose }) {
             <Text pb={2}>Name</Text>
             <Input variant='inputTiny' placeholder='name' 
             onChange={(el) => setRoom({ name : el.target. value})}></Input>
-            <Flex pt={5}>
+            <Flex pt={4}>
                 <Button onClick={onClose}>Close</Button>
                 <Box variant="spacer" />
                 <Button onClick={() => onCreate()}>Create</Button>
