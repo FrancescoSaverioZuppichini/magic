@@ -3,6 +3,7 @@ import { Flex } from 'theme-ui'
 import { MagicCard, ZoomMagiCardAction, AddToDeckMagiCardAction, CardPage } from '../MagicCards/MagicCard'
 import Deck from './Deck.js'
 import MagicCards from '../MagicCards/MagicCards'
+import MagicCardsInDeckFilters from './MagicCardsInDeckFilters'
 import CloneDeckAction from './CloneDeckAction'
 
 export default function OthersDeck({ deck, onClose }) {
@@ -11,7 +12,9 @@ export default function OthersDeck({ deck, onClose }) {
             controllers={
                 deck => <CloneDeckAction deck={deck} />
             }>
-            {deck => <MagicCards cards={deck.cards}>
+            {deck => <MagicCards cards={deck.cards}
+                filters={onChange => <MagicCardsInDeckFilters onChange={onChange} deck={deck} />}
+            >
                 {(card, i) => <MagicCard key={i} card={card}
                     actions={props => (
                         // actions for the card

@@ -35,7 +35,7 @@ const DeckPreviewWithZoom = ({ deck }) => {
                 linkable={false}
                 onClick={() => setZoom(true)}
             />
-            {zoom && <Modal active={zoom} variant='vCentering'>
+            {zoom && <Modal active={zoom} variant='none'>
                 <DeckPage id={deck.id} onClose={() => setZoom(false)} />
             </Modal>}
         </Box>

@@ -5,7 +5,7 @@ import { Card, Flex, Button, Text, Box } from 'theme-ui'
 import { MagicCard, ZoomMagiCardAction, AddToDeckMagiCardAction, CardPage } from '../MagicCards/MagicCard'
 import { SelectableMagigCards } from '../MagicCards/SelectableMagicCards.js'
 import MyDeckControllers from './MyDeckControllers'
-import { useHistory } from "react-router-dom";
+import MagicCardsInDeckFilters from './MagicCardsInDeckFilters'
 import mutations from '../../mutations/index.js'
 import Deck from './Deck.js'
 import OthersDeck from './OthersDeck'
@@ -45,28 +45,30 @@ const MyDeck = ({ originalDeck, onClose }) => {
 
         <Deck deck={deck} onClose={onClose} controllers={
             deck => <MyDeckControllers {...deck} />
-            }>
-            {deck => <SelectableMagigCards cards={deck.cards} card={
-                (card, i, setSelectedCard) => <MagicCard key={i} card={card}
-                    onClick={() => setSelectedCard(card, i)}
-                    actions={props => (
-                        // actions for the card
-                        <Flex sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-                            <RemoveCardFromDeckAction onRemove={() => removeCardsFromDeck([card])} variant='actionWarning' />
-                            <AddToDeckMagiCardAction {...props} selectedDecks={[deck]} />
-                            <ZoomMagiCardAction {...props}>
-                                {onClose => <CardPage {...props} onClose={onClose}>
-                                    <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                                        <RemoveCardFromDeckAction onRemove={() => {
-                                            removeCardsFromDeck([props])
-                                            onClose()
-                                        }} />
-                                        <AddToDeckMagiCardAction {...props} variant='primary' selectedDecks={[deck]} />
-                                    </Flex>
-                                </CardPage>}
-                            </ZoomMagiCardAction>
-                        </Flex>
-                    )} />}
+        }>
+            {deck => <SelectableMagigCards cards={deck.cards}
+                filters={onChange => <MagicCardsInDeckFilters onChange={onChange} deck={deck} />}
+                card={
+                    (card, i, setSelectedCard) => <MagicCard key={i} card={card}
+                        onClick={() => setSelectedCard(card, i)}
+                        actions={props => (
+                            // actions for the card
+                            <Flex sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                                <RemoveCardFromDeckAction onRemove={() => removeCardsFromDeck([card])} variant='actionWarning' />
+                                <AddToDeckMagiCardAction {...props} selectedDecks={[deck]} />
+                                <ZoomMagiCardAction {...props}>
+                                    {onClose => <CardPage {...props} onClose={onClose}>
+                                        <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <RemoveCardFromDeckAction onRemove={() => {
+                                                removeCardsFromDeck([props])
+                                                onClose()
+                                            }} />
+                                            <AddToDeckMagiCardAction {...props} variant='primary' selectedDecks={[deck]} />
+                                        </Flex>
+                                    </CardPage>}
+                                </ZoomMagiCardAction>
+                            </Flex>
+                        )} />}
             >
                 {(selectedCards, onClear) =>
                     <SelectedCardsActions cards={selectedCards}
@@ -87,12 +89,12 @@ export default function DeckPage({ id, onClose }) {
     const meRes = useQuery(queries.GET_ME)
     const meData = meRes.data
     const { data } = useQuery(queries.GET_DECK, { variables: { id: id } })
-    if(data) data.deck.owner = data.deck.owner === null ? {} : data.deck.owner
+    if (data) data.deck.owner = data.deck.owner === null ? {} : data.deck.owner
     return (
         <Box>
             {data && meData && (data.deck.owner.id === meData.me.id ?
-                 <MyDeck originalDeck={data.deck} onClose={onClose}/> :
-                 <OthersDeck deck={data.deck} onClose={onClose}/>)
+                <MyDeck originalDeck={data.deck} onClose={onClose} /> :
+                <OthersDeck deck={data.deck} onClose={onClose} />)
             }
         </Box>
     )

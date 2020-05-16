@@ -3,7 +3,7 @@ import { Flex, Box, Text, Button, IconButton, Image } from 'theme-ui'
 import { MagicCardsFilters } from './MagicCardsFilterControllers'
 import { filterMagicCards } from '../../utils'
 
-export default function MagicCards({ cards, children, hasFilters = true, width = ['100%', '50%', '33%', '250px'] }) {
+export default function MagicCards({ cards, children, filters, hasFilters=true, width = ['100%', '50%', '33%', '250px'] }) {
     /**
      * Container for cards. It allows to filter the cards is `harFilters=true`. 
      * Custom card types can be passed as children.
@@ -47,7 +47,7 @@ export default function MagicCards({ cards, children, hasFilters = true, width =
                         <IconButton onClick={() => setCardVisMode('TABLE')}><Image src='/view_list-black-18dp.svg' width='48px' height='48px'></Image></IconButton>
                     </Box>
                 </Flex>
-                {showFilters && <Box pb={2}><MagicCardsFilters onChange={setFilterAndEnsureAll} /> </Box>}
+                {hasFilters && (filters ? filters(setFilterAndEnsureAll) : <Box pb={2}><MagicCardsFilters onChange={setFilterAndEnsureAll} /> </Box>)}
             </Flex>
             {!hasFilters && <Box p={1} />}
             {/* cards */}
