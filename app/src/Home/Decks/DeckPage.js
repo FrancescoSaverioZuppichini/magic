@@ -26,7 +26,6 @@ const RemoveCardFromDeckAction = ({ onRemove, variant = 'warning' }) => (
 
 const MyDeck = ({ originalDeck, onClose }) => {
     const [deck, setDeck] = useState({ ...originalDeck })
-
     const [newDeck, { newDeckError }] = useMutation(mutations.NEW_DECK)
 
     const removeCardFromDeck = (card) => {
