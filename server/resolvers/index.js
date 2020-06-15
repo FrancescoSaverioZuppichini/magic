@@ -1,6 +1,7 @@
 const { User, Card, Deck, Room } = require('../models/index.js')
 const CURSOR_BOUNDS = { limit: 200 }
 const { getDeckColors } = require('../utils')
+const { AuthenticationError } = require('apollo-server')
 
 const cards = async (ctx, { filter, cursor }) => {
 	let { skip, limit } = cursor
@@ -30,7 +31,7 @@ const cards = async (ctx, { filter, cursor }) => {
 	return { cards, hasMore, cursor }
 }
 
-const decks = async( ctx, { filter, cursor }) => {
+const decks = async (ctx, { filter, cursor }) => {
 	let { skip, limit } = cursor
 	let deckFilder = {}
 
@@ -84,12 +85,12 @@ const resolvers = {
 		async cardsFilters(cd, { deck }) {
 			const myDeck = await Deck.findById(deck.id).populate('cards')
 			const types = myDeck.cards.distinct('types')
-			return {types}
-			
+			return { types }
+
 		},
 		room: (ctx, { id }) => Room.findById(id).populate('users').populate('owner'),
-		playedRooms: (ctx, { }, { user }) => { 
-			const rooms = Room.find({ users: { '$in' : user.id }, owner: { '$ne' : user.id}})
+		playedRooms: (ctx, { }, { user }) => {
+			const rooms = Room.find({ users: { '$in': user.id }, owner: { '$ne': user.id } })
 			return rooms.populate('users').populate('owner')
 		}
 	},
@@ -101,7 +102,7 @@ const resolvers = {
 			user.save()
 			return user
 		},
-		async newAuth(obj, { username, password }, ctx) {
+		async newAuth(obj, { username, password }, { user }) {
 			const user = await User.find().byUsernameAndPassword({ username, password })
 			const token = user.generateJWT()
 			return { user, token }
@@ -113,9 +114,13 @@ const resolvers = {
 			deck.colors = colors
 			// // compute colors
 			if (deck.id) {
-				newDeck = await Deck.findByIdAndUpdate(deck.id, deck, {
-					new: true
-				})
+				if (deck.owner === user.id) {
+					newDeck = await Deck.findByIdAndUpdate(deck.id, deck, {
+						new: true
+					})
+				} else{
+					throw new AuthenticationError('You must be the owner of the deck to modify it.')
+				}
 			} else {
 				newDeck = await (new Deck(deck)).save()
 				user.decks.push(newDeck)

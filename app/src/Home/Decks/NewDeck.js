@@ -164,7 +164,6 @@ export default function NewDeck({ onClose }) {
                             </Box>
                             <Box py={2}></Box>
                             <Text><Link to={'/home/search?type=DECKS'}>or pickup a default one</Link></Text>
-                            <Box py={2}></Box>
                             <Flex pt={4}>
                                 <Button onClick={onClose}>Close</Button>
                                 <Box variant="spacer" />

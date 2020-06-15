@@ -47,7 +47,7 @@ export default function MagicCards({ cards, children, filters, hasFilters=true, 
                         <IconButton onClick={() => setCardVisMode('TABLE')}><Image src='/view_list-black-18dp.svg' width='48px' height='48px'></Image></IconButton>
                     </Box>
                 </Flex>
-                {hasFilters && (filters ? filters(setFilterAndEnsureAll) : <Box pb={2}><MagicCardsFilters onChange={setFilterAndEnsureAll} /> </Box>)}
+                {showFilters && (filters ? filters(setFilterAndEnsureAll) : <Box pb={2}><MagicCardsFilters onChange={setFilterAndEnsureAll} /> </Box>)}
             </Flex>
             {!hasFilters && <Box p={1} />}
             {/* cards */}

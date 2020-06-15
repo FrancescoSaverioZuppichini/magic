@@ -17,7 +17,7 @@ export default function CloneDeckAction({ deck, onDone }) {
                 query: queries.GET_ME,
                 data: me,
             })
-            snackbar.open('', `Cloned ${newDeck.name}`)
+            snackbar.open('', `Cloned deck "${newDeck.name}"`)
         }
     })
 

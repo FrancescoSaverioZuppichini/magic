@@ -1,9 +1,8 @@
 import React from 'react'
 import moment from 'moment'
 import { Card, Text, Box } from 'theme-ui'
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import DeckStats from './DeckStats'
-
 function DeckPreview({ deck, controllers, linkable=true, width='300px', url='/home/decks/show/', onClick }) {
     const { id, name, cards, createdAt, colors = [], type } = deck
     /**
@@ -12,7 +11,7 @@ function DeckPreview({ deck, controllers, linkable=true, width='300px', url='/ho
     return (
         <Card sx={{ width }} >
             {linkable && <Text sx={{ fontSize: 2 }}><Link to={`${url}${id}`}>{name}</Link></Text>}
-            {!linkable && <Text sx={{ fontSize: 2 }}><Link onClick={onClick}>{name}</Link></Text>}
+            {!linkable && <Text sx={{ fontSize: 2 }}><a onClick={onClick}>{name}</a></Text>}
             <Text sx={{ fontSize: 0 }}>{moment(Number(createdAt)).format('MMM Do YY')}</Text>
             {type && <Text py={1}>{type}</Text>}
             <Box py={1}/>
