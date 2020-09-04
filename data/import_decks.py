@@ -7,7 +7,7 @@ from tqdm import tqdm
 from bson.objectid import ObjectId
 from datetime import datetime
 from collections import defaultdict
-DATA_DIR = Path('./AllDeckFiles')
+DATA_DIR = Path('./AllDeckFiles/')
 
 mongo = MongoClient()
 magic = mongo.magic

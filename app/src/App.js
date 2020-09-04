@@ -6,7 +6,7 @@ import { onError } from "apollo-link-error"
 import { HttpLink } from 'apollo-link-http'
 import { ApolloLink } from 'apollo-link'
 import { BrowserRouter, Route, Redirect } from "react-router-dom"
-import Index from './Index'
+import Landing from './Landing'
 import Home from './Home/Home'
 import { ThemeProvider } from 'theme-ui'
 import { Box } from 'theme-ui'
@@ -72,7 +72,7 @@ function App() {
         <Box variant='app'>
           <BrowserRouter>
             <Route path="/" exact={true}>
-              <Index />
+              <Landing />
             </Route>
             <Route path="/home" >
               <Home />

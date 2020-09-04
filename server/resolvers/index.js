@@ -102,7 +102,7 @@ const resolvers = {
 			user.save()
 			return user
 		},
-		async newAuth(obj, { username, password }, { user }) {
+		async newAuth(obj, { username, password }) {
 			const user = await User.find().byUsernameAndPassword({ username, password })
 			const token = user.generateJWT()
 			return { user, token }

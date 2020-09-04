@@ -1,0 +1,1 @@
+docker run -d -p 27017-27019:27017-27019 --rm -v /home/zuppif/data:/data/db --name mongodb mongo
