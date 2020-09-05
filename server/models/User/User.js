@@ -35,7 +35,7 @@ UserSchema.methods.isUniqueOrAbort = async function() {
  * Generate a JWT using the user id
  */
 UserSchema.methods.generateJWT = function() {
-  return jwt.sign({ data: this._id }, process.env.TOKEN_SECRET || 'pazzofurioso', { expiresIn: '7d' })
+  return jwt.sign({ data: this._id }, process.env.TOKEN_SECRET || 'pazzofurioso', { expiresIn: '5' })
 }
 
 /**

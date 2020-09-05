@@ -23,11 +23,10 @@ mongoose
 var app = express()
 app.use(express.static('public'))
 app.use(expressLogger)
-app.use(jwt({ secret: TOKEN_SECRET, credentialsRequired: false }))
+// app.use(jwt({ secret: TOKEN_SECRET, credentialsRequired: false }))
 // app.use(function (err, req, res, next) {
 // 	if (err.name === 'UnauthorizedError') {
-// 	 throw new AuthenticationError('Token Expired')
-	 
+// 	 	throw new AuthenticationError('Token Expired')	 
 // 	}
 //   })
 
