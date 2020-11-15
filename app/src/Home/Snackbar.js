@@ -4,10 +4,12 @@ import { Card, Text, Flex, Box } from 'theme-ui'
 export default function Snackbar({ title, text }) {
     return (
         <Box
-            sx={{ position: 'absolute', bottom: 4, zIndex: 999, width: '100%' }}>
-            <Flex sx={{ justifyContent: 'center' }}>
+            sx={{ position: 'absolute', top: 6, zIndex: 999, width: '100%' }}>
+            <Flex>
+                <Box variant='spacer'/>
                 <Card variant='tiny'
-                    sx={{ minWidth: '150px', padding: 2,
+                    mr={4}
+                    sx={{ minWidth: '150px', padding: 3,
                     borderWidth:  '0px',
                     backgroundColor: 'primary',
                     }}>

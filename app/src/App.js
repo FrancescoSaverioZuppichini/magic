@@ -4,7 +4,6 @@ import { ApolloProvider, useQuery } from '@apollo/react-hooks'
 import ApolloClient from 'apollo-boost'
 import { onError } from "@apollo/client/link/error";
 import { from, HttpLink } from '@apollo/client';
-import { ApolloLink } from 'apollo-link'
 import { BrowserRouter, Route, Redirect } from "react-router-dom"
 import Landing from './Landing'
 import Home from './Home/Home'
@@ -25,8 +24,9 @@ const typeDefs = gql`
 const resolvers = {}
 
 const myOnErrorLink = onError(({ graphQLErrors, networkError, response }) => {
-  console.log(response)
+  console.log('response')
   if (graphQLErrors)
+  console.log('assa')
   console.log(graphQLErrors)
     graphQLErrors.map(({ message, locations, path }) =>
       console.log(
@@ -61,7 +61,7 @@ const client = new ApolloClient({
   typeDefs,
   resolvers)
 
-// should check if a token exist in the local storage
+// check if a token exist in the local storage
 client.writeData({ data: { isAuthenticated: localStorage.getItem('token') !== null } })
 
 // I could use ApolloConsumer and check for isAuthenticated

@@ -26,7 +26,7 @@ app.use(expressLogger)
 // app.use(jwt({ secret: TOKEN_SECRET, credentialsRequired: false }))
 // app.use(function (err, req, res, next) {
 // 	if (err.name === 'UnauthorizedError') {
-// 	 	throw new AuthenticationError('Token Expired')	 
+// 		next(new AuthenticationError('Token Expired'))
 // 	}
 //   })
 
