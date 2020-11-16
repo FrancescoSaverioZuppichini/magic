@@ -37,9 +37,18 @@ function Home() {
     // const socket = io('http://localhost');
     const client = useApolloClient()
     const { error, loading, data } = useQuery(queries.GET_ME)
-
+   
     if (loading) loader.show()
-    if (data || error) loader.hide()
+    if (data){
+        loader.hide()
+        snackbar.open('', `Welcome back ${data.me.username} 😎`)
+    }
+    if(error) { 
+        // TODO this should be fetch in the onErrorLink
+        localStorage.removeItem('token')
+        client.writeData({ data: { isAuthenticated: false } })
+        snackbar.open('', 'Your token is expired, please login again 😢')
+    }
 
     const onNewDeckClick = () => {
         history.push("/home/decks/newDeck")

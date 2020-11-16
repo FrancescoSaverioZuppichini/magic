@@ -23,8 +23,7 @@ class RoomContainer extends Container {
         super()
         this.socket = io.connect()
         this.socket.on('connect', () => {
-            console.log('Connect to ws')
-            snackbar.open('', 'Connected')
+            console.log('Connected to ws')
         })
 
         this.socket.on('action', ({ action, from }) => {

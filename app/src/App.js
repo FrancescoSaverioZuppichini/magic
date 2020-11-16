@@ -2,9 +2,8 @@ import React from 'react'
 import theme from './theme.js'
 import { ApolloProvider, useQuery } from '@apollo/react-hooks'
 import ApolloClient from 'apollo-boost'
-import { onError } from "apollo-link-error"
-import { HttpLink } from 'apollo-link-http'
-import { ApolloLink } from 'apollo-link'
+import { onError } from "@apollo/client/link/error";
+import { from, HttpLink } from '@apollo/client';
 import { BrowserRouter, Route, Redirect } from "react-router-dom"
 import Landing from './Landing'
 import Home from './Home/Home'
@@ -24,8 +23,11 @@ const typeDefs = gql`
 
 const resolvers = {}
 
-const myOnErrorLink = onError(({ graphQLErrors, networkError }) => {
+const myOnErrorLink = onError(({ graphQLErrors, networkError, response }) => {
+  console.log('response')
   if (graphQLErrors)
+  console.log('assa')
+  console.log(graphQLErrors)
     graphQLErrors.map(({ message, locations, path }) =>
       console.log(
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
@@ -39,9 +41,11 @@ const myHttpLink = new HttpLink({
   uri: '/graphql',
 })
 
+const link = from([myOnErrorLink, myHttpLink])
+
 
 const client = new ApolloClient({
-  link: myOnErrorLink.concat(myHttpLink),
+  link: link,
   request: (operation) => {
     const token = localStorage.getItem('token')
     if (token) {
@@ -57,7 +61,7 @@ const client = new ApolloClient({
   typeDefs,
   resolvers)
 
-// should check if a token exist in the local storage
+// check if a token exist in the local storage
 client.writeData({ data: { isAuthenticated: localStorage.getItem('token') !== null } })
 
 // I could use ApolloConsumer and check for isAuthenticated

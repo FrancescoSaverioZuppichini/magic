@@ -35,6 +35,7 @@ function NavBar({ user }) {
 
                 <Box sx={{ position: 'relative' }}>
                     <Text
+                        sx={{fontSize: 2, textTransform: 'uppercase',}}
                         onClick={() => setOpenDropDown(!openDropDown)}>{user.username}
                     </Text>
                     <DropDown open={openDropDown} width={100}>
