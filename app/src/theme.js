@@ -90,7 +90,8 @@ const theme = {
   },
   text: {
     error: {
-      color: 'red'
+      color: '#6f42f5',
+      fontWeight: 700
     }
   },
   spacer: {

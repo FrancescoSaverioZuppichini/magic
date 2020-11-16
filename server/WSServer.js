@@ -21,6 +21,7 @@ class WSServer {
             logger.info('a user connected')
 
             socket.on('room', async ({ name, userId, roomId }) => {
+                // store user and room directly on the socker -> we will use them later!
                 socket.userId = userId
                 socket.roomId = roomId
                 // join and notify all the users inside!

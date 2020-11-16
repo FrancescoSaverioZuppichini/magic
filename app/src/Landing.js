@@ -5,18 +5,21 @@ import queries from './queries/index'
 import mutations from './mutations/index'
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
 
-const Left = ({ active, doSignUp, doSignIn, onSignUpClick, onSignInClick }) => {
+const Left = ({ active, doSignUp, doSignIn, onSignUpClick, onSignInClick, error }) => {
     const usernameInput = useRef(null)
     const emailInput = useRef(null)
     const passwordInput = useRef(null)
 
     const withUser = (func) => {
+        // create the user data from the form and pass it to fund
         let user = {}
         user.username = usernameInput.current.value
         if (!!emailInput.current) user.email = emailInput.current.value
         user.password = passwordInput.current.value
         return func(user)
     }
+
+    const formatError = ({message}) => `Error: ${message.split(':')[1]} 🤔` 
 
     return (
         <Card variant='viewport' sx={{
@@ -29,6 +32,7 @@ const Left = ({ active, doSignUp, doSignIn, onSignUpClick, onSignInClick }) => {
                     <Input mb={3} placeholder='username' ref={usernameInput}></Input>
                     {active === 'signUp' && <Input mb={3} placeholder='email' ref={emailInput}></Input>}
                     <Input mb={3} type="password" placeholder='password' ref={passwordInput}></Input>
+                    {error.message && <Card><Text variant='error'>{formatError(error)}</Text></Card>}
                     {active === 'signIn' && <Button onClick={() => withUser(doSignIn)} variant='primary' sx={{ width: '100%' }}>
                         Sign In
                     </Button>}
@@ -77,15 +81,18 @@ const Right = ({ active, onSignUpClick, onSignInClick }) => (
 
 function Index() {
     const client = useApolloClient()
-    const [active, setActive] = useState('signUp')
-    let currentInput
+    const [active, setActive] = useState('signIn')
+    const [error, setError] = useState({})
 
-    const [newAuth, { newAuthError}] = useMutation(mutations.NEW_AUTH, {
+    const [newAuth, { newAuthError }] = useMutation(mutations.NEW_AUTH, {
         onCompleted({ newAuth }) {
             // update the local cache
             const token = newAuth.token
             localStorage.setItem("token", token)
             client.writeData({ data: { isAuthenticated: true } })
+        },
+        onError(err) {
+            setError(err)
         }
     })
 
@@ -93,6 +100,9 @@ function Index() {
         onCompleted({ newUser }) {
             console.log(`new User ${newUser.username} created`)
             setActive('signIn')
+        },
+        onError(err) {
+            setError(err)
         }
     })
 
@@ -111,6 +121,7 @@ function Index() {
                 doSignUp={doSignUp}
                 doSignIn={doSignIn}
                 active={active}
+                error={error}
             />
             <Right
                 onSignUpClick={onSignUpClick}
